@@ -1,0 +1,650 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+# "Language Name: 日本語"
+# "Project-Id-Version: FileOptimizer 13.50.2431"
+# "POT-Creation-Date: 2025/07/27"
+# "MIME-Version: 1.0"
+# "Content-Type: text/plain; charset=UTF-8"
+# "Content-Transfer-Encoding: 8bit"
+# "Language: ja_JP"
+# "Last-Translator: Re*Index.(ot_inc)"
+# "Plural-Forms: nplurals=2; plural=(n != 1);"
+msgid "FileOptimizer"
+msgstr "FileOptimizer"
+
+msgid "&About..."
+msgstr "バージョン情報(&A)..."
+
+msgid "Open the about window with internal and legal information"
+msgstr "内部情報と法的情報を含むバージョン情報ウィンドウを開きます。"
+
+msgid "-"
+msgstr "-"
+
+msgid "Donate..."
+msgstr "寄付..."
+
+msgid "Support the development by easily and securely money donations"
+msgstr "簡単かつ安全に寄付をして開発を支援しましょう。"
+
+msgid "&Information..."
+msgstr "情報(&I)..."
+
+msgid "Open information window with the list of currently supported file formats"
+msgstr "現在サポートされているファイル形式の一覧を含む情報ウィンドウを開きます。"
+
+msgid "Help topics..."
+msgstr "ヘルプのトピック..."
+
+msgid "Open help topics"
+msgstr "ヘルプのトピックを開く"
+
+msgid "&Help"
+msgstr "ヘルプ(&H)"
+
+msgid "&Options..."
+msgstr "オプション(&O)..."
+
+msgid "Open configuration options window"
+msgstr "設定オプションウィンドウを開きます。"
+
+msgid "&Stop"
+msgstr "停止(&S)"
+
+msgid "Stop in-progress optimizations"
+msgstr "進行中の最適化を停止します。"
+
+msgid "&Optimize all files"
+msgstr "すべてのファイルを最適化する(&O)"
+
+msgid "Optimize files in the optimization list"
+msgstr "一覧にあるファイルを最適化します。"
+
+msgid "&Optimize"
+msgstr "最適化(&O)"
+
+msgid "E&xit..."
+msgstr "終了(&X)..."
+
+msgid "Exit the program"
+msgstr "プログラムを終了します"
+
+msgid "Open &containing folder..."
+msgstr "選択した項目を含むフォルダーを開く(&C)..."
+
+msgid "Open folder containing selected item"
+msgstr "選択した項目を含むフォルダーを開きます。"
+
+msgid "&Open selected file"
+msgstr "選択したファイルを開く(&O)"
+
+msgid "Open selected file with the associated program"
+msgstr "選択したファイルを関連付けられたプログラムで開きます。"
+
+msgid "&Clear all files"
+msgstr "すべてのファイルを消去(&C)"
+
+msgid "Empty all files in the optimization list"
+msgstr "一覧のすべてのファイルを空にします。"
+
+msgid "&Remove selected files"
+msgstr "選択したファイルを消去(&R)"
+
+msgid "Remove selected files from the optimization list"
+msgstr "選択したファイルを一覧から消去します。"
+
+msgid "A&dd folder..."
+msgstr "フォルダーを追加(&D)..."
+
+msgid "Add folder contents recursively from your computer to the optimization list"
+msgstr "コンピューターからフォルダーの内容を再帰的に一覧へ追加します。"
+
+msgid "&Add files..."
+msgstr "ファイルを追加(&A)..."
+
+msgid "Add files from your computer to the optimization list"
+msgstr "コンピューターからファイルを一覧に追加します。"
+
+msgid "&File"
+msgstr "ファイル(&F)"
+
+msgid "© Copyright 2012-2019 by Javier Gutiérrez Chamorro (Guti)"
+msgstr "© Copyright 2012-2019 by Javier Gutiérrez Chamorro (Guti)"
+
+msgid "https://nikkhokkho.sourceforge.io/static.php?page=FileOptimizer"
+msgstr "https://nikkhokkho.sourceforge.io/static.php?page=FileOptimizer"
+
+msgid "Drag on the list below files you want to optimize, and when ready, click on the right button context menu to proceed. All processed files are copied to Recycle Bin, so you can easily restore them. You can disable moving to Recycle Bin if you like. Double click an item to preview it."
+msgstr "最適化したいファイルを一覧にドラッグして、準備ができたら右ボタンで表示されるコンテンツメニューをクリックで続行します。\n処理済みのファイルは、すべてごみ箱に移動されるため簡単に復元することができます。\n必要に応じて、ごみ箱への移動を無効にすることもできます。項目をダブルクリックでプレビューが表示されます。"
+
+msgid "File"
+msgstr "ファイル"
+
+msgid "Extension (Type)"
+msgstr "拡張子 (タイプ)"
+
+msgid "Original size"
+msgstr "オリジナルのサイズ"
+
+msgid "Optimized size"
+msgstr "最適化後のサイズ"
+
+msgid "Status"
+msgstr "ステータス"
+
+msgid "Optimization is still running. Do you want to stop and exit %s?"
+msgstr "最適化は実行中です。停止して %s を終了しますか？"
+
+msgid "About"
+msgstr "バージョン情報"
+
+msgid "&Close"
+msgstr "閉じる(&C)"
+
+msgid "and %s file formats among many others."
+msgstr "と %s ファイル形式などその他多数。"
+
+msgid " is an advanced file optimizer featuring a lossless (no quality loss) file size reduction that supports: "
+msgstr " は、ロスレス (品質の低下がなし) のファイルサイズ削減を特徴とする高度なファイル最適化であり、以下をサポートします。"
+
+msgid ""
+"\n"
+"\n"
+"DONATOR INFORMATION\n"
+msgstr ""
+"\n"
+"\n"
+"寄付者情報\n"
+
+msgid "Have not donated yet!"
+msgstr "まだ寄付していません！"
+
+msgid ""
+"\n"
+"User since %s %s"
+msgstr ""
+"\n"
+"User since %s %s"
+
+msgid ""
+"\n"
+"\n"
+"USAGE STATISTICS\n"
+"- Time: %s\n"
+"- Opens: %s\n"
+"- Files: %s\n"
+"- Total: %s\n"
+"- Saved: %s\n"
+msgstr ""
+"\n"
+"\n"
+"使用統計\n"
+"- 時間: %s\n"
+"- ファイルの展開: %s\n"
+"- ファイル: %s\n"
+"- 合計: %s\n"
+"- 保存済み: %s\n"
+
+msgid "Information"
+msgstr "情報"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "&Cancel"
+msgstr "キャンセル(&C)"
+
+msgid "Discard any changes made to options."
+msgstr "オプションのすべての変更を破棄します。"
+
+msgid "&OK"
+msgstr "OK(&O)"
+
+msgid "Accept and apply all changes made to options."
+msgstr "オプションのすべての変更を適用します。"
+
+msgid "&Restore defaults"
+msgstr "既定に復元する(&R)"
+
+msgid "Restore all options to its factory settings values."
+msgstr "すべての設定を既定値に戻します。"
+
+msgid "&Recurse"
+msgstr "再帰的(&R)"
+
+msgid "Enable optimization inside archives (recursive optimization)."
+msgstr "アーカイブ内の最適化を有効にします (再帰的な最適化)。"
+
+msgid "&Copy metadata"
+msgstr "メタデータをコピー(&C)"
+
+msgid "Copy file metadata. Else strip all unneeded information."
+msgstr "ファイルのメタデータをコピーします。それ以外の場合は、不要な情報をすべて削除します。"
+
+msgid "&ZIP"
+msgstr "ZIP(&Z)"
+
+msgid "&Enable Leanify"
+msgstr "Leanify を有効(&E)"
+
+msgid "Enable Leanify. Results in smaller files, but can happen they are not editable anymore."
+msgstr "Leanify を有効にします。ファイルサイズは小さくなりますが、編集ができなくなる可能性があります。"
+
+msgid "&XML"
+msgstr "XML(&X)"
+
+msgid "&TIFF"
+msgstr "TIFF(&T)"
+
+msgid "&TGA"
+msgstr "TGA(&T)"
+
+msgid "&Allow lossy optimizations"
+msgstr "非可逆最適化を許可(&A)"
+
+msgid "Allowing lossy optimizations will get higher files reduction at the cost of some quality loss, even if visually unnoticeable or not"
+msgstr "非可逆最適化を許可すると、視覚的に目立たない場合でも品質低下を犠牲にしてファイルサイズを大幅に削減できます。"
+
+msgid "&PNG"
+msgstr "PNG(&P)"
+
+msgid "&Skip layered"
+msgstr "レイヤーをスキップ(&S)"
+
+msgid "Skip processing of PDF files containing layered objects. Results in more compatible files with higher size."
+msgstr "レイヤー化されたオブジェクトを含む PDF ファイルの処理をスキップします。結果として、ファイルサイズは大きくなりますが、互換性は向上します。"
+
+msgid "When custom profile is chosen, it allows you to specify a custom DPI for downsampling images"
+msgstr "カスタムプロファイルを選択すると、画像をダウンサンプリングするためのカスタム DPI を指定できます。"
+
+msgid "Compression profile, from less size, to best quality."
+msgstr "圧縮プロファイル、小さいサイズから最高品質に対応しています。"
+
+msgid "Custom"
+msgstr "カスタム"
+
+msgid "Prepress: 300 dpi and color preserve"
+msgstr "プリプレス: 300 dpi と色彩を保存"
+
+msgid "Printer: 300 dpi"
+msgstr "プリンター: 300 dpi"
+
+msgid "Ebook: 150 dpi"
+msgstr "電子書籍: 150 dpi"
+
+msgid "Screen: 72 dpi"
+msgstr "画面: 72 dpi"
+
+msgid "None: No downsampling (Default)"
+msgstr "なし: ダウンサンプリングしない (既定)"
+
+msgid "&Custom DPI"
+msgstr "カスタム DPI(&C)"
+
+msgid "&Profile"
+msgstr "プロファイル(&P)"
+
+msgid "&PDF"
+msgstr "PDF(&P)"
+
+msgid "&PCX"
+msgstr "PCX(&P)"
+
+msgid "&MP4"
+msgstr "MP4(&M)"
+
+msgid "&MP3"
+msgstr "MP3(&M)"
+
+msgid "&Disable"
+msgstr "無効(&D)"
+
+msgid "Disable processing of other file types. This could imply lossing some edit capabilities such as PSD/PSB where text layers will be rasterized."
+msgstr "その他のファイル形式の処理を無効にします。これにより、テキストレイヤーがラスタライズされる PSD/PSB などの一部の編集機能が失われる可能性があります。"
+
+msgid "&Miscellaneous"
+msgstr "その他(&M)"
+
+msgid "&LUA"
+msgstr "LUA(&L)"
+
+msgid "Add extra extensions to be threated as JS/JSON."
+msgstr "JS/JSON として扱われるように追加の拡張子を追加します。"
+
+msgid "&Enable JSMin"
+msgstr "JSMin を有効(&E)"
+
+msgid "Enable jsmin. Results in smaller files, but can happen they are not editable anymore."
+msgstr "JSMin を有効します。ファイルサイズは小さくなりますが、編集できなくなる可能性があります。"
+
+msgid "&Additional Extensions"
+msgstr "追加の拡張子(&A)"
+
+msgid "&JS"
+msgstr "JS(&J)"
+
+msgid "&Use arithmetic encoding"
+msgstr "算術符号化を使用する(&U)"
+
+msgid "Arithmetic encoding gives additional saving reductions, but is incompatible with most programs."
+msgstr "算術符号化により、さらなるサイズの削減が行えますがほとんどのプログラムと互換性がありません。"
+
+msgid "&JPEG"
+msgstr "JPEG(&J)"
+
+msgid "&Enable Tidy"
+msgstr "Tidy を有効(&E)"
+
+msgid "Enable Tidy. Results in smaller files, but can happen they are not editable anymore. Note that this applies to both SVG and HTML file types"
+msgstr "Tidy を有効します。ファイルサイズは小さくなりますが、編集できなくなる可能性があります。これは SVG と HTML の両方のファイル形式に適用されます。"
+
+msgid "&HTML"
+msgstr "HTML(&H)"
+
+msgid "&GZ"
+msgstr "GZ(&G)"
+
+msgid "&GIF"
+msgstr "GIF(&G)"
+
+msgid "&Enable UPX"
+msgstr "UPX を有効(&E)"
+
+msgid "Enable UPX executable compression. When enabled, UPX will be used, resulting EXE and DLL size reduction at the cost of runtime decompression."
+msgstr "UPX による実行ファイルの圧縮を有効します。有効すると UPX が使用され、実行時の展開を犠牲にして EXE と DLL のサイズが縮小されます。"
+
+msgid "&Disable PETrim"
+msgstr "PETrim を無効(&D)"
+
+msgid "Disable PETrim. When enabled, PETrim will not be used, resulting in less EXE corruption at the cost of larger file size."
+msgstr "PETrim を無効にします。無効にすると PETrim は使用されなくなり、EXE ファイルの破損が少なくなりますが、ファイルサイズは大きくなります。"
+
+msgid "&EXE"
+msgstr "EXE(&E)"
+
+msgid "Compression template, from safer and worse compression, to highest compression"
+msgstr "圧縮テンプレート、より安全な圧縮から低圧縮、そして高圧縮が行えます。"
+
+msgid "Highest"
+msgstr "最高"
+
+msgid "High"
+msgstr "高"
+
+msgid "Low (Default)"
+msgstr "低 (既定)"
+
+msgid "Enable tidy. Results in smaller files, but can happen they are not editable anymore."
+msgstr "Tidy を有効にします。ファイルサイズは小さくなりますが、編集できなくなる可能性があります。"
+
+msgid "&Template"
+msgstr "テンプレート(&T)"
+
+msgid "&CSS"
+msgstr "CSS(&C)"
+
+msgid "&BMP"
+msgstr "BMP(&B)"
+
+msgid "User interface language"
+msgstr "ユーザーインターフェースの言語"
+
+msgid "&Hide ads"
+msgstr "広告を非表示(&H)"
+
+msgid "Hide ads from being displayed."
+msgstr "広告を非表示にします。"
+
+msgid "Specify the format to display filenames in the list."
+msgstr "一覧にファイル名を表示する形式を指定します。"
+
+msgid "Drive letter + Partial (path + Filename)"
+msgstr "ドライブレター + 部分 (パスとファイル名)"
+
+msgid "Drive letter + Partial path + Filename"
+msgstr "ドライブレター + 部分パス + ファイル名"
+
+msgid "Filename only"
+msgstr "ファイル名のみ"
+
+msgid "Full path and Filename (Default)"
+msgstr "フルパスとファイル名 (既定)"
+
+msgid "&Always on top"
+msgstr "常に手前に表示(&A)"
+
+msgid "Show main window always on top."
+msgstr "メインウィンドウを常に手前に表示します"
+
+msgid "&Show toolbar"
+msgstr "ツールバーを表示(&S)"
+
+msgid "Show icons toolbar on main window"
+msgstr "メインウィンドウにアイコンツールバーを表示します。"
+
+msgid "If you have already donated to support FileOptimizer development, enter here the email address or name you used"
+msgstr "FileOptimizer の支援ですでに寄付している場合は、使用したメールアドレスまたは名前をここに入力してください。"
+
+msgid "&Language"
+msgstr "言語(&L)"
+
+msgid "&Filename format"
+msgstr "ファイル形式(&F)"
+
+msgid "&Donator"
+msgstr "寄付者(&D)"
+
+msgid "&Appearance"
+msgstr "外観(&A)"
+
+msgid "&Allow multiple instances"
+msgstr "多重起動を許可(&A)"
+
+msgid "Allow having more than one FileOptimizer instance. If not, a warning will appear."
+msgstr "複数の FileOptimizer の起動を許可します。許可しない場合は、警告が表示されます。"
+
+msgid "&Enable cache"
+msgstr "キャッシュを有効(&E)"
+
+msgid "Enable cache of already optimized files to automatically skip them."
+msgstr "すでに最適化されているファイルのキャッシュを有効にして、自動的にスキップします。"
+
+msgid "If specified, number of trial iterations in all Leanify executions will use this value. If not, iterations are calculated depending on the Optimization level."
+msgstr "指定されている場合にすべての Leanify の実行における試行回数でこの値を使用します。指定されてない場合は、最適化レベルに応じた試行回数が計算されます。"
+
+msgid "&Allow duplicates"
+msgstr "重複を許可する(&A)"
+
+msgid "Allow adding same file more than once. If enabled, adding to the grid will be much faster, specially on very large grids."
+msgstr "同じファイルを複数回追加できるようにします。有効にすると、特に大きなグリッドでグリッドへの追加が大幅に高速化されます。"
+
+msgid "&Clear when complete"
+msgstr "完了後に消去(&C)"
+
+msgid "Automatically clear file list when optimization is completed."
+msgstr "最適化の完了後にファイルの一覧を自動的に消去します。"
+
+msgid "&Shutdown when done"
+msgstr "完了後にシャットダウン(&S)"
+
+msgid "Shutdown computer when optimization completes."
+msgstr "最適化の完了後にコンピューターをシャットダウンします。"
+
+msgid "&Beep when done"
+msgstr "完了後にビープ音を鳴らす(&B)"
+
+msgid "Beep the speaker when optimization completes."
+msgstr "最適化の完了後にスピーカーからビープ音を再生します。"
+
+msgid "Allow excluding execution of certain plugins. It is case insensitive, and allows more than one item to be specified by using semicolon as separator."
+msgstr "特定のプラグインの実行を除外することを許可します。大文字と小文字は区別されず、セミコロンを区切り文字として使用することで複数の項目を指定できます。"
+
+msgid "&Leanify iterations"
+msgstr "Leanify の処理を繰り返す(&L)"
+
+msgid "&Disable plugin mask"
+msgstr "プラグインマスクを無効(&D)"
+
+msgid "General &2"
+msgstr "一般(&2)"
+
+msgid "If not empty specified directory will be used for temporary storage instead of system's %TEMP%."
+msgstr "空でない場合に指定されたディレクトリを %TEMP% の代わりに一時ストレージとして使用します。"
+
+msgid "D&o not create backups"
+msgstr "バックアップを作成しない(&O)"
+
+msgid "When checked original files will not be backed up in the current folder as a .BAK files."
+msgstr "チェックすると元のファイルを現在のフォルダーに .BAK ファイルとしてバックアップを残さないようにします。"
+
+msgid "If not empty, only files containing this mask (substring) on name or path will be included from optimization. You can use semicolon to specify more than one substring being included."
+msgstr "空でない場合、名前またはパスのこのマスク (部分文字列) を含むファイルのみが最適化の対象となります。セミコロンを使用することで、複数の部分文字列を含めるように指定できます。"
+
+msgid "Files containing this mask (substring) on name or path will be excluded from optimization. You can use semicolon (;) to specify more than one substring being excluded."
+msgstr "名前またはパスにこのマスク (部分文字列) を含むファイルを最適化から除外します。セミコロンを使用して、除外する部分文字列を複数指定できます。"
+
+msgid "&Do not use recycle bin"
+msgstr "ごみ箱を使用しない(&D)"
+
+msgid "When checked original files will not be backed up in the system trashcan."
+msgstr "チェックすると元のファイルをシステムのごみ箱へ移動しないようにします。"
+
+msgid "Debugging level to output on program log."
+msgstr "プログラムログに出力するデバッグレベルです。"
+
+msgid "4: Information"
+msgstr "4: 情報"
+
+msgid "3: Warning"
+msgstr "3: 警告"
+
+msgid "2: Error"
+msgstr "2: エラー"
+
+msgid "1: Critical"
+msgstr "1: 致命的"
+
+msgid "0: None (Default)"
+msgstr "0: なし (既定)"
+
+msgid "Automatically check for program updates."
+msgstr "プログラムの更新を自動で確認します。"
+
+msgid "Never"
+msgstr "確認しない"
+
+msgid "Automatically (Default)"
+msgstr "自動 (既定)"
+
+msgid "Ask"
+msgstr "尋ねる"
+
+msgid "Process priority from most conservative to best performance."
+msgstr "最も保守的なものから最高のパフォーマンスのものまでのプロセスの優先順位です。"
+
+msgid "Realtime"
+msgstr "リアルタイム"
+
+msgid "Above normal"
+msgstr "通常以上"
+
+msgid "Normal (Default)"
+msgstr "通常 (既定)"
+
+msgid "Below normal"
+msgstr "通常以下"
+
+msgid "Idle"
+msgstr "アイドル"
+
+msgid "Optimization level from best speed to best compression."
+msgstr "高速圧縮から最高圧縮までの最適化レベルを設定します。"
+
+msgid "9: Best"
+msgstr "9: 最高"
+
+msgid "8: Better"
+msgstr "8: 安定"
+
+msgid "7: Good"
+msgstr "7: 良い"
+
+msgid "6:"
+msgstr "6:"
+
+msgid "5: Normal (Default)"
+msgstr "5: 通常 (既定)"
+
+msgid "4:"
+msgstr "4:"
+
+msgid "3:"
+msgstr "3:"
+
+msgid "2: Fast"
+msgstr "2: 高速"
+
+msgid "1: Faster"
+msgstr "1: 超高速"
+
+msgid "0: Fastest"
+msgstr "0: 最高速"
+
+msgid "&Keep file attributes"
+msgstr "ファイル属性を保持する(&K)"
+
+msgid "Keep original readonly, system, hidden and archive attributes as well as creation and modification timestamps."
+msgstr "元となる読み取り専用、システム、非表示、アーカイブ属性、および作成と変更のタイムスタンプを保持します。"
+
+msgid "&Temp directory"
+msgstr "一時ディレクトリ(&T)"
+
+msgid "&Include mask"
+msgstr "マスクを含める(&I)"
+
+msgid "&Exclude mask"
+msgstr "マスクを除外する(&E)"
+
+msgid "&Log level"
+msgstr "ログレベル(&L)"
+
+msgid "&Check for updates"
+msgstr "更新を確認(&C)"
+
+msgid "&Process priority"
+msgstr "プロセスの優先度(&P)"
+
+msgid "&Optimization level"
+msgstr "最適化レベル(&O)"
+
+msgid "General &1"
+msgstr "一般(&1)"
+
+msgid "Configure the appearance and behaviour of FileOptimizer"
+msgstr "FileOptimizer の外観と動作を設定します。"
+
+msgid "General program options affecting all extensions (1/2)"
+msgstr "すべての拡張子に影響する一般的なプログラムオプション (1/2)"
+
+msgid "General program options affecting all extensions (2/2)"
+msgstr "すべての拡張子に影響する一般的なプログラムオプション (2/2)"
+
+msgid "Extensions affected: "
+msgstr "影響を受ける拡張子: "
+
+msgid "Automatic: System default"
+msgstr "自動: システムの既定"
+
+msgid "3082: English - United States (Built-in)"
+msgstr "1041: 日本語"

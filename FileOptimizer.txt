@@ -1,0 +1,2097 @@
+﻿VERSION|0.4.5|SUBJECT|FileOptimizer|CONTENT|[url=images/FileOptimizerDonate.html new=true][img=https://www.paypalobjects.com/en_US/ES/i/btn/btn_donateCC_LG.gif popup=false][/url]
+
+
+[b]Introduction[/b]
+FileOptimizer is an advanced file optimizer featuring a lossless (no quality loss) file size reduction that supports: .3G2, .3GG, .3GP, .7Z, .A, .AAI, .AC, .ACC, .ADP, .AI, .AIR, .APK, .APNG, .APPX, .APR, .ART, .ART, .AVCI, .AVCS, .AVI, .AVIF, .AVIF, .AVIFS, .AVS, .BAR, .BMP, .BPG, .BPL, .BSZ, .CBT, .CBZ, .CDR, .CDT, .CHI, .CHM, .CHQ, .CHS, .CHW, .CIN, .CMYK, .CMYKA, .CPL, .CSL, .CSS, .CUR, .DB, .DB, .DCX, .DDS, .DEB, .DES, .DIB, .DLL, .DNG, .DOC, .DOCM, .DOCX, .DOT, .DOTM, .DOTX, .DPX, .DRV, .DWF, .DWFX, .EAR, .EASM, .EML, .EMLX, .EPDF, .EPDF, .EPRT, .EPUB, .EXE, .FAX, .FAX, .FB2, .FDF, .FITS, .FLA, .FLAC, .FLV, .FPX, .FPX, .FXG, .FXG, .GALLERY, .GALLERYCOLLECTION, .GALLERYITEM, .GFT, .GIF, .GRAY, .GRS, .GZ, .HDR, .HEIC, .HEICS, .HEIF, .HEIFS, .HRZ, .HTM, .HTML, .ICB, .ICL, .ICO, .ICO, .INK, .INLINE, .IPA, .IPK, .IPSW, .ITA, .ITS, .ITZ, .J2C, .J2K, .JAR, .JFI, .JFIF, .JIF, .JNG, .JP2, .JPC, .JPE, .JPEG, .JPG, .JPS, .JPT, .JS, .JSON, .JXL, .KML, .KMZ, .KMZ, .KSF, .LIB, .LIT, .LUA, .LUAC, .LXF, .LZL, .LZMA, .M4A, .M4B, .M4P, .M4R, .M4V, .MAX, .MBX, .MCE, .MDB, .MDT, .MDZ, .MHT, .MHT, .MHTML, .MHTML, .MIC, .MIF, .MIFF, .MIX, .MIZ, .MK3D, .MKA, .MKS, .MKV, .MMIP, .MNG, .MONO, .MOV, .MP3, .MP4, .MPC, .MPD, .MPEG, .MPG, .MPO, .MPP, .MPP, .MPR, .MPT, .MSC, .MSG, .MSG, .MSI, .MSL, .MSP, .MST, .MSZ, .MTV, .MTW, .MVG, .MVZ, .MZZ, .NAR, .NBK, .NOTEBOOK, .O, .OBJ, .OCX, .ODB, .ODF, .ODG, .ODP, .ODS, .ODT, .OEX, .OGA, .OGG, .OGG, .OGM, .OGV, .OGX, .OGX, .OLE, .OLE2, .ONE, .OPT, .OPUS, .ORA, .OSK, .OST, .OTB, .OXPS, .P7, .PALM, .PBM, .PCC, .PCD, .PCDS, .PCL, .PCLS, .PCX, .PDB, .PDF, .PFM, .PFS, .PGM, .PIC, .PICON, .PICT, .PK3, .PNG, .PNM, .PNS, .POTM, .POTX, .PPAM, .PPM, .PPS, .PPSM, .PPSX, .PPT, .PPTM, .PPTX, .PSB, .PSD, .PTIF, .PTIF, .PTIFF, .PTIFF, .PUB, .PUB, .PUZ, .QT, .QWK, .R2SKIN, .RA, .RAM, .RDB, .RDB, .RFA, .RFG, .RFT, .RGB, .RGBA, .RLL, .RM, .RMSKIN, .RMVB, .RTE, .RV, .RVT, .S3Z, .SCR, .SGI, .SGML, .SLDASM, .SLDDRW, .SLDM, .SLDPRT, .SLDX, .SMIL, .SOU, .SPL, .SPO, .SPX, .SQLITE, .SQLITE2, .SQLITE3, .STZ, .SUN, .SVG, .SVGZ, .SWC, .SWF, .SYS, .TAR, .TGA, .TGZ, .THM, .TIF, .TIFF, .UYVY, .VBX, .VCARD, .VCF, .VDA, .VDX, .VICAR, .VIFF, .VLT, .VOB, .VSD, .VSS, .VST, .VST, .VSX, .VTX, .WAL, .WAR, .WAV, .WBA, .WBMP, .WEBA, .WEBM, .WEBP, .WIZ, .WMA, .WMV, .WMZ, .WPS, .WSZ, .X, .XAP, .XBM, .XHTML, .XHTML, .XL, .XLA, .XLAM, .XLC, .XLM, .XLS, .XLSB, .XLSM, .XLSX, .XLTM, .XLTX, .XLW, .XML, .XML, .XMZ, .XNK, .XPI, .XPM, .XPS, .XSF, .XSL, .XSLT, .XSN, .XWD, .YCBR, .YCBRA, .YUB, .Z01, .Z02, .Z03, .Z04, .Z05, .Z06, .Z07, .Z08, .Z09, .Z10, .ZIP, .ZIPX, .ZX01, .ZX02, .ZX03, .ZX04, .ZX05, .ZX06, .ZX07, .ZX08, .ZX09, .ZX10, STICKYNOTES.SNT and THUMBS.DB file formats among many others.
+
+FileOptimizer compresses already compressed files further without changing the file format, and being totally compatible. It keeps the behavior of the file untouched, but with its size reduced thanks to several recompression and optimization techniques.
+
+[img=images/fileoptimizer_windows_10.png]
+[i]FileOptimizer 8 running under Windows 10[/i]
+
+
+[img=images/fileoptimizer_windows_8.png]
+[i]FileOptimizer 5 running under Windows 8[/i]
+
+
+[img=images/fileoptimizer_windows_8_metro.png]
+[i]FileOptimizer 4 running under Windows 8 (Metro like style)[/i]
+
+
+[img=images/fileoptimizer_luna.png]
+[i]FileOptimizer 4 running under Windows 8 (Luna style)[/i]
+
+
+[img=images/fileoptimizer_windows_7.png]
+[i]FileOptimizer 4 running under Windows 7[/i]
+
+
+[img=images/fileoptimizer_windows_xp.png]
+[i]FileOptimizer 4 running under Windows XP[/i]
+
+
+[img=images/fileoptimizer_wine.png]
+[i]FileOptimizer 4 running under WINE with Kubuntu 12.04[/i]
+
+
+[img=images/fileoptimizer_wine_macos_sierra.png]
+[i]FileOptimizer 13 running under WINE with macOS Sierra 10.12[/i]
+
+
+[img=images/fileoptimizer_reactos.png]
+[i]FileOptimizer 10 running under ReactOS 0.4.5[/i]
+
+
+[img=images/fileoptimizer_description.png]
+[i]FileOptimizer context menu[/i]
+
+
+[b]Quick facts[/b]
+- More than 90 third party tools integrated in one same tool (plugins).
+- More than 600 file extensions supported, being the most complete tool available of this type.
+- Smart detection of file types by analyzing its contents, no matter of what extension they have.
+- Multilanguage (English, Spanish, French, German, Français, Dutch, Swedish, Italian, Russian, Korean, Chinese Simplified and Chinese Traditional).
+- Simple program interface. 
+- Easy to use.
+- Powerful automation via command-line.
+- Enterprise deployment restrictions for current user and all users.
+- Free and open source.
+
+
+[b]Key features[/b]
+- Suitable for home users that need to speedup file transfers no matter if they are in email attachments, P2P or shared upload servers.
+- Suitable for webmasters to increase the page load speed.
+- Suitable for web developers to reduce content weight.
+- Suitable for desktop developers in any platform (Windows, Linux, macOS, ...) to reduce distribution sizes and reduce load times.
+- Suitable for mobile developers (Android, iOS, Windows Phone, ...) to reduce distribution sizes and reduce load times.
+- Suitable for server administrators that could integrate FileOptimizer via command-line.
+- Suitable for content creators and distributors to reduce content weights.
+
+
+[b]Description[/b]:
+Drag the files you want to optimize to the files grid in FileOptimizer, right click with the mouse to open the contextual menu, and then click on Optimize. This will process all supported files added, and overwrite them with the optimized version.
+
+Alternatively you can add the files and directories to process on the program's command-line, or dragging them to the executable file. A context menu for [i]Add files[/i], also does it.
+
+By default, FileOptimizer will remove additional metadata, and other unneeded information, but will keep original files in your recycle bin just in case you want to further modify the originals.
+
+Following plugins, are currently builtin in FileOptimizer:
+- AdvanceCOMP 2.6 - https://github.com/amadvance/advancecomp
+- APNG Optimizer 1.4 - https://sourceforge.net/projects/apng/
+- Best CFBF Optimizer Nov 1st 2019 - https://papas-best.com/cfbf_en
+- Coherent PDF Command Line Tools (cpdf) 2.9.3 - http://community.coherentpdf.com
+- Columbo 0.9.0 - https://github.com/ace-dent/columbo
+- CSSTidy 1.3 - http://csstidy.sourceforge.net/download.php
+- DeflOpt 2.07 - http://www.walbeehm.com/download/
+- defluff 0.3.2 - http://j-o.users.sourceforge.net
+- Document Press Version 6.01 - http://encode.su/threads/336-Document-Press-6-01
+- ECT 0.9.5 - https://github.com/fhanau/Efficient-Compression-Tool
+- ffmpeg 9.0.2 - https://www.gyan.dev/ffmpeg/builds/
+- FLAC 1.5.0 - https://xiph.org/flac/
+- FLACOUT 07/03/2014 - http://advsys.net/ken/utils.htm
+- Flasm 1.62 - http://flasm.sourceforge.net
+- Gifsicle 1.97 - http://www.lcdf.org/gifsicle/
+- Ghostscript 10.08.0 - https://www.ghostscript.com
+- GNU Strip 2.36.1 - https://sourceforge.net/projects/mingw-w64/
+- Guetzli cuda-opencl 2.2.6 - https://github.com/doterax/guetzli-cuda-opencl
+- ImageMagick 7.1.2.34 - http://www.imagemagick.org
+- ImageWorsener 1.3.5 - http://entropymine.com/imageworsener
+- jhead 3.04 - http://www.sentex.net/~mwandel/jhead/
+- jpeg-archive 2.2.0 - https://github.com/danielgtaylor/jpeg-archive
+- jpegli - https://github.com/google/jpegli
+- jpegoptim 1.5.6 - http://www.kokkonen.net/tjko/projects.html
+- jpegtran 9b - http://jpegclub.org/jpegtran/
+- jsmin 2019-10-30 - https://www.crockford.com/jsmin.html
+- Leanify 0.4.3.287 - https://github.com/JayXon/Leanify (https://ci.appveyor.com/project/JayXon/leanify)
+- libdeflate 1.26 - https://github.com/ebiggers/libdeflate
+- libwebp 1.6.0 - https://storage.googleapis.com/downloads.webmproject.org/releases/webp/index.html
+- m7zRepacker 1.0.32.319 - https://encode.su/threads/1201-m7zRepacker
+- Minify 2.24.25 - https://github.com/tdewolff/minify/
+- mkclean 0.9.0 - http://www.matroska.org/downloads/mkclean.html
+- mozjpeg 4.1.5 - https://github.com/mozilla/mozjpeg/
+- MP3packer 2.04 - http://omion.dyndns.org/mp3packer/mp3packer.html
+- mp4v2 5.0.1 - https://github.com/TechSmith/mp4v2
+- mutool 1.28.5 - http://mupdf.com/downloads/
+- OptiVorbis 0.3.2 - https://github.com/OptiVorbis/OptiVorbis
+- OxiPNG 10.2.1 - https://github.com/shssoichiro/oxipng
+- PETrim 4.00 beta - https://bitsum.com/pesuite/
+- pingo 1.26 - http://css-ig.net/pingo
+- PngOptimizer 2.7 - http://psydk.org/PngOptimizer
+- PNGOUT 02/13/2015 - http://advsys.net/ken/utils.htm
+- pngquant 2.17.0 - http://www.pngquant.org
+- pngrewrite 1.4.0 - http://entropymine.com/jason/pngrewrite
+- pngwolf-zopli 1.1.2 - https://github.com/jibsen/pngwolf-zopfli
+- rehuff - http://wiki.xiph.org/Rehuff
+- qpdf 12.4.2 - https://github.com/qpdf/
+- SQLite 3.54.1 - http://www.sqlite.org
+- shntool 3.0.10 - http://shnutils.freeshell.org/shntool/
+- HTML Tidy version 5.9.14  - http://www.html-tidy.org
+- TidyDNG 0.1.1 - https://tinydng.com/
+- TruePNG 0.6.2.5 - http://x128.ho.ua/pngutils.html
+- UPX 5.3.0 - https://upx.github.io
+- ZLib 1.3.2 - http://www.zlib.net
+- zRecompress 2.12 - http://nikkhokkho.sourceforge.net/static.php?page=zRecompress
+
+
+[b]License[/b]
+FileOptimizer is provided free of charge covered by the [url=https://www.gnu.org/licenses/agpl-3.0.en.html]GNU Affero General Public License (AGPL)[/url]. Of course if you are using it in a commercial environment, a small donation will be highly appreciated.
+
+
+[b]Requirements[/b]
+- Operating System: Windows XP, 2003, Vista, Server 2008, 7, 8, Server 2012, 10, Server 2016, Server 2019, 11, Server 2022 (x86 and x64 compatible). 
+- 128 MB. of free memory. 
+- 300 MB. of disk space available. 
+
+
+[b]Language[/b]
+Currently FileOptimizer is multilanguage enabled. Out of the box it supports several languages, as well as additional localizations via standard PO files. See the [b]FAQ[/b] to learn how to support your own language.
+
+
+[b]Sponsors[/b]
+[html]<center><script type="text/javascript">google_ad_client="ca-pub-3625063062589476"; google_ad_slot="1656604445"; google_ad_width=336; google_ad_height=280;</script><script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script></center>[/html]
+
+[b]Download[/b]
+- [url=https://www.sourceforge.net/projects/nikkhokkho/files/FileOptimizer]Full distribution in EXE installer format (128.9 MB.) or in plain 7z SFX format -no setup- (117.7 MB.).[/url]. Both packages can work in portable mode, include 32 bit and 64 bit executables for Windows, all the required plugins, as well as a help file.
+
+- [url=https://www.sourceforge.net/projects/nikkhokkho/files/FileOptimizer]Source code in 7Z format (5.1 MB.)[/url]: Embarcadero C++ Builder 13.2 Florence source code, Visual C++ 2026 gifsicle, Visual C++ 2026 gifsicle-lossy, Visual C++ 2026 jpegoptim, Visual C++ 2026 JSMin, Visual C++ 2026 SQLite and Visual C++ 2026 mp4v2).
+
+[url=https://sourceforge.net/projects/nikkhokkho/files/FileOptimizer][img=https://img.shields.io/sourceforge/dt/nikkhokkho.svg popup=false][/url]
+
+
+[b]Donate[/b]
+Voluntary donate using the [b]Paypal[/b] the amount of money you choose to support FileOptimizer development. It is safe, secure and convenient.
+
+[url=images/FileOptimizerDonate.html new=true][img=https://www.paypalobjects.com/en_US/ES/i/btn/btn_donateCC_LG.gif popup=false][/url]
+
+
+[b]Sponsors[/b]
+[html]<center><script type="text/javascript">google_ad_client="ca-pub-3625063062589476"; google_ad_slot="1656604445"; google_ad_width=336; google_ad_height=280;</script><script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script></center>[/html]
+
+
+[b]Frequently Asked Questions (FAQ)[/b]
+[i]Why are several downloads available?[/i]
+Available downloads come separated in a binaries (executables) form, suitable for x86 and x64 architectures, and in a source code archive. Both are usually available in several package formats.
+
+[i]What is the sense of FileOptimizer, if standalone tools are already available?[/i]
+Indeed you can manually execute the commandline tools that FileOptimizer uses as plugins, but this will be probably less comfortable. Specially if you consider you will need to execute one or another depending on the file format, and to chain some of them to obtain best results.
+
+[i]What is different in FileOptimizer compared to similar tools?[/i]
+General idea on tools like PNGGauntlet, ImageOptim, RIOT, etc is essentially the same.
+FileOptimizer is built-in with lots of plugins that allow it to handle a big variety of file formats. Optimized files are usually smaller than in competing products, or comparable at worst. It is easy to use, and at the same time easy to automate. Is a native Win32 application, being compact and fast, and works portable with no external dependencies nor access to the system registry. Finally it is free and open source.
+At the moment, it is not much mature, lacks some features, and is not configurable at all.
+
+[i]Are optimized files identical to the original ones?[/i]
+Optimized files, will look identical to the original ones, but internally they will be different in order to achieve the size reduction.
+For images, bit depth reduction is used when possible. For instance an image encoded with 24 bit color depth could be resampled to 8 bit color depth if 256 colors of less are used. Quality should not be affected after the transformation.
+
+[i]Why are original file stamps not preserved after optimization?[/i]
+FileOptimizer supports restoring original file attributes once it has been recompressed. This includes creation, and modification timestamps, but also read-only, system, archive and hidden attributes. To enable it, mark the checkbox "Keep file attributes" under "Options -> General".
+
+[i]Have the optimized files same degree of compatibility as the original ones?[/i]
+Generally yes, they have the same degree of compatibility. The exception is JPEG images, when you have enabled the [i]User arithmetic encoding[/i] option. It generates smallest files with the same quality, but require recent software to render them.
+
+[i]Will optimized files load faster?[/i]
+Definitively yes, optimized files are smaller, less information needs to be transferred from the internet, of from the local disk, and will load faster in a direct proportion with the size reduction.
+Decompression speed of the optimized files is also proportional to the size reduction, because used compression algorithms are asymmetric (slow compression and fast decompression).
+
+[i]Does optimized files work on other platforms than Windows?[/i]
+Yes, since they are the same format as the original ones, they will continue to work, no matter if they are rendered in a web browser, an Android or iOS application, or any other desktop program.
+
+[i]Why is the recompression process so slow?[/i]
+The speed of the recompression depends on the particular format of the file.
+Noticeably PNG processing is the slowest, because the brute-force recompression to squeeze them. As oposite, PDF and JPEG files should be encoded pretty fast.
+
+[i]Does it work on other platforms than Windows?[/i]
+FileOptimizer is reported to work in some environments under UNIX based operating systems with Wine such a Linux and macOS.
+For other platforms, you will need to install a virtual machine such as VirtualBox with Windows XP or later.
+
+[i]Why a particular format is not supported?[/i]
+Even if I do my best to add new format support to FileOptimizer, I may have missed some.
+If the format to add has available a Windows command-line tool to optimize it, it can be easily integrated on FileOptimizer, so please, let me know.
+
+[i]How can I disable a particular plugin?[/i]
+You can use the INI setting DisablePluginMask= to allow excluding execution of certain plugins. For instance DisablePluginMask=leanify;advpng.exe will prevent executing any plugin containing in its name leanify or advpng.exe.
+As you can see it is case insensitive, and allows more than one item to be specified by using semicolon (;) as separator.
+
+[i]Can I prevent certain file formats from being processed?[/i]
+If they are supported by FileOptimizer, unless you could remove all the plugins used to treat this format, it will not be possible.
+The workaround would be to not add those type of files.
+
+[i]I can appreciate some quality loss on PDF optimization. Why?[/i]
+PDF are recompressed with no loss of quality, but images can be downsampled, and so on, allow certain lost of quality, specially at high zoom levels. You can control it under Options -> PDF -> Profile.
+
+[i]Why is Ghostcript always downsampling embedded images?[/i]
+Ghostscript (more particularly the pdfwrite device) does NOT 'optimise' PDF files. Ghostscript interprets the input into a series of marking operations, which are then piped to a device. The pdfwrite device then produces a PDF file based on those marking operations. The output is unrelated to the input, except for the appearance. This is discussed in more detail in the Overview in VectorDevices.htm in the Ghostscript documentation. Because the input is fully interpreted JPEG images are decoded to a bitmap. If you then apply JPEG quantisation in the pdfwrite device the result will be a loss of quality (unsurprisingly, since JPEG Is a lossy compression scheme). At present, your only option is to not use JPEG to compress images in the pdfwrite output.
+
+[i]How is the command line syntax?[/i]
+FileOptimizer command line arguments work like:
+[html]C:PROYECTOSFileOptimizerWin32ReleaseFileOptimizer64.exe "C:PROYECTOSFileOptimizer_Tests_ - copia"<br/>
+Where:<br/>
+- C:PROYECTOSFileOptimizerWin32ReleaseFileOptimizer64.exe: Is the full path where FileOptimizer executable is.<br/>
+- "C:PROYECTOSFileOptimizer_Tests_ - copia": Is the full path of the folder to recursively process. Be aware enclosing it with double quotes as in the example, which is Windows mandatory if the folder contains spaces, or extended characters.<br/>
+Alternatively you can specify only one single file instead of a folder:<br/>
+C:PROYECTOSFileOptimizerWin32ReleaseFileOptimizer64.exe "C:PROYECTOSFileOptimizer_Tests_ - copiaav-214_.zip"<br/>
+Where:<br/>
+- C:PROYECTOSFileOptimizerWin32ReleaseFileOptimizer64.exe: Is the full path where FileOptimizer executable is.<br/>
+- "C:PROYECTOSFileOptimizer_Tests_ - copiaav-214_.zip": Is the full path of the file to process.[/html]
+
+[i]Is there a way to silent install FileOptimizer?[/i]
+You can specify the /S command-line swich to the installer, and it will install FO with no prompts:
+FileOptimizerSetup.exe /S
+Since it is implemented over NSIS, you can take a look at http://nsis.sourceforge.net/Docs/Chapter3.html#installerusageexamples for further reference.
+
+[i]Are there any other parameters available in the installer[/i]
+Yes, you can use optionally:
+- /AllUsers: Install for all users instead of current user.
+
+[i]How can I enable FileOptimizer log?[/i]
+Simply check Optimize->Options->General->Log level, and set it higher to 0, depending on the information you want to log.
+
+[i]Where can I find FileOptimizer.ini or FileOptimizer.log[/i]
+FileOptimizer.log and FileOptimizer.ini both sits were FileOptimizer executable is (FileOptimizer32.exe or FileOptimizer64.exe) when write permissions exist on that folder. If not, they will be stored under %USERPROFILE%, which usually resolves to something like "C:UsersJavier GutiérrezFileOptimizer.ini" or "C:UsersJavier GutiérrezFileOptimizer.ini".
+Remember you can use Windows search tool, to look for the file.
+
+[i]Why my HTML, CSS or JS files are not optimized being them supported?[/i]
+As of version 6.50, optimization of CSS, HTML, Javascript and its derivatives is supported. They follow the same lossless concept as other formats, so once compressed they will render and look exactly the same as the original, but with a reduced file size.
+Unfortunately those optimizations may cause your files to not be editable anymore by WYSIWYG tools such as Dreamweaver, and to avoid risks they are disabled by default.
+To enable them, simply go to [i]Options->CSS->Enable Tidy[/i]; [i]Options->HTML->Enable Tidy[/i] and [i]Options->JS->Enable JSMin[/i].
+
+[i]How can I enable SVG optimizations?[/i]
+SVG optimizations, are linked with HTML ones. You can enable them by checking "Options -> HTML -> Enable Tidy". When enabled, results in smaller files, but can happen they are not editable anymore. Note that this applies to both SVG and HTML file types.
+
+[i]Are there any other files that are not editable after optimization?[/i]
+Since focus of FileOptimizer is to be lossless in terms of appearance, other files could become not editable once optimized. For instance Photoshop's PSD files, will have their text layers rasterized.
+
+[i]How can I enable lossy compression?[/i]
+You can check "Options -> PNG -> Allow lossy optimizations" and ini settings JPEGAllowLossy=true, GIFAllowLossy=true.
+
+[i]How can I prevent users changing options?[/i]
+FileOptimizer reads its options in the following order: HKEY_LOCAL_MACHINESoftwareFileOptimizer, HKEY_CURRENT_USERSoftwareFileOptimizer, command-line arguments, INI file. So if you set HKEY_LOCAL_MACHINESoftwareFileOptimizerDoNotUseRecycleBin to "true" it will take precedence in all cases.
+
+[i]Why FileOptimizer is not using all my CPU cores?[/i]
+Making FileOptimizer a multithreaded application involves a major rewrite of it. Basically, GUI can only run in the main thread, which implies a big reengineering. Some progress has been done since 2 years ago, but it is getting more and more difficult as its codebase enlarges. Also having plugins such as ECT or mp3packer which are already multithreaded, makes less sense to continue the task.
+
+[i]How to translate FileOptimizer in your own language?[/i]
+Since FileOptimizer 12, user inteface is multilanguage/multilocale capabled. You can translate it to your own language.
+
+1) Execute FileOptimizer with the /SAVELANGUAGE command-line argument, like this: D:PROYECTOSFileOptimizerFileOptimizer64.exe /savelanguage
+
+2) Browse all secondary windows (Options, About, Information, ...) and keep using FO for some time.
+
+3) If everything went OK because there was write permissions on FileOptimizer folder, when you close it a file called 1033.po will be available. This file will contain all english strings that have been presented.
+
+4) Make a copy of 1033.po, and name it as the language (LANGID) or locale (LCID) you will be translating to. You can use reference table available here: https://msdn.microsoft.com/library/windows/desktop/dd318693(v=vs.14.0).aspx
+
+For example, if you want to translate it to "Spanish Modern Sort (ES)" name it 3082.po (3082 is 0x0C0A in decimal). If you want to translate it to "Spanish Dominican Republic (DO)" name it 7178.po (7178 is 1C0A in decimal). In the case you want to translate to a language instead of a locale, for instance to "Spanish (es)" for all countries, you should name it 10.po (10 is 0A in decimal).
+
+5) Translate the contents of the copied PO file. It is a text file where for each msgid containing the original english text, you have an empty msgstr with the translation. You can use any text editor like notepad, or dedicated PO utilities, even if they are cloud based (Online PO Editor).
+
+6) When finished, put your new PO file together with FileOptimizer32.exe or FileOptimizer64.exe. If you current system locale is set to the primary language or locale you translated to, FileOptimizer will read it, and translate all the texts according to your translation. Double check nothing is broken, no texts are missing, and lengths is enought to fit on all items in screen.
+
+7) You are now done. You can erase 1033.po. Please post your translation onto https://sourceforge.net/p/nikkhokkho/discussion/fileoptimizer/ if you will it to be officially included in FileOptimizer.
+
+[i]Why there is a donate button being the program free?[/i]
+FileOptimizer is free either for personal and commercial usage. I have spent hundreds of hours in creating, developing, researching, supporting, testing and maintaining it, so if you consider a donation is worth my effort, it is highly appreciated, but not mandatory. Program will work as the full version without any limitations, no matter if you have donated or not.
+
+[i]How much should I donate?[/i]
+There is no minimum nor maximum in the donations. Simply consider the benefit it is reporting to you, and how the compensation you will give to the future of FileOptimizer should be. Donations of even 1 euro, are welcome the same as 1000 euro.
+
+[i]What if I have problems donating?[/i]
+Current [url=https://nikkhokkho.sourceforge.io/images/FileOptimizerDonate.html]donation[/url] platform is managed by [url=https://www.paypal.me/FileOptimizer]Paypal.Me[/url], which is fast and safe. Unfortunately it is not supported in all countries and currencies, so you can try the old Paypal platform [url=https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XE3E37GGZV6EY]here[/url].
+
+[i]Can I donate more than once?[/i]
+Sure, you can donate more than one time. Indeed, I am spending time on FileOptimizer more than once, so it is fair. You can choose to do it after a new version, after a major one, or as you can afford.
+
+[i]Where is latest source code?[/i]
+Source code for releases is available in the [i]Download section[/i] above.
+Latest deveolpment code is available in the [url=https://sourceforge.net/p/nikkhokkho/code/HEAD/tree/trunk/FileOptimizer/]SVN repository[/url].
+
+[i]Where can I send suggestions, comments and bug reports?[/i]
+Better place for easily followup comments, suggestions and bug reports is on the [url=https://sourceforge.net/p/nikkhokkho/discussion/]Discussion page at Sourceforge[/url].
+
+[i]How can I contribute the project?[/i]
+If you want to contribute and actively participate in the evolution of FileOptimizer, your help is highly appreciated.
+You can donate money, or send patches and improvements in the source code, or even send suggestions, or bug reports to plugin developers. Also communication in other websites such as software portals or Wikipedia is welcome.
+
+[i]How can I get FileOptimizer support?[/i]
+I am receiving lots of support request. I will not guarantee support nor answers to users that are not engaged in the FileOptimizer community. Either by contributing in user to user support, expanding its popularity, donating via Paypal, or reporting issues to plugin developers.
+
+[i]Why is FileOptimizer showing me advertisements?[/i]
+Some users are not able to donate and asked for other approaches to support FileOptimizer. This is the reason why it displays [url=https://nikkhokkho.sourceforge.io/images/FileOptimizerAds.php]ads[/url]. Ads are placed to not be intrusive, and if desired can easily be disabled using Options -> Appearance -> Hide ads.
+
+If you have donated, you can enter your email/name for the donation in Options -> Appearance -> Donator and all reminder will disappear.
+
+[i]What if I have a question, and do not want to contribute to the community?[/i]
+Even if that is not fair, of course you can solve your questions. Try to ask to another user, look at the source code, and take a look to the FileOptimizer website and documentation.
+
+[i]Why is FileOptimizer available in warez portals?[/i]
+Recently I have found some Torrent sites, as well as warez portals offering repackaged FileOptimizer distributions.
+Be warned that those sites usually include malware in their packages, mostly adware to give them incomes with no effort nor credit to the original authors, so if you opt to get elsewhere, you are not only underestimating my work, but also putting your PC in risk.
+Obviously, the author, me, has no relationship with those sites, and what is more important, I am not seeing any advantage on pirating a software which is already free.
+Remember that FileOptimizer is free, and open source, being always available as direct download from its official page: https://nikkhokkho.sourceforge.io/static.php?page=FileOptimizer
+
+[i]Can you give more details on how FileOptimizer works?[/i]
+As said before, FileOptimizer is only a frontend for external command-line applications, called plugins. Those plugins are the ones which does the hard part, and the ones deserving creting. This is why usually optimization bugs happen in plugins, instead of in FileOptimizer side.
+If you need more details about the internals, please take a look at the links above with the official sites for them, where you could get lots of technical details.
+
+
+[b]History[/b]
+18.10 - 2026/11/15
+- Added Zoom option to scale application user interface (#152 Suisenn Alexandar).
+- Optimized translations. Translated texts load even faster now.
+- Made components render faster by using double buffering.
+- Added Columbo support for optimizing deflate streams in GZ, PNG, ZIP (TPS).
+- Win64 build now uses again Win64x "Modern" compiler based on Clang 20.1.7 instead of Clang 5.0.2.
+- Updated to Minify 2.24.25 x64.
+- Some minor optimizations and code cleanup.
+- Updated UPX to 5.3.0.
+- Updated EXE compatibility to PatchPE 1.38.
+- Upgraded distributions to 7-Zip 26.06.
+
+18.00 - 2026/10/25
+- Implemented multithreading support, so more than one file can be optimized at a time.
+- Improved automatic detection by content.
+- Fixed QPDF does not optimize lossyly images unless Lossy JPEG is enabled (#146 Sly).
+- Updated UPX to 5.2.1.
+- Updated cpdf to 2.9.3.
+- Updated ffmpeg to 9.0.2 x64.
+- Updated Ghostscript to 10.08.0.
+- Updated to guetzli-cuda-opencl 2.2.6 x64.
+- Updated ImageMagick to 7.1.2.34 with HDRI support x64.
+- Updated libdeflate to 1.26 x64.
+- Updated to Minify 2.24.23 x64.
+- Update MUPDF mutool to 1.28.5.
+- Updated to OptiVorbis 0.3.2 x64.
+- Updated OxiPNG to 10.2.1.
+- Updated qpdf to 12.4.2.
+- Updated SQLite to 3.54.1 x86 and x64 Visual C++ 2022 custom builds.
+- Some minor optimizations and code cleanup.
+- Updated to NSIS 3.13.
+- Upgraded distributions to 7-Zip 26.05.
+
+17.30 - 2026/10/20
+- Implemented Drop with elevated process in Windows 10+ (UIPI).
+- Fixed a glitch in Options->General dialog introduced in 17.20.
+- Some minor optimizations and code cleanup.
+
+17.20 - 2026/10/19
+- Optimized translations processing to make it faster and safer.
+- Added hungarian translation (kekmacska).
+- Fixed missing Win32 cjpegli 0.11.1 (Renard Voß #144).
+- Updated pingo to 1.26 x64 version.
+- Updated AdvanceCOMP to 2.6.
+- Updated to guetzli-cuda-opencl 2.2.1 x64 (Reiner Schweinlin).
+- Updated jpegoptim to 1.5.6 x64.
+- Updated gifsicle to 1.97.
+- Updated UPX to 5.2.0.
+- Updated to cppcheck 2.20.
+- Upgraded to C++ Builder 13.2 Florence.
+- Updated to NSIS 3.12.
+- Some minor optimizations and code cleanup.
+
+17.10 - 2025/09/05
+- Added japanese translation (Re*Index. (ot_inc)).
+- Enabled OxiPNG for APNG toolchain.
+- Added tinydng-cli to the TIFF toolchain (avalanch).
+- Added DNG (Digital Negative) via TIFF toolchain.
+- Added qpdf to the PDF toolchain (avalanch).
+- Fixed cjpegli removing metadata (Renard Voß, Danylo Surmai) #140.
+- Fixed not honoring keep metadata inside ODG from the ZIP toolchain (Arturs Pupausis).
+- Fixed lossy by adding --strict to ECT on PNG toolchain (Will Roberts).
+- Updated SQLite to 3.50.4 x86 and x64 Visual C++ 2022 custom builds.
+- Updated Ghostscript to 10.05.1.
+- Updated ImageMagick to 7.1.2.0 with HDRI support.
+- Updated cpdf to 2.8.4.
+- Updated FLAC to 1.5.0.
+- Updated libwebp to 1.6.0.
+- Update MUPDF mutool to 1.24.2 x64.
+- Updated to OptiVorbis 0.3.0 x64.
+- Updated pingo to 1.24.2 x64 version.
+- Updated UPX to 5.0.2.
+- Updated ffmpeg to 8.0.0 x64.
+- Updated OxiPNG to 9.1.5.
+- Upgraded distributions to 7-Zip 25.01.
+- Updated internal EdgeView to 1.0.3065.
+- Upgraded to C++ Builder 13 Florence RTM.
+
+17.00 - 2025/07/01
+- Win64 build now uses Win64x "Modern" compiler based on Clang 20 instead of Clang 5.
+- Changed INI settings and Options IncludeMask, ExcludeMask, DisablePluginMask and JSAdditionalExtensions to use comma (,) separated values instead of semi colons (;) to prevent conflicting with INI comments (przemoc).
+- Fixed disable pluging mask.
+- Migrated cjpegli from libjxl to Google jpegli (Paolo Bartolo).
+- Updated Leanify to 0.4.3.287.
+- Updated libwebp to 1.5.0 RC1.
+- Updated ffmpeg to 7.1 x64.
+- Updated UPX to 5.0.0.
+- Some minor optimizations and code cleanup.
+- Updated to NSIS 3.11.
+- Updated to cppcheck 2.17.1.
+- Updated to C++ Builder 13 Beta (Ganymede).
+
+16.90 - 2024/11/14
+- Fixed FileOptimizer32.exe being 16.40 and not 16.80/16.90.
+
+16.80 - 2024/11/12
+- Improved donator check.
+- Updated to cppcheck 2.15.
+- Upgraded distributions to 7-Zip 24.08.
+- Updated to C++ Builder 12.2 Ikaria.
+
+16.70 - 2024/07/12
+- Added cjpegli x64 from libjxl when JPEG lossy is enabled (AcidBurn).
+- Updated libwebp to 1.4.0 RC1.
+- Updated pingo to 1.23.9 x64 version.
+- Some minor optimizations and code cleanup.
+- Updated to C++ Builder 12.2 Ikaria Beta.
+
+16.60 - 2024/04/02
+- Updated SQLite to 3.45.2 x86 and x64 Visual C++ 2022 custom builds.
+- Updated Leanify to 0.4.3.280.
+- Updated pingo to 1.19.3 x64 version.
+- Updated ECT x64 binaries to 0.9.5.
+- Updated gifsicle to 1.95.
+- Updated Ghostscript to 10.03.0.
+- Updated ImageMagick to 7.1.1.29 with HDRI support.
+- Updated ffmpeg to 6.1.1 x64.
+- Updated FLAC to 1.4.3.
+- Updated cpdf to 2.7.0.
+- Updated to Minify 2.20.19 x64.
+- Updated to OptiVorbis 0.2.0 x64.
+- Updated to mutool 1.23.0.
+- HTML Tidy for Windows 5.9.14
+- Updated UPX to 4.2.3.
+- Some minor optimizations and code cleanup.
+- Updated to NSIS 3.10.
+- Updated to C++ Builder 12.1 Santorini.
+
+16.50 - 2024/01/09
+- Fixed some events being lost during C++ Builder 12 upgrade (avalanch).
+- Updated cpdf to 2.6.1.
+- Updated pingo to 1.17 x64 version.
+- Updated UPX to 4.2.1.
+- Updated WebView2Loader to 1.0.1661.34.
+- Some minor optimizations and code cleanup.
+- Updated to C++ Builder 12.
+
+16.40 - 2023/10/26
+- Implemented automatically purging file cache. On close, if cache is enabled and INI size is larger than 200 KB. then FileOptimizer will check all entries on the cache section and remove the ones pointing to unexisting/deleted files (Mike Ando).
+- Switched from OptiPNG to OxiPNG (Owen Quinlan, Yakov Till, Gannet).
+- Delayed load SHCORE.DLL to improve startup time.
+- Cached COMCTL32.DLL and USER32.DLL to improve performance.
+- Fixed BPL required to run (necros -#129-).
+- Added pingo 1.04 compatibility flags.
+- Updated mozjpeg to 4.1.5 x86 and x64 binaries.
+- Updated UPX to 4.10.
+- Updated pingo to 1.12 x64 version.
+- Updated gifsicle to 1.94.
+- Updated ImageMagick to 7.1.1.11 with HDRI support.
+- Updated ffmpeg to 6.0.0.
+- Updated Ghostscript to 10.02.0.
+- Updated libwebp to 1.3.2.
+- Updated to Minify 2.12.7 x64.
+- Updated to mutool 1.22.1.
+- Updated to OptiVorbis 0.1.4 x64.
+- Updated SQLite to 3.42.0 x86 and x64 Visual C++ 2022 custom builds.
+- Updated jpegoptim to 1.5.5 x64.
+- Upgraded distributions to 7-Zip 23.01.
+- Updated to cppcheck 2.12.
+- Updated to NSIS 3.09.
+- Some minor optimizations and code cleanup.
+
+16.30 - 2023/05/05
+- Fixed HEIC image detection.
+- Renamed 25.po language to 1049.po to automatically load this file on Windows with Russian locale (AHOHNMYC #127).
+- Removed ImageMagick's "-set dispose background" because sometimes it corrupts GIF (necros -#126-).
+- Improved Windows XP compatibility by PEPatching tidy.exe, sqlite3.exe, pngoptimizer.exe, mkclean.exe, jsmin.exe, jpegoptim.exe, imagew.exe and gifsicle.exe (marc).
+- Updated SQLite to 3.41.0 x86 and x64 Visual C++ 2022 custom builds.
+- Updated ECT x64 binaries to 0.9.4.
+- Updated UPX to 4.01.
+- Updated AdvanceCOMP to 2.5.
+- Updated ImageWorsener to 1.3.5.
+- Updated ImageMagick to 7.1.0.57 with HDRI support.
+- Updated libwebp to 1.3.0 x64.
+- Updated to mutool 1.21.1.
+- Updated pingo to 1.00 a67 x64 version.
+- Updated jpegoptim to 1.5.3 x64.
+- Updated to C++ Builder 11.3 Alexandria Patch #1.
+- Updated to cppcheck 2.10.
+
+16.20 - 2023/01/10
+- Properly fixed PNGQUANT executable being corrupted (trlkly #124).
+- Switched back from Windows10 theme in light mode to regular Windows theme because the "enhanced" one is not adapting its colors (trlkly).
+- Added multicore support to jpegoptim.
+- Updated jpegoptim to 1.5.1 x64.
+- Updated libwebp to 1.3.0 RC1 x64.
+- Updated AdvanceCOMP to 2.4 (WinnieW).
+- Updated pingo to 1.00 a66 x64 version.
+- Updated ECT x64 binaries to 0.9.3 Fix.
+- Better performance updating to ASMLib 2.52 with AVX512 support.
+- Updated to C++ Builder 11.3 Malawi Beta.
+- Some minor optimizations and code cleanup.
+
+16.10 - 2022/11/17
+- New INI setting PersistentGrid=false option to make contents of the file grid persistant across sessions
+- Implemented files in grid being persistent, and thus allowing to automatically save the session (Krzysztof Janda, Jacobov Landau -#115-).
+- Added Ctrl-C, Ctrl-X and Ctrl-V to copy and cut grid files to clipboard.
+- Disabled Help->Topics item if CHM file is not available.
+- Changed default value for StartupDelay from 1000 to 3000ms in order to support additional processing.
+- Fixed PNGQUANT executable being corrupted (trlkly #124).
+- Added preliminary support for Windows Dark/Light mode (Mike Ando #123).
+- Improved Webview cache by setting it to system temporary folder.
+- Updated Leanify to 0.4.3.275.
+- Updated SQLite to 3.40.0 x86 and x64 Visual C++ 2022 custom builds.
+- Updated pingo to 1.00 a60 x64 version.
+- Updated UPX to 4.01.
+- Updated Ghostscript to 10.02.0.
+- Updated ffmpeg to 5.1.2.
+- Updated FLAC to 1.4.2.
+- Updated ImageMagick to 7.1.0.52 with HDRI support.
+- Updated to Minify 2.12.4 x64.
+- Updated to mutool 1.21.
+- Updated to OptiVorbis 0.1.2.
+- Updated to guetzli-cuda-opencl 2.1.5.
+- Some minor optimizations and code cleanup.
+
+16.00 - 2022/09/09
+- Made ads display smoother when using IE engine.
+- Made ECT honor not recursing inside ZIP files (#71 necros).
+- Fixed .GIF ImageMagick processing due to using -loop (#77 necros).
+- Improved OptiVorbis optimization by adding --vendor_string_action empty --comment_fields_action delete (necros).
+- Added --nofix to jpegoptim to make it safer (#119 LeTiger).
+- Updated SQLite to 3.39.0 x86 and x64 Visual C++ 2022 custom builds.
+- Updated ECT x64 binaries to 0.9.3 (#106).
+- Updated libwebp to 1.2.4 x64.
+- Updated strip to 2.36.1.
+- Updated FLAC to 1.3.4.
+- Updated ImageWorsener to 1.3.4.
+- Updated to Minify 2.12 x64.
+- Updated to mutool 1.20.
+- Updated ImageMagick to 7.1.0.43 with HDRI support.
+- Updated ffmpeg to 5.1.1.
+- Updated pingo to 1.00 a31 x64 version.
+- Some minor optimizations and code cleanup.
+- Updated to cppcheck 2.10.
+- Upgraded to C++ Builder 11.2.
+
+15.90 - 2022/07/12
+- Made file operations stronger to avoid deleting source files when no write permissions.
+- Improved lossless OGG optimization by adding OptiVorbis (TPS).
+- Fixed stealing focus with /NOWINDOW (Louis Horvath).
+- Added arithmetic support to jpegoptim.
+- Updated jpegoptim to 1.4.7 x64 (WirzbergerW).
+- Updated libwebp to 1.2.3 RC1 x64.
+- Updated pingo to 1.00 a23 x64 version.
+- Upgraded distributions to 7-Zip 22.01.
+
+15.80 - 2022/06/09
+- Added support to JPEG XL (JXL) images using ImageMagick (A F).
+- Added additional AVIF extensions: .heif .heifs .heic, .heics .avci .avcs .avif .avifs
+- Made SQLite optimization error handling safer.
+- Improved JPEG 2000 (JP2) handling.
+- Fixed Korean translation (1042.po).
+- Updated Chinese languages including Simplified Chinese (2052, zh_CN) and Traditional Chinese (1028, zh_TW) (thanks 大眼仔~旭).
+- Switched from HTML Tidy 5.6.0 x86 and HTML Tidy 5.8.0 x64 to HTML Tidy for Windows 5.9.17 x86 and x86.
+- Updated ECT x64 binaries to 0.9.1 (Collpo).
+- Updated to Minify 2.11.2 x64.
+- Updated cpdf to 2.5.2.
+- Updated pingo to 1.00 a17 x64 version.
+- Updated to mutool 1.19.1.
+- Updated AdvanceCOMP to 2.3.
+- Updated SQLite to 3.38.4 x86 and x64 Visual C++ 2022 custom builds.
+- Updated ImageMagick to 7.1.0.36 with HDRI support.
+- Updated to cppcheck 2.8.
+- Some minor optimizations and code cleanup.
+
+15.70 - 2022/04/20
+- Added support to AVIF images using ImageMagick.
+- Speedup WEBP compression because dwebp is not needed anymore.
+- Improved WEBP lossless compression ratio.
+- Improved WEBP losy compression ratio by adding cwebp to the webp tool chain.
+- Fixed issue with BMP transparencies with Image Worsener by adding -opt bmp:version=auto (Devedse) #111.
+- Reduced mutool optimization aggresivity from -gggg to -g in order to increase compatibility (Jacobov Landau) #116.
+- Updated Ghostscript to 9.56.1.
+- Updated ffmpeg to 5.0.1.
+- Updated ImageMagick to 7.1.0.29 with HDRI support.
+- Updated ImageW to 1.3.4 test.
+- Added Korean translation. Thank you Jaehyung Lee.
+- Updated SQLite to 3.38.2 x86 and x64 Visual C++ 2022 custom builds.
+- Updated EXE compatibility to PatchPE 1.35.
+
+15.60 - 2022/03/24
+- Improved optimization ratio thanks to moving Pingo at top of JPEG toolchain for better results (Dm Kh) #113.
+- Fixed automatically disabling BeepWhenDone when launched via commandline to allow a proper exit.
+- Fixed missing VCRUNTIME140_1.dll that was needed by optipng (Devedse) #112.
+- Fixed empty messagebox when closing FO.
+- Fixed pingo inverted logic that per default removes metadata (Devedse) #110.
+- Optimized and updated pingo settings.
+- Improved ECT execution by adding --mt-file (multithreading file).
+- Updated AdvanceCOMP to 2.16 (custom built by snow).
+- Updated SQLite to 3.38.1 x86 and x64 Visual C++ 2022 custom builds.
+- Updated pingo to 1.00 a14 x64 version.
+- Updated ImageMagick to 7.1.0.25 with HDRI support.
+- Updated libwebp to 1.2.2 x64.
+- Upgraded to C++ Builder 11.1 (Alexandria).
+- Some minor optimizations and code cleanup.
+
+15.50 - 2022/02/09
+- Fixed crash in some JPEG due to new CMYK detection code (#108).
+
+15.40 - 2022/02/07
+- Added detection of CMYK JPEG images.
+- Fixed some compiler warnings (Jean-Marc Dupuis).
+- Switched from regular Guetzli to guetzli-cuda-opencl because it has a recent build and with --c it is faster (#107).
+- Execute Guetzli with GPU acceletation if available to Guetzli (Alexey Pavlov).
+- Avoid JPEG CMYK corruption by excluding jhead in those types.
+- Properly execute rehuff_theora instead of removed rehuff in OGG files.
+- Enabled pingo support for JPEG images when copy metadata is enabled.
+- Updated SQLite to 3.37.2 x86 and x64 Visual C++ 2022 custom builds.
+- Updated mp4v2 x86 and x64 to 5.0.1 Visual C++ 2022 custom builds.
+- Updated pingo to 1.00 a8 x64 version.
+- Updated cpdf to 2.5.1.
+- Updated ffmpeg to 5.0.
+- Updated ImageMagick to 7.1.0.23 with HDRI support.
+- Updated Leanify to 0.4.3.270.
+- Updated ImageWorsener to 1.3.4 test.
+- Updated to Minify 2.10.0 x64.
+- Updated libwebp to 1.2.2 RC2 x64.
+- Updated to cppcheck 2.7.
+
+15.30 - 2021/12/28
+- Fixed wrong PNGOptimized version (Edward Truong https://sourceforge.net/p/nikkhokkho/discussion/fileoptimizer/thread/02b2fe8882/)
+- Updated pingo to 1.00 a5 x64 version.
+- Upgraded distributions to 7-Zip 21.07.
+
+15.20 - 2021/12/27
+- Try to make executables compatible with Windows XP.
+- Some code tweaks (thanks Jean-Marc Dupuis).
+- Improved DPI support in Windows 10 or later.
+- Updated PngOptimizer x64 to 2.7.
+- Updated pngquant to 2.17.0.
+- Updated Ghostscript to 9.55.0.
+- Updated ffmpeg to 4.4.1.
+- Updated to mutool 1.19.
+- Upgraded to C++ Builder 11 Update 1.
+- Updated to cppcheck 2.6.
+- Updated to NSIS 3.08.
+- Upgraded distributions to 7-Zip 21.06.
+- Some minor optimizations and code cleanup.
+
+15.10 - 2021/09/11
+- Added .CAB and SFXCAB file detection by contents.
+- Added skipping of SFX CAB EXE installers (JoeW).
+- Do not run 64 bit plugins with FO 32 bit, even if under Win64.
+- Updated pingo to 0.99.5 x64 version.
+- Updaded Tidy to 5.8.0 x64.
+- Updated libwebp to 1.2.1 RC2 x64.
+- Updated gifsicle to 1.93 (custom build).
+- Upgraded to C++ Builder 11 (Alexandria).
+- Updated to cppcheck 2.5.
+- Updated to NSIS 3.07.
+- Some minor optimizations and code cleanup.
+
+15.00 - 2021/06/23
+- New INI setting DisableSleep=true option to avoid system going to sleep while optimizing (Lucy Phipps).
+- Added italian localization. Thank you Giacomo Margarito.
+- Added redirection to sourceforge page to get updates (Krzysztof Janda).
+- Added -z switch to cwebp -activates lossless preset with given level (Paul).
+- Added OGG (.ogm .spx .opus) to the OGG tool chain (necros) #93.
+- Fixed OGG smart detection by content (necros) #93.
+- Fixed cache not working (Jack).
+- Reverted back cpdfsqueeze to cpdf as in 14.10 because cpdfsqueeze has not been updated since 2 years ago.
+- Updated mp4v2 x86 and x64 to 5.0.0 Visual C++ 2019 custom builds.
+- Updated SQLite to 3.36.0 x86 and x64 Visual C++ 2019 custom builds.
+- Updated cpdf to 2.4.
+- Updated ImageMagick to 7.1.0.1 with HDRI support.
+- Updated libwebp to 1.2.0 x64.
+- Updated to Minify 2.9.17 x64.
+- Updated pingo to 0.99 rc5 (10) x64 version.
+- Updated ffmpeg to 4.4 (Stephen D Brock).
+- Updated ECT -> multithreaded processing support, folder support, Ofast #95 (Paul).
+- Updated PngOptimizer x64 to 2.7 beta #95 (Paul).
+- Updated Optipng x64 to 0.7.7 #95 (Paul).
+- Updated pngwolf-zopfli x64 to 1.1.2 #95 (Paul).
+- Updated pngquant to 2.15.0.
+- Updated pingo to 0.99 rc5 (8) x64 version.
+- Updated Leanify to 0.4.3.260.
+- Upgraded distributions to 7-Zip 21.02.
+- Some minor optimizations and code cleanup.
+
+14.70 - 2021/04/13
+- Fixed detecting file type by contents when it has no extension.
+- Implemented new Leanify parallel mode to make optimization faster.
+- Reenabled --mt-deflate ECT switch which was not available in FO 13.
+- Updated SQLite to 3.35.4 x86 and x64 Visual C++ 2019 custom builds.
+- Updated Ghostscript to 9.54.0.
+- Updated mkclean to 0.9.0.
+- Updated ImageMagick to 7.0.11.3 with HDRI support.
+- Updated ffmpeg to 4.3.2.
+- Updated Leanify to 0.4.3.258.
+- Updated mozjpeg to 4.0.3 x86 and x64 binaries.
+- Updated pingo to 0.99 rc4 (16) x64 version.
+- Upgraded to C++ Builder 10.4.2 (27.0.40680.4203).
+- Updated EXE compatibility to PatchPE 1.33.
+- Some minor optimizations and code cleanup.
+
+14.60 - 2021/02/09
+- Improved speed and ratio with ECT by converting -9 to -90032 (Julien B. O.)
+- Replaced JSMin by Minify #87 (Pingogeek) for x64 tool chain.
+- Added Minify to the HTML, CSS, JS/JSON and XML tool chains when HTMLTidy, JSMin or Leanfy is enabled respectively.
+- Updated SQLite to 3.34.1 x86 and x64 Visual C++ 2019 custom builds.
+- Updated libwebp to 1.2.0 RC3 x64.
+- Updated pingo to 0.99 rc4 (13) x64 version.
+- Updated Leanify to 0.4.3.244.
+- Updated ImageMagick to 7.0.10.58 with HDRI support.
+- Updated libdeflate to 1.7.
+- Updated to cppcheck 2.3.
+- Upgraded distributions to 7-Zip 21.00.
+
+14.50 - 2020/11/26
+- Added support for pingo when copy metadata is enabled (Devedse).
+- Added support for webp lossless with pingo.
+- Updated jpeg-archive to 2.2.0.
+- Updated pingo to 0.99 rc3 (23) x64 version.
+- Updated ImageMagick to 7.0.10.37 with HDRI support.
+- Updated Ghostscript to 9.53.3.
+- Updated mozjpeg to 4.0.1 RC2 build 20200929 x86 and x64 binaries.
+- Updated to mutool 1.18.
+- Updated ffmpeg to 4.3.1.
+- Updated to cppcheck 2.2.
+- Some minor optimizations and code cleanup.
+
+
+14.40 - 2020/09/05
+- Added Tencent QQ (.gft .rdb) support using Leanify.
+- Added OpenRaster (.ora) support using Leanify.
+- Fixed grid drawing issues in C++ Builder 10.4.
+- Updated SQLite to 3.33 x86 and x64 Visual C++ 2019 custom builds.
+- Updated Leanify to 0.4.3.243 daily binaries and use new shorten parameters.
+- Updated mozjpegtran to 4.0.1 build 20200815 x64 binaries.
+- Updated pingo to 0.99 rc3 (15) x64 version.
+- Updated to NSIS 3.06.1.
+- Upgraded distributions to 7-Zip 20.02.
+- Some minor optimizations and code cleanup.
+- Updated to cppcheck 2.1.
+- Upgraded to C++ Builder 10.4.1 (27.0.38860.1461).
+
+14.30 - 2020/07/29
+- Fixed status of files not being refreshed when using cache (JoeW).
+- Updated german translation (thanks Renard Voß).
+- Updated SQLite to 3.32.2 x86 and x64 Visual C++ 2019 custom builds.
+- Updated ImageMagick to 7.0.10.24 with HDRI support.
+- Updated ffmpeg to 4.3.
+- Updated pingo to 0.99 rc3 (02) x64 version.
+- Updated to mutool 1.17.
+- Updated Ghostscript to 9.52.
+- Updated to cppcheck 2.00.
+- Upgraded to C++ Builder 10.4.0 (27.0.37889.9797).
+
+14.20 - 2020/03/19
+- Updated russian translation (thank you Max).
+- Updated SQLite to 3.31.1 x86 and x64 Visual C++ 2019 custom builds.
+- Swiched from cpdf to cpdfsqueeze which provides better results.
+- Fixed Gifsicle 64 bit plugin in Plugins32 folder (AcidBurn).
+- Updated ECT x64 binaries to 0.8.3.
+- Updated pingo to 0.99 rc1 x64 version.
+- Updated ffmpeg to 4.2.2.
+- Updated ImageMagick to 7.0.9.20 with HDRI support.
+- Updated JSMIn 2019-10-30 custom build.
+- Updated Leanify to 0.4.3.240 daily binaries.
+- Updated to jHead 3.04.
+- Updated libwebp to 1.1.0 x64.
+- Updated to NSIS 3.05.
+- Updated UPX to 3.96.
+
+14.10 - 2019/11/21
+- Fixed regression wrong elapsed time calculation (LeTiger #67).
+- Updated SQLite to 3.30.1 x86 and x64 Visual C++ 2019 custom builds.
+- Updated ffmpeg to 4.2.1.
+- Updated Ghostscript to 9.50.
+- Updated ImageMagick to 7.0.9.5 with HDRI support.
+- Updated pingo to 0.99 beta 63 x64 version.
+- Updated Best CFBF Optimizer to Nov 1st 2019.
+- Updated Leanify to 0.4.3.237 daily binaries.
+
+14.00 - 2019/09/30
+- Workarrounded TWebControl to minimize the memory leak happening in Internet Explorer when ads are enabled. As a side effect, ads should load faster too (Tomas Cold #66).
+- Added Best CFBF Optimizer to the OLE toolchain.
+- Updated cpdf to 2.3.
+- Updated ffmpeg to 4.1.4.
+- Updated ImageMagick to 7.0.8.58 with HDRI support.
+- Updated libwebp to 1.0.3.
+- Updated pingo to 0.99 beta 58 x64 version.
+- Updated strip to 2.32.
+- Updated to mutool 1.16.
+- Upgraded distributions to 7-Zip 19.02.
+- Some minor optimizations and code cleanup.
+
+13.90 - 2019/07/27
+- Fixed PNGOut corrupting JPEG files that are named as PNG (Sergi).
+- Updated SQLite to 3.29.0 x86 and x64 Visual C++ 2019 custom builds.
+- Updated libwebp to 1.0.3 RC1.
+- Updated ImageMagick to 7.0.8.53 with HDRI support.
+- Updated Leanify to 0.4.3.232 daily binaries.
+- Updated pingo to 0.99 beta 44 x64 version.
+- Updated to mutool 1.16 RC1.
+- Updated to cppcheck 1.88.
+- Upgraded to C++ Builder Community Edition 10.3.2 (26.0.34749.6593).
+- Some minor optimizations and code cleanup.
+
+13.80 - 2019/05/23
+- Updated spanish translation (Thanks Edson Pacompía Ortiz).
+- Updated all custom built plugins to Visual C++ 2019: gifsicle, gifsicle-lossy, jpegoptim, jsmin, mp4v2 and sqlite.
+- Updated SQLite to 3.28.0 x86 and x64 Visual C++ 2019 custom builds.
+- Updated gifsicle to 1.92.
+- Removed gifsicle-lossy management because it is now integrated in gifsicle.
+- Updated to mutool 1.15.
+- Updated mp4v2 x86 and x64 to 4.1.0 Visual C++ 2019 custom builds.
+- Updated ImageMagick to 7.0.8.37 with HDRI support.
+- Updated pingo to 0.99 beta 32 x64 version.
+- Updated libdeflate to 1.2.
+- Updated Ghostscript to 9.27.
+- Updated Leanify to 0.4.3.231 daily binaries.
+- Updated EXE compatibility to PatchPE 1.31.
+
+13.70 - 2019/03/22
+- Added pingo for WEBP toolchain (lossless and lossy).
+- New INI setting WEBPAllowLossy=false option to allow WEBP lossy optimizations.
+- Updated SQLite to 3.27.2 x86 and x64 Visual C++ 2017 custom builds.
+- Updated pingo to 0.99 beta 29 x64 version.
+- Updated ffmpeg to 4.1.1.
+- Updated strip to 2.31.1 x64 version.
+- Updated ImageMagick to 7.0.8.33 with HDRI support.
+- Upgraded to C++ Builder Community Edition 10.3.1 Rio (26.0.33219.4899).
+- Upgraded distributions to 7-Zip 19.00.
+
+13.60 - 2019/02/13
+- Added hyperlinks compatibility when using Ghostcript (George Ionescu).
+- Added XLSB extension to the ZIP toolchain (Konstantin Pozdnyakov).
+- Rewritten log format (FatBit).
+- Updated russian translation (thanks Max).
+- Updated SQLite to 3.27.0 x86 and x64 Visual C++ 2017 custom builds.
+- Updated Leanify to 0.4.3.227 daily binaries.
+- Updated to jHead 3.03.
+- Updated libwebp to 1.0.2.
+- Updated ImageMagick to 7.0.8.23 with HDRI support.
+- Updated pingo to 0.98.53 x64 version.
+- Upgraded to C++ Builder Community Edition 10.3 Rio (26.0.32429.4364).
+- Upgraded distributions to 7-Zip 18.06.
+- Some minor optimizations and code cleanup.
+
+13.50 - 2018/12/24
+- New INI setting MiscDisable=false and option to prevent misc optimization (#54, Dm Kh).
+- Implemented /NoWindow command-line option to hide FileOptimizer when starting (Devedse).
+- Improved About window.
+- flexiGIF has been disabled due to corruption and inestability. Hope it could be reenabled soon.
+- Fixed optimization of SWF files when new debug in 13.40 is enabled (avalanch).
+- Updated SQLite to 3.26.0 x86 and x64 Visual C++ 2017 custom builds.
+- Updated to jHead 3.02.
+- Updated ImageMagick to 7.0.8.15 with HDRI support.
+- Updated ffmpeg to 4.1.0.
+- Updated Ghostscript to 9.26.
+- Updated libwebp to 1.0.1.
+- Updated pingo to 0.98.46 x64 version.
+- Updated flexiGIF to 2018.11a that fixes GIF corruptions (Aleksey Kuznetsov, Edward Truong).
+- Updated Leanify to 0.4.3.224 daily binaries.
+- Updated to cppcheck 1.86.
+- Updated to NSIS 3.04.
+- Some minor optimizations and code cleanup.
+
+13.40 - 2018/11/16
+- Added new INI setting Debug=false that keeps temporary files (Devedse #51).
+- You can support FileOptimizer at Patreon (https://patreon.com/user?u=14590326).
+- Removed -p switch in FlexiGIF because it is very slow (Edward Truong).
+- Removed ImageMagick from the ICO tool chain because it causes some lossy artifacts (Pepper Andrino).
+- Fixed TruePNG reducing bit-depth (Devedse #58).
+- Updated libwebp to 1.0.1 RC2.
+- Updated pingo to 0.98.40 x64 version.
+- Updated SQLite to 3.25.3 x86 and x64 Visual C++ 2017 custom builds.
+- Updated flexiGIF to 2018.10b (Edward Truong).
+- Updated ImageWorsener to 1.3.3.
+- Updated Leanify to 0.4.3.222 daily binaries.
+- Some minor optimizations and code cleanup.
+- Updated to cppcheck 1.85.
+
+13.30 - 2018/10/15
+- Allowed window resizing to be 200x50 pixels (Roger #56).
+- Added flexiGIF for GIF toolchain.
+- Updated SQLite to 3.25.2 x86 and x64 Visual C++ 2017 custom builds.
+- Updated pingo to 0.98.31 x64 version.
+- Updated Ghostscript to 9.25.
+- Updated ImageMagick to 7.0.8.12 with HDRI support.
+- Updated to mutool 1.14.
+- Some minor optimizations and code cleanup.
+
+13.20 - 2018/09/10
+- New HideInstructions=false INI setting to hide instructions pane on the top, and left more UI space available (Robert Berge).
+- Fixed (hopefully) access violations caused by TWebBrowser on close in some system configurations (Tomas J Stehlik, mario lopez moreno).
+- Fixed shntool introduced in 12.90 being inconsistent in file extension management, which could cause 0 byte optimized files (Robert Berge, Peter S. #42).
+- Fixed "Miscelaneous" spelled as "Miscellaneous" in Options window and translations (JoeW).
+- Fixed some interface and help english typos (Armin Müller).
+- Tested with WINE 3 under macOS Sierra and High Sierra.
+- Updated chinese traditional translation. Thanks Danfong Hsieh.
+- Updated Ghostscript to 9.24.
+- Updated Leanify to 0.4.3.219 daily binaries.
+- Updated ECT x86 and x64 binaries to ECT 0.8.3.47 (g4a45c139e86). Thanks to przemoc.
+- Updated mp4v2 x86 and x64 to 4.0.1 Visual C++ 2017 custom builds.
+- Updated ImageMagick to 7.0.8.11 with HDRI support.
+- Updated pingo to 0.98.15 x64 version.
+- Updated ffmpeg to 4.0.2.
+- Updated mozjpegtran to 3.3.1-3 x86 and x64 binaries.
+- Updated to mutool 1.14 gfe8b5f20.
+- Updated UPX to 3.95.
+- Integrated with Synopsys Coverity Scan.
+- Some minor optimizations and code cleanup.
+
+13.10 - 2018/07/26
+- Fixed installer shortcuts pointing to Pluings32 or Plugin64 folders instead of where FO was installed (James Pous).
+- Updated ffmpeg to 4.0.1.
+- Updated pingo to 0.97.6 x64 version.
+- Updated ImageMagick to 7.0.8.8 with HDRI support.
+- Extensively debugged with CodeGuard.
+- Updated to cppcheck 1.84.
+- Some minor optimizations and code cleanup.
+
+13.00 - 2018/07/24
+- New StartupDelay=1000 INI setting from 1000ms to 29000ms specifying the delay before start adding files (cy_sfnet_2007).
+- Removed --mt-deflate ECT switch because it is not available in latest build (Renard Voß, #39).
+- Fixed a resource leak while copying files using memory mapped views.
+- Updated russian translation (Thanks Max).
+- Updated pingo to 0.97.4 x64 version.
+- Updated pingo to 0.97.1 x86 version.
+- Updated ImageMagick to 7.0.8.3 with HDRI support.
+- Switched to official mozjpegtran builds.
+- Upgraded to C++ Builder Community Edition 10.2.3 (10.2.3.3231).
+- Using IDE Fix Pack 6.3.1.
+- Some minor optimizations and code cleanup.
+
+12.90 - 2018/06/19
+- Added WAV support by using shntool. New INI options available WAVCopyMetadata=false and WAVStripSilence=false (Lucy Phipps).
+- Extended shntool to FLAC when WAVCopyMetadata enabled (Lucy Phipps).
+- Added new INI setting PNGWolfIterations=-1 to overwrite PNGWolf zopfli settings (Abinadab Suzuki).
+- Added elapsed time displayed in status bar when finished as well as in MessageBox when BeenWhenDone is enabled (Abinadab Suzuki).
+- Added per file elapsed time in Status column (Abinadab Suzuki).
+- Added chinesse traditional translation. Thanks Danfong Hsieh.
+- Improved window repositioning in several windows (Tomasz W).
+- Fixed processing files without extension (Lucy Phipps #38).
+- Fixed SWF processing with FLASM.
+- Fixed some archives not being processed because they were detected as SFX even if they were not EXE (Lucy Phipps #37).
+- Updated SQLite to 3.24.0 x86 and x64 Visual C++ 2017 custom builds.
+- Updated ImageMagick to 7.0.8.1 with HDRI support.
+- Updated pingo to 0.97 x86 and x64 versions.
+- Updated pngquant to 2.12.0.
+- Updated ECT x86 and x64 binaries to 0.8.2 b62da9a01560e626a8a1a9ebd78245f88dc81590. Thanks to landfillbaby and fhanau.
+- Some minor optimizations and code cleanup.
+
+
+12.80 - 2018/05/23
+- Fixed strip.exe in Win32 version was Win64 itself. jpeg-recompress and pngquant still are Win64 since there are no 32 bit binaries available (Lucy Phipps).
+- Fixed some description typos (dado023).
+- Updated mozjpegtran to 3.3.1 x86 and x64 binaries (Olav R. Birkeland).
+- Updated SQLite to 3.23.1 x86 and x64 Visual C++ 2017 custom builds.
+- Updated libwebp to 1.0.0 (Olav R. Birkeland).
+- Updated jpegoptim to 1.4.6 (custom built with libjpeg 9b).
+- Updated ffmpeg to 4.0.
+- Updated to mutool 1.13.
+- Updated pingo to 0.96z94 x86 and x64 versions.
+- Updated ImageMagick to 7.0.7.33 with HDRI support.
+- Updated Leanify to 0.4.3.217 daily binaries.
+- Upgraded distributions to 7-Zip 18.05.
+- Better performance updating to ASMLib 2.52 with AVX512 support.
+- Some minor optimizations and code cleanup.
+
+12.70 - 2018/04/05
+- Added Libdeflate for GZ toolchain (JoeW).
+- Updated jpegoptim to 1.4.5 (custom built with libjpeg 9b).
+- Updated SQLite to 3.23.0 x86 and x64 Visual C++ 2017 custom builds.
+- Updated gifsicle-lossy to 1.91 (custom built).
+- Updated libwebp to 1.0.0 RC2.
+- Updated pingo to 0.96y x86 and x64 versions.
+- Updated ImageMagick to 7.0.7.28 with HDRI support.
+- Updated strip to 2.30.
+- Updated to cppcheck 1.83.
+- Some minor optimizations and code cleanup.
+
+12.61 - 2018/04/01
+- Fixed corruption when copy to recyclebin due to 0 byte file sizes (Alex Devero).
+- Updated russian translation (Thanks Max).
+- Updated Ghostscript to 9.23.
+- Updated pingo to 0.96w x86 and x64 versions.
+- Some minor optimizations and code cleanup.
+- Upgraded distributions to 7-Zip 18.03.
+
+12.60 - 2018/03/21
+- Added russian translation. Thanks Max.
+- Added swedish translation. Thanks a902cd23.
+- Added per pluggin progress (RejZoR).
+- Disabled ImageMagick on TIFF images when copy metadata because it is not kept (Dominik RUTSCHMANN).
+- Disabled pngquant on APNG images when lossy compression was selected because it broke animations (Shazy).
+- Updated ffmpeg to 3.4.2.
+- Updated pingo to 0.96q x86 and x64 versions.
+- Updated ImageMagick to 7.0.7.25 with HDRI support.
+- Updated Leanify to 0.4.3.210 daily binaries.
+- Statically analized with C++ Builder Audits.
+- Some minor optimizations and code cleanup.
+- Updated EXE compatibility to PatchPE 1.30.
+- Upgraded distributions to 7-Zip 18.02.
+
+12.50 - 2018/02/27
+- Switched to AGPL license to protect it from modifications in network environments and making it compatible with Ghostcript (Robin Watts #33).
+- Added full licensing files to all plugins to avoid any confusion.
+- Made About and Option windows resizable.
+- Made ads load smoother.
+- Retested in Windows XP SP3.
+- Updated pngquant to 2.11.7.
+- Updated pingo to 0.95w x86 and x64 versions.
+- Updated ImageMagick to 7.0.7.23 with HDRI support.
+- Some minor optimizations and code cleanup.
+
+12.40 - 2018/02/19
+- Added dutch translation. Thanks Luc.
+- Added german translation. Thanks Oliver.
+- Made installer multilanguage.
+- Made all internal file operations use short names if available to avoid long path errors (#32 Ramon E).
+- Implemented some translation improvements (Luc).
+- Improved Google File Stream and Microsoft OneDrive compatibility.
+- Fixed a regression in 12.30 which caused registry values not being properly read (srobert698).
+- Fixed an access violations on some circunstances (Ramon E).
+- Fixed some strings not being translated due to line breaks (Luc).
+- Updated AdvanceCOMP to 2.10.
+- Some minor optimizations and code cleanup.
+
+12.30 - 2018/02/06
+- Added creation of file backups before optimization, enabled by default, to avoid issues with large files in recyclebin. Can be disabled in Options (bianamaran).
+- Added ask to user if he wants to show ads on first execution to avoid flagging it as "Ad Supported" in Softpedia and other channels.
+- Improved startup logic.
+- Tested against Google File Stream and Microsoft OneDrive virtual file systems.
+- Updated SQLite to 3.22.0 x86 and x64 Visual C++ 2017 custom builds.
+- Updated to ECT 0.8.2 (50e32cde31e6) x86 and x64 daily optimized builds (thanks przemoc).
+- Updated Leanify to 0.4.3.209 daily binaries.
+- Updated pingo to 0.95q x86 and x64 versions.
+- Updated ImageMagick to 7.0.7.22 with HDRI support.
+- Updated to cppcheck 1.82.
+- Updated to NSIS 3.03.
+- Upgraded distributions to 7-Zip 18.03.
+
+12.20 - 2018/01/08
+- Fixed a regression in getting donator information (Johnson Lam).
+- Fixed enabling and disabling ads causing a CPU leak (avalanch).
+- Fixed formatting of total files in Information window.
+- Updated gifsicle to 1.91 (custom build).
+- Updated ImageMagick to 7.0.7.19 with HDRI support.
+- Some minor optimizations and code cleanup.
+
+12.11 - 2017/12/28
+- Fixed accidentally left experimental multithreading code that avoids optimization (Alex Devero).
+- Updated ImageMagick to 7.0.7.17 with HDRI support.
+
+12.10 - 2017/12/28
+- Fixed refreshing issues (trlkly).
+- Delay load SHCORE.DLL to avoid a runtime bug in Wine < 2 (#25 trlkly).
+- Disabled File system redirection unneded in x64 builds.
+- Updated OptiPNG to 0.7.7.
+- Updated TruePNG to 0.6.2.5.
+- Updated libwebp to 0.6.1 (Olav R. Birkeland).
+- Updated pingo to 0.93 x86 and x64 versions.
+- Updated to mutool 1.12.
+- Updated ffmpeg to 3.4.1.
+- Updated ImageMagick to 7.0.7.15 with HDRI support.
+- AQtime 8 performance improvements (Armin).
+- Compiled with latest C++ Builder 10.2.2 (Tokyo Update 2).
+- Some minor optimizations and code cleanup.
+
+12.00 - 2017/12/08
+- Implemented multilanguage support via standard PO files.
+- New icons. Better quality and higher resolution (Nicolas, trlkly).
+- Implemented ability to read options from registry to prevent users changing them in corporate environments. It will never write in the registry nevertheless (srobert698).
+- Made adding files even faster.
+- Hardened buffers in update checker to avoid crashed with certain AV/firewalls (Tom B, Abdulaziz Alnasi).
+- Fixed creation of process because some of them like TruePNG do not like to be started in different folders (Hacker).
+- Allow reading INI options from all users if available.
+- Increased disable plugin mask to 512 characters (olavrb).
+- Made INI parsing stronger against errors.
+- Improved uninstaller to remove also .INI and .LOG files on user profile.
+- Fixed ads were loaded even if hidden (Special).
+- Added -perfect to mozjpegtran (Psykauze).
+- Workarrounded again ImageMagick GIF processing flags as in 11.30 because it is not yet fixed (#26 Dr. Sassafras).
+- Optimized precompiled headers.
+- Added spanish translation (Javier Gutiérrez Chamorro).
+- Added french translation (Nicolas F., Victor Bernoni).
+- Using IDE Fix Pack 6.1.1.
+- Updated TruePNG to 0.6.2.4 (Mike).
+- Updated pngquant to 2.11.4.
+- Updated libwebp to 0.6.1 RC2.
+- Updaded Tidy to 5.6.0.
+- Updated pingo to 0.92k x86 and x64 versions.
+- Updated to mutool 1.12 RC1.
+- Updated ImageMagick to 7.0.7.13 with HDRI support.
+- Some minor optimizations and code cleanup.
+
+11.40 - 2017/11/21
+- Permanently removed theme logic as advised in 11.30.
+- Delayed load of ads to increase startup speed.
+- Fixed ads display requiring IE11 or later only available in Windows 7 or later. Now they run under Vista or later too (IE9) (bianamaran).
+- Fixed disabled Windows error handling in 11.30 requiring Vista or later due to calling GetErrorMode. Now we are XP compatible again (bianamaran).
+- Fixed execution of gifsicle and gifsicle-lossy due to wrong parameters (dado23).
+- Faster gifsicle-lossy execution because -j (multithreaded jobs) even if undocumented, is also supported.
+- Updated jpegoptim to 1.4.4-git-9578d79 (custom built).
+- Updated gifsicle-lossy to 1.88-git-bf3e029 (custom built).
+- Some minor optimizations and code cleanup.
+
+11.31 - 2017/11/17
+- Reduced donator reminder frequency.
+- Reduced ads number because now they are 728x90.
+- Improved window restore on next launch when maximized.
+- Improved ads viewer.
+- Updated ImageMagick to 7.0.7.11 with HDRI support.
+- Updated pngquant to 2.11.2.
+- Updated strip to 2.29.1.
+- Some minor optimizations and code cleanup.
+
+11.30 - 2017/11/16
+- Moved to a new HTTPS enabled website at https://nikkhokkho.sourceforge.io.
+- Switched code to support HTTP and HTTPS.
+- Added integrated ads display, since some users wanted to support FileOptimizer and do not have Paypal. You can remove if you want.
+- Added HideAds=false INI setting to remove ads.
+- Added GUI option to remove ads.
+- Disabled Windows error handling, so when a plugin crashes, FileOptimizer execution does not get stopped (Garret Wilson, FatBit and others).
+- Disabled/deprecated themes because they are not stable. I will remove all asociated code in next release.
+- Reduced reminder frequency.
+- Workarrounded ImageMagick GIF processing flags (Devedse).
+- Fixed default process priority set to idle, even if it should be normal (RejZoR).
+- Avoided m7zRepacker treating .exe files.
+- Updated Leanify to 0.4.3.208 daily binaries.
+- Updated ffmpeg to 3.3.4 (TPS).
+- Updated ImageMagick flags (Devedse).
+- Updated ImageMagick to 7.0.7.9 with HDRI support.
+- Updated SQLite to 3.21.0 x86 and x64 Visual C++ 2017 custom builds.
+- Updated pingo to 0.92e x86 and x64 versions.
+- Tested with Windows 10 Fall Creators Update.
+- Tested with wine 2 under GalliumOS 2.1 / lubuntu 16.10.
+- Some minor optimizations and code cleanup.
+
+11.20 - 2017/10/12
+- Added 7-Zip (.7z) support with m7zRepacker.
+- Improved donator information (Peni).
+- Improved APNG compression adding ECT and pingo.
+- Improved PNG 9-patch compression adding pingo.
+- Added more supported extensions (.mzz, .rll).
+- Made restore default settings smoother.
+- Updated to ECT 0.8.2 (9290a5cf7ea0) x86 and x64 daily optimized builds (thanks przemoc).
+- Updated Leanify to 0.4.3.195 daily binaries.
+- Updated Ghostscript to 9.22.
+- Updated pingo to 0.92 x86 and x64 versions.
+- Updated ImageMagick to 7.0.7.6 with HDRI support.
+- Updated to cppcheck 1.81.
+- Some minor optimizations and code cleanup.
+
+11.10 - 2017/09/24
+- Added .webm, .weba and .mk3d support throught MKV tool chain (AlexNG).
+- Fixed update checker when donor.
+- Updated pingo to 0.91 x86 and x64 versions.
+- Updated ImageMagick to 7.0.7.3 with HDRI support.
+- Some minor optimizations and code cleanup.
+
+11.00 - 2017/09/05
+- Expanded Options window to fit all missing INI directives.
+- Added optional toolbar with menu icons (trlkly).
+- Added Add folder option (bl3uge).
+- Added detected filetype under extension column in file list, when its extension is not know.
+- Accurated file listings. Only supported files will be added to the grid.
+- Reworked About window to be more colorful.
+- Added donator information displayed in Information box. You can enter your donator email in Options->Appearance->Donator.
+- Improved a lot grid performance (listing, sorting, removing, clearing, adding, ...).
+- Speededup duplicates check when adding items to the grid, which is now exponentially faster (20 times faster for 10,000 files).
+- Added ImageMagick to the GIF toolchain.
+- Added ClearWhenComplete=false INI setting to autoclear file list when optimization completes (Lanette Fidrych).
+- Added TARGA (TGA ICB, VDA, and VST) toolchain, and TGA detection by contents.
+- Added YUV, YCBCRA, YCBCR, X, UYVY, SUN, SGI, RFG, RGB, RGBA, PTIF, PCL, PCLS, MTV, MVG, MSL, MPR, MPC, MONO, J2C, J2K, INLINE, GRAY, FPX, FAX, EPDF, DPX, DDS, CMYK, CMYKA, CIN, BPG, ART to the ImageMagick toolchain.
+- Reenabled Embarcadero's Luna, Metropolis and Windows 10 themes removed in FileOptimizer 9.10, because they work fine again with Windows 10 Anniversary and later. Made Windows theme default, because it is stabler and faster.
+- Fixed themes hidding main user interface when executed via command-line.
+- Formatted numbers, sizes and times according to locale settings.
+- Fixed that double-clicking on fixed columns could open selected file.
+- When multiple instances are allowed, FO will not warn anymore about Optimization still running, nor kill plugin processes.
+- Made MessageBoxes autoclose after 30 seconds (Devedse).
+- Rewritten update check to use POST.
+- Better 7z SFX detection.
+- Made INI processing safer.
+- Expanded contextual menu with more new commands.
+- Reenabled ECT on APNG files (fhanau).
+- Reduced a bit the quality loss allowed when lossy compression is enabled to improve ratio.
+- Disabled ECT in MP3 toolchain, because it is not compiled with that module (fhanau).
+- Fixed version display in About window, and show internal compiler version.
+- Fixed MPEG recompression when more than one audio stream existed (AlexNG).
+- Tweaked the Information window.
+- Added Aero's glass frame to all windows.
+- Minor usability improvements.
+- Added FLAC codec to the FLAC toolchain to recompress them (AlexNG).
+- Only use flacout in FileOptimizer compression levels 9, because it is slow (AlexNG).
+- Removed PCXLite because it contains bugs, and is not needed with ImageMagick.
+- Better Ghostcript processing (Adventurer).
+- Removed fix for missing BTHPROPS.CPL and BLUETOOTHAPIS.DLL error on Wine by making them delay loaded on Win32 binaries to overcome C++ Builder XE7 bug, which is solved since C++ Builder 10.0 (trlkly).
+- Reduced 7z EXE SFX in the portable distribution in 105 KB., becasuse extractor is now UPX'ed.
+- Updated cpdf to 2.2 patchlevel 1.
+- Updated mkclean to 0.8.10.
+- Enabled ImageMagick for JPEG processing when lossy is permitted.
+- Updated gifsicle to 1.90 (custom build).
+- Updated to ECT 0.8.2 (a9cb2da) x86 and x64 daily optimized builds (thanks Malloc Voidstar).
+- Updated ffmpeg to 3.3.3.
+- Updated SQLite to 3.20.1 x86 and x64 Visual C++ 2017 custom builds.
+- Updated pngquant to 2.10.1.
+- Updated ImageMagick to 7.0.7.0 with HDRI support.
+- Upgraded distributions to 7-Zip 17.01.
+- Updated to NSIS 3.02.1.
+- Updated to cppcheck 1.80.
+- Some minor optimizations and code cleanup.
+
+10.10 - 2017/07/28
+- Increased NSIS installer dictionary size to 216MB thanks to 4gb_patch by NTCore and upgraded to latest NSIS nightly builds. Size reduced from 96MB to 70MB (maadjordan).
+- Repacked portable version is now a 7-Zip EXE SFX instead of a ZIP file. Size reduced from 136MB to 66MB.
+- Updated pingo to 0.89 x86 and x64 versions.
+- Updated to ECT 0.8.2 (da09899) x86 and x64 daily optimized builds (thanks Malloc Voidstar).
+- Updated ImageMagick to 7.0.6.3 with HDRI support.
+
+10.00 - 2017/07/21 (5th aniversary release)
+- Added EnableCache=false INI setting to enable cache of already optimized files, so they are not reoptimized each time.
+- Added AllowMultipleInstances=false INI setting, to prevent the warning of multiple FileOptimizer instances running (Jack).
+- Compiled with latest C++ Builder 10.2 Tokyo April 2017 Hotfix.
+- Fixed the bug of chineese shortcut text caused by Embarcadero C++ Builder 10.2 Tokyo, issue in the Win64 version when "Link with runtime packages" is set to false.
+- Improved GUI draw performance.
+- Improved pingo lossy optimizations for JPEG and PNG.
+- Improved gifsicle and gifsicle-lossy performance by allowing using more memory, and using several threads.
+- Added nightly builds at the SVN repository, so they can be publicly tested (Jack, Ryan Morben).
+- Updated gifsicle to 1.89 (custom build).
+- Updated pngquant to 2.10.0.
+- Updated to ECT 0.8.2 x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Updated Leanify to 0.4.3.192 daily binaries.
+- Updated SQLite to 3.19.3 x86 and x64 Visual C++ 2017 custom builds.
+- Updated pingo to 0.88 x86 and x64 versions.
+- Updated ImageMagick to 7.0.6.1 with HDRI support.
+- Upgraded distributions to 7-Zip 17.00.
+- Some minor optimizations and code cleanup.
+
+9.90 - 2017/06/11
+- Addes SQLite database optimization support (necros).
+- Added ffmpeg to the video toolchain (mp4, mkv, ogv).
+- New extensions supported in the video toolchain: .mpg .mpeg .flv .wmv .wma .rv .ra .rm .rmvb .ram .smil, qt, mov, 3gg, 3g2.
+- New extensions added to the ZIP toolchain: .qwk, .ear, .war, .jar, .z01 .z02 .z03 .z04 .z05 .z06 .z07 .z08 .z09 .z10, .zipx, .zx01 .zx02 .zx03 .zx04 .zx05 .zx05 .zx06 .zx07 .zx08 .zx09 .zx10.
+- Added INI setting MP4CopyMetadata=false to enable copying MP4 metadata.
+- Fixed some help typos (Joel Rangelle).
+- Added mp4v2 2.1.0 x86 and x64 static Visual C++ 2017 custom builds.
+- Added SQLite 3.19.2 x86 and x64 Visual C++ 2017 custom builds.
+- Improved pingo compression.
+- Added -KeepPhysicalPixelDimensions to PngOptimizer when keep metadata to mantain DPI information (Renard Voß).
+- Disabled advpng when keep metadata is selected (Renard Voß).
+- Updated AdvanceCOMP to 2.00 (TPS).
+- Updated tidy 5.4.0 to be Windows XP compatible.
+- Updated mkclean to 0.8.9.
+- Updated UPX to 3.94.
+- Updated to mp4v2 2.1.0.
+- Updated mozjpegtran x86 and x64 binaries, because CoolOppo did not build x64 (thanks d4k0).
+- Updated to ECT 0.7.0 (2b66b21) x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Updated Leanify to 0.4.3.190 daily binaries.
+- Updated ImageWorsener to 1.3.2.
+- Updated ImageMagick 7.0.5.10 with HDRI support.
+- Updated pingo to 0.83.
+- Updated strip to 2.27.
+- Updated to cppcheck 1.79.
+- Some minor optimizations and code cleanup.
+
+9.80 - 2017/04/15
+- Ribbon interface is removed as adviced in FileOptimizer 9.00.
+- Added detection 7-ZIP SFX archives, since as other SFX data overlay gets stripped after optimization (FatBit).
+- Updated to C++ Builder 10.2 Tokyo.
+- Faster and slightly smaller 32 bit version thanks to be migrated to CLang backend (64 bit already was).
+- Faster 32 and 64 bit versions thanks to new -O3 CLang backend optimizations.
+- Improved pingo JPEG optimizations.
+- Updated to pngwolf-zopli 1.1.2.
+- Updated to mutool 1.11.
+- Updated to ECT 0.7.0 (9090e23) x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Updated Guetzli to 1.0.1 (olavrb).
+- Updated pingo to 0.79p.
+- Updated ImageMagick 7.0.5.4 with HDRI support.
+- Updated to cppcheck 1.78.
+- Some minor optimizations and code cleanup.
+
+9.70 - 2017/03/25
+- Added INI setting IncludeMask=. If not empty, only files containing this mask (substring) on name or path will be included from optimization (user202jkl).
+- Added ECT ZIP support.
+- Updated custom builds with Visual C++ 2017 (jsmin, gifsicle, jpegoptim).
+- Updated Ghostscript to 9.21.
+- Updated Guetzli to 1.0.
+- Updaded Tidy to 5.4.0.
+- Updated libwebp to 0.6.0.
+- Updated pingo to 0.76.
+- Updated Leanify to 0.4.3.188 daily binaries.
+- Updated ImageMagick 7.0.5.3 with HDRI support.
+- Some minor optimizations and code cleanup.
+
+9.60 - 2017/02/18
+- Brand new FileOptimizer icon (Thanks Dorel Megaleechers.com).
+- Added descriptions in INI file to make it easier and safer to be modified.
+- Migrated from smpdf to cpdf (maadjordan).
+- Fixed a bug that could show optimized sizes larger than original, when the plugin execution increased it. It was only cosmetic, and optimized size, never was larger (Pepper Andrino).
+- Ghostrcript is automatically disabled when no downsampling is selected, because it is always downsampling images even if -dDownsampleColorImages=false -dDownsampleGrayImages=false -dDownsampleMonoImages=false are specified (olavrb).
+- Make sure TempDirectory is created to avoid certain plugins crash (Newtomic).
+- Patched Guetzli and Mutool plugins to be compatible with Windows XP (thanks Jaff for the patch).
+- Switched to libwebp without WIC codes to keep Windows XP compatibility (Jaff).
+- Fixed not properly passing PDF profile to Ghostcript (#9 Runer112).
+- Updated UPX to 3.93.
+- Updated libwebp to 0.6.0 RC3.
+- Updated mozjpeg to 3.2 (Thanks AiZ).
+- Updated Leanify to 0.4.3.180 daily binaries.
+- Updated ImageMagick 7.0.4.7 with HDRI support.
+- Updated pingo to 0.59.
+- Updated pngquant to 2.8.1 (dado023).
+- Some minor optimizations and code cleanup.
+
+9.50 - 2017/01/10
+- Fixed a regression since FileOptimizer 9.30, that could avoid some plugin optimizations to not being applied (Armin Mueller, signalman).
+- Fixed a bug when LogLevel was 4, when Optimized Size could be reported as 0 bytes in some situations.
+- Updated Guetzli to 0.2, now with x64 native binary.
+- Updated pingo to 0.56.
+- Updated ImageMagick 7.0.4.3 with HDRI support.
+- Some minor optimizations and code cleanup.
+
+9.40 - 2017/01/06
+- Added INI setting PDFSkipLayered=false to skip processing of PDF containing layers Optional Content Groups -OCG- (Grahame Bevan).
+- Implemented using Win64 plugins in all Win64 system, even if you run Win32 version of FileOptimizer.
+- Added removing metadata in pngquant if PNGCopyMetadata is disabled.
+- Added Guetzli to the JPEG tool chain when allow lossy compression is enabled (Jyrki Alakuijala).
+- Added pingo to the JPEG and PNG toolchains when copy metadata is disabled.
+- Reenabled Leanify in JPEG processing when Copy Metadata is enabled, because now we can use --jpeg-keep-all-metadata.
+- Fixed crashing with temporary paths longer than 260 characters (Roman Luks).
+- Updated pingo to 0.52.
+- Updated libwebp to 0.5.2.
+- Updated UPX to 3.92.
+- Updated Leanify to 0.4.3.173 daily binaries.
+- Updated pngquant to 2.8.0.
+- Updated to mutool 1.10a with x64 native build (thanks Dirk Paehl).
+- Updated ImageMagick 7.0.4.2 with HDRI support.
+- Better performance updating to ASMLib 2.51 with AVX512 support.
+- Updated to cppcheck 1.77.
+- Updated to NSIS 3.01.
+- Some minor optimizations and code cleanup.
+
+9.30 - 2016/11/26
+- Installer now supports the /AllUsers argument to install for all users instead of current user (Grahame Bevan).
+- Fixed remove selected files (Shift-Del) always enabled since 9.00 when unified ribbon and regular UI (TPS).
+- Added original and optimized sizes in log file (JoeW).
+- Fixed a bug in mutool that prevented execution on PDF (LeTiger).
+- Disabled Leanify from the JPEG, PNG and ICO toolchains when copy metadata is enabled, because it removed IPTC information (ZonaCasio).
+- Updated AdvanceCOMP to 1.23.
+- Updated to ECT 0.6.2.0 -511fa96- x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Updated jsmin custom build with Visual C++ 2015.
+- Updated Leanify to 0.4.3.172 daily binaries.
+- Updated ImageMagick 7.0.3.7 with HDRI support.
+- Updated PngOptimizer to 2.5.
+- Updated Ghostscript to 9.20.
+- Updated strip to 2.27.
+- Updated to mutool 1.10RC2.
+- Better performance updating to ASMLib 2.50 with AVX512 support.
+- Updated to cppcheck 1.76.
+- Upgraded distributions to 7-Zip 16.04.
+- Some minor optimizations and code cleanup.
+
+9.20 - 2016/10/01
+- Added INI setting JSAdditionalExtensions to add extra extensions to be threated as JSON (Oddbrother).
+- Implemented several UPX compression profiles depending on optimization level (User Hunter).
+- Updated ImageMagick 7.0.3.1 with HDRI support.
+- Updated Leanify to 0.4.3.152 daily binaries.
+- Upgraded distributions to 7-Zip 16.03.
+- Some minor optimizations and code cleanup.
+
+9.10 - 2016/09/17
+- Added mutools (clean -ggg) to the PDF tools chain (TPS).
+- Added F5 key to refresh grid contents updating original size (originfake).
+- Added CTRL-F5 key to reload grid contents. It will remove already optimized items, and then do a refresh (originfake).
+- Added support for Adobe Illustrator (AI) file types (maadjordan).
+- Dynamically adapt instruction text, stating if files will be backuped on Recycle Bin or not, according to settings (Armin Mueller).
+- Implemented heuristic detection of corrupted PDF after Ghostcript processing the encryption (Gonzalo).
+- Proper wording wording for "Mb." is "MiB". Thanks to Armin Mueller for the patch (Armin Mueller).
+- Fixed calling to ImageMagick that was passing incorrect switches and prevented TIFF and ICO optimization (Michael Goeller).
+- Made statistics use B, KiB, MiB o GiB automatically (Armin Mueller).
+- Updaded Tidy to 5.2.0 (TPS).
+- Updated pngwolg-zopfil x64 to 1.1.1, avoiding 64 bit crashes on some CPU, and improving performance -Thanks Joergen Ibsen- (alex123, bob joseph).
+- Removed Embarcadero's Luna, Metropolis and Windows 10 themes because they have issues with Windows 10 Anniversary and later.
+- Updated jpegoptim to 1.4.4 (custom built).
+- Updated ImageMagick 7.0.3.0 with HDRI support.
+- Some minor optimizations and code cleanup.
+
+9.00 - 2016/08/15
+- Ribbon interface is by default disabled, and replaced by traditional menus. There is a new Appearance tab under Options dialog where you can reenable it (Newtomic).
+- Added context menu Open containing folder (Special).
+- Now you can override virtually any INI setting thought the command-line. For instance FileOptimizer32.exe /GIFAllowLossy=true.
+- Added INI option ShutdownWhenDone=false to specify the OS to shutdown as soon as optimization of all queued files is done (guindos98).
+- Implemented simple command-line help when specifying /? switch.
+- Enhanced update checker.
+- Implemented a Statistics section that can be checked inside the Information window.
+- Improved single instance detection, because it did not work properly on Vista and later (Special).
+- Embarcadero themes have conflicts with Windows 10 Anniversay update, so we get back to default Windows one in 10 or later (RejZoR, TPS).
+- Made abort optimization message more clearer (Louis Horvath).
+- Fixed main window position not properly restored on launch (hairycactus).
+- Simplified ECT multithreading, because it already knows the number of threads to use.
+- Retested in Windows XP RTM, and Windows 10 Anniversary.
+- Updated help file.
+- Updated Leanify to 0.4.3.149 daily binaries.
+- Updated to ECT 0.6.2.0 -ef70e0- x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Changed from pngwolf to pngwolf-zopfli, which gives higher rations, and a native x64 build (TPS).
+- Updated ImageMagick 7.0.2.7 with HDRI support.
+- Updated to cppcheck 1.75.
+- Some minor optimizations and code cleanup.
+
+8.50 - 2016/08/01
+- Made interface fully HDPI aware. Now it reescales according to Windows scaling (@Zeyckler).
+- Added smpdf to the PDF toolchain (necros, maadjordan).
+- Added OLE and OBJ files detection by content.
+- Added optional GIF lossy recompression by adding Gifsicle Lossy (thanks to jibz for the binaries).
+- Added INI setting GIFAllowLossy=false to enable lossy GIF optimizations (maadjordan).
+- Added ECT multithreading support to make it faster with more than one core/CPU, and improve ratio with --allfilters.
+- Improved UPX compresion adding --nrv2d --crp-ms=999999.
+- Improved ECT compression.
+- Switched jpeg-recompress method to SmallFry due to better compression ratios than SSIM, at least until it is patented.
+- Replaced tidy-html5 4.9.26-191-gb4efe74 with official Tidy 5.1.14 to avoid errors on old Windows versions (maadjordan).
+- Added Flash (.fla) format and enhance extension lists to the OLE tool chain (maadjordan).
+- Added Revit FAmily file extensions (.rft, .rfa, .rte) to the OLE tool chain (maadjordan).
+- Added more OLE extensions from http://www.filesignatures.net: .ac .adp .apr .db .opt .msc .mtw .wps .spo .sou .xla (maadjordan).
+- Clarified via tooltip (hint) that Enable Tidy (HTMLEnableTidy INI setting) in the HTML options tab, applies also to SVG (maadjordan).
+- Fixed some english typos (thanks Armin).
+- Improved already running instances detection.
+- Updated to ECT 0.6.1.0 x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Updated ImageMagick 7.0.2.5 with HDRI support.
+- Updated to NSIS 3.0.
+
+8.40 - 2016/06/17
+- Added MIME (.mht .mhtml .eml .emlx .msg .mbx .vcf .vcard) support with Leanify (JoeW).
+- Added optional JPEG lossy recompression by adding jpeg-recompress (maadjordan).
+- Added INI setting JPEGAllowLossy=false to enable lossy JPEG optimizations (maadjordan).
+- Added ZIP SFX installer detection.
+- Added InstallShield Wizard and RTPatch Updater detections to exclude processing like we did with Inno Setup (ThisWillDoIt).
+- Added Nullsoft Install System detections to exclude processing in EXE chain.
+- Added ECT to the MP3 toolchain to optimize embedded images (Skibicki).
+- Fixed a bug calling Ghostscript, that ignored parameters after dPDFSETTINGS which should made quality and size better (Skibicki #5).
+- Removed generator metatag from tidy output (JoeW).
+- Disabled Leanify, and PNGout for APNG because the broke optimized files in some cases (Folding Home).
+- Disabled ImageWorsener for WEBP, because it is not lossless (Skibicki #9).
+- Added EPRT extension (Solid Works) to ZIP chain (maadjordan).
+- Added Leanify to the HTML/SVG toolchain when HTMLEnableTidy is enabled (JoeW).
+- Updated Leanify to 0.4.3.136 daily binaries.
+- Updated donation button to use Paypal.me so it can accept different currencies that euros (JoeW).
+- Updated pngquant to 2.7.0a.
+- Updated to ECT 0.4 x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Updated ImageMagick 7.0.2.0 with HDRI support.
+- Updated to NSIS 3.0 RC1.
+- Updated to cppcheck 1.74.
+- Upgraded distributions to 7-Zip 16.02.
+- Some minor optimizations and code cleanup.
+
+8.30 - 2016/04/30
+- Added UPX to the EXE/DLL tool chain (guindos98, necros).
+- Added INI setting bEXEEnableUPX=false to enable UPX EXE compression. For instance bEXEEnableUPX=true will enable UPX processing (guindos98, necros).
+- Added INI setting LeanifyIterations=-1 to specify desired Leanify iterations independently of the compression level. For instance LeanifyIterations=128 will instruct Leanify to always use 128 iterations (necros).
+- Added stereo extensions: MPO (Multi Picture Object), PNS (PNG Stereo) and JPS (JPEG Stereo).
+- Added LXF extension (Lego Digital Designer) to ZIP chain (Jaff).
+- Tweaked ECT invoking to make it get better compression ratios (Jaff).
+- Fixed ECT execution it does not use -Mx but -x instead (fhanau).
+- Fixed disable ZIP recurse handling in Leanify (Jaff).
+- Fixed an Embarcadero's VCL bug that caused view modes in add files Windows common dialog show strange strings (JoeW).
+- Removed crop-transparency from gifsicle arguments, since it can downsize resulting GIF image, and thus not being lossless (Austin Donisan).
+- Disable TruePNG on ICO files because it crashes (TPS).
+- Avoid using Advzip on SFX ZIP files due to header being removed (Jaff).
+- Updated AdvanceCOMP to 1.20 (Jaff).
+- Updated Leanify to 0.4.3.103 daily binaries.
+- Updated pngquant to 2.5.2.
+- Updated TruePNG to 0.6.2.2.
+- Updated strip to 2.26.
+- Updated Ghostscript to 9.19. Please report any issue if I should revert to 9.15.
+- Updated OptiPNG to 0.7.6 since Hg 20121021 is discontinued.
+- Updated ImageMagick to 6.9.3.8 with HDRI support.
+- Updated to cppcheck 1.73.
+- Some minor optimizations and code cleanup.
+
+8.20 - 2016/02/13
+- Added INI setting DisablePluginMask= to allow excluding execution of certain plugins. For instance DisablePluginMask=leanify;advpng.exe (hairycactus).
+- Added INI setting AllowDuplicates=false to allow adding same file more than once. If enabled, adding to the grid will be much faster, specially on very large grids (Priit).
+- Better High DPI compatibility.
+- Use Windows 10 theme by default on Windows 8 and newer.
+- Cleaned up JPEG options page glitches (d4k0).
+- Delay load shcore.dll to avoid a C++ Builder bug on WINE (trlkly).
+- Make child windows show always on top, even if main window uses AlwaysOnTop=false (hairycactus).
+- Make FileOptimizer a true lossless tool by default by setting PDF Profile to none by default (RejZoR).
+- Fix Windows 8.1 and later detection, by using RtlGetVersion because old previous functions (GetVersion, IsWin10OrLater, ...) only work for manifested applications.
+- Fixed ZIP Leanify processing not honoring not recursing (Jaff).
+- Adding files to grid is three times faster because of some refreshes removed, and other little tweaks (Priit).
+- Checking for already existing files in the grid, is about 10x faster, by taking advantage of IndexOf (Priit).
+- Updated to ECT 0.2.1 x86 and x64 optimized builds (thanks Malloc Voidstar).
+- Updated ImageMagick to 6.9.3.3 with HDRI support.
+- Updated TruePNG to 0.6.1.9.
+- Revert to Ghostscript 9.15 since Ghostscript 9.18 crashes, and 9.16 has worse compression ratios (hairycactus).
+- Updated to NSIS 3.0 beta 3.
+- Updated to cppcheck 1.72.
+- Some minor optimizations and code cleanup.
+- Upgraded distributions to 7-Zip 15.14.
+
+8.10 - 2015/12/26
+- Enhanced GZ, JPEG and PNG compression by adding ECT 0.1 by Felix Hanau.
+- Fixed Windows 10 theme (d4k0).
+- Worked around a bug in C++ Builder Seattle that made executables require BORLANDMM.DLL -https://forums.embarcadero.com/thread.jspa?messageID=706835- (d4k0).
+- Fixed a problem with disabled menu items after optimization (d4k0).
+
+8.00 - 2015/12/25
+- Added Windows 10 theme, enabled by default on Windows 10 or later.
+- Prevented missing BTHPROPS.CPL and BLUETOOTHAPIS.DLL error on Wine by making them delay loaded on Win32 binaries to overcome C++ Builder XE7 bug (trlkly).
+- Removed custom window frame, because it was always looked black with C++ Builder 10.
+- Made check for updates detect faulty routers and switches returning HTML content when no valid data connection exists (Armin Mueller).
+- Added INI option TempDirectory="" to specify FileOptimizer temporary folder to use. If empty, it will use system defaults. Set it to a fast SSD drive or ramdisk to increase performance (Newtomic).
+- Prevented Windows message about "Program not responding" when adding lots of files (Zulfikar Raditya Hernanta).
+- Upgraded to Ghostscript 9.18.
+- Updated ImageMagick to 7.0.0.0 with HDRI support.
+- Updated pngquant to 2.5.1.
+- Updated Leanify to 0.4.3.
+- Updated TruePNG to 0.6.1.8.
+- Updated tidy-html5 to 4.9.26-191-gb4efe74 patched to be Windows XP compatible.
+- Updated libwebp to 0.4.4.
+- Updated ImageWorsener to 1.3.0.
+- Updated to cppcheck 1.71.
+- Updated to C++ Builder 10 Seattle.
+- Better performance updating to ASMLib 2.36.
+- Improved setup.
+- Some minor optimizations and code cleanup.
+- Upgraded distributions to 7-Zip 15.12.
+
+7.90 - 2015/08/20
+- Tested to be compatible on new Microsoft Windows 10.
+- Better PNG optimizations by allowing tuning TruePNG parameters, including remove metadata and lossy recompression.
+- Better JPEG optimizations by allowing to run jhead when metadata should be copied too (Jaff).
+- Do not convert SVG to SVGZ (JoeW).
+- Updated Leanify to 0.4.2.64 daily binaries.
+- Updated ImageMagick to 6.9.2.0 with HDRI support.
+- Updated gifsicle to 1.88 (custom build).
+- Updated TruePNG to 0.6.0.0.
+- Updated strip to 2.25.1.
+- Updated to NSIS 3.0 beta 2.
+- Updated custom builds with Visual C++ 2015 (gifsicle, jpegoptim).
+- Upgraded distributions to 7-Zip 15.06.
+
+7.80 - 2015/06/01
+- Fixed an incompatibility with Windows XP introduced in 7.50 by unsupported COPY_FILE_NO_BUFFERING flag that makes CopyFileEx API function fail (Vivil).
+- Fixed lossy PNG optimization was performed even if "allow lossy" was unchecked (guindos98, alex, Newtomic).
+- Tested over mapped and unmapped network shares.
+- Keep rotation on EXIF rotated JPEG images, even if metadata is stripped (Jaff).
+- Updated ImageMagick to 6.9.14.
+- Updated tidy-html5 to 4.9.26-26-g9785399 patched to be Windows XP compatible.
+- Updated Leanify to 0.4.2.45 daily binaries.
+- Updated mozjpeg to 3.10.
+- Updated jpegoptim to 1.4.3 (custom built).
+- Upgraded distributions to 7-Zip 15.03.
+
+7.70 - 2015/05/17
+- Added a new PNG option to optionally allow lossy PNG recompression support with pngquant 2.4.0 (Jack Cherng).
+- Made higher compression profiles, optimize better at a cost of extra processing time. Now on best setting, we are using 30 zopfli iterations instead of 9 (SvenBent).
+- Added MNG files detection by content.
+- Added WinRAR SFX detection to exclude processing like we did with Inno Setup (SvenBent).
+- Fixed regression on files with uppercase extensions, compression ratio was less than in 7.40 and before. (Jaff).
+- Make child windows open on top, when always on top is checked (hairycactus).
+- Do not reset column widths after minimizing window (Jaff).
+- Use TMP if TEMP is not available or else use current directory to avoid issues when reading them (xezz).
+- File extensions were converted to lowercase. ie: JPG to jpg (Marilyn Phillip).
+- Updated jpegoptim to 1.4.3 beta (custom built).
+- Updated to cppcheck 1.69.
+- Some minor optimizations and code cleanup.
+
+7.60 - 2015/04/26
+- Added INI option AlwaysOnTop=false to specify if FileOptimizer main Windows should stay always on top (hairycactus).
+- Updated Leanify 0.4.2.44 daily binaries.
+- Adding files not working for the x64 edition due to some aggressive optimizations in C++ Builder with -O3 (hairycactus).
+
+7.50 - 2015/04/24
+- Add support for files larger than 4 GB, now up to 4 TB (Spotted Cow).
+- Speedup file copies by using CopyFileEx.
+- Updated help file.
+- PNGOUT and FLACOUT has been unpacked to avoid false positives by scary antivirus.
+- Fix PDF no downsampling profile.
+- Revert to Ghostscript 9.15 since Ghostscript 9.16 crashes with errorlevel 0 (everything OK), when source file name has extended characters. It worked properly on 9.15.
+- Updated ImageMagick to 6.9.12.
+- Some minor optimizations and code cleanup.
+
+7.40 - 2015/04/10
+- We are now checking returned errorlevels from plugins to avoid corruption such as in password protected PDF (sambufalo).
+- Fixed removal of range selection of files (Dmitry).
+- Make sure temporary filenames have no collisions even if original files are named the same across different folders (Dmitry).
+- Updated Leanify 0.4.2.43 daily binaries.
+- Updated APNG Optimizer to 1.4.
+- Upgraded to Ghostscript 9.16.
+- Upgraded distributions to 7-Zip 15.00.
+- Some minor optimizations and code cleanup.
+- Upgraded to C++ Builder XE8.
+
+7.30 - 2015/03/15
+- Default optimization level is now 5: Normal, instead of 9: Best.
+- Fixed wrong percent calculation (Dmitry, Spotted Cow).
+- Updated PETrim to 4.00 Beta.
+- Minor optimizations.
+
+7.20 - 2015/03/13
+- FileOptimizer is now able to partially detect file types by its contents instead of file extensions (BMP, DLL, FLAC, GIF, GZ, JPG, MKV, MP3, MP4, PCX, PDF, PNG, SWF, TIFF, WEBP, and ZIP). More to come later.
+- Added custom PDF profile to allow specifying desired downsampling DPI (stratos chatzi, Special, Newtomic).
+- Added new column extension between file and original on the grid to allow sorting by filetypes (Nico919).
+- Added INI option BeepWhenDone=false to beep and notify used when optimization is complete (Special).
+- Added INI option FilenameFormat=0 (0: full path+filename; 1: only filename). (To Do: 2: driveletter + “:\”+partial path + filename; 3: driveletter + “:\”+partial path if fits+”...” last part of filename) to specify how File grid column is displayed (Jaff).
+- Information window now sorts extensions supported alphabetically, and better formats them.
+- Improved window layout performance by enabling double buffering.
+- Added .GALLERY, .GALLERYCOLLECTION, .GALLERYITEM, .INK, .NBK, .NOTEBOOK and *.XNK file extensions to the ZIP tool chain (maadjordan).
+- Better handling of obsolete .INI preferences.
+- Improved alternate colors in grid to look better on different Windows color schemes.
+- Fixed wrong percentage calculation for big files due to integer overflow (Dmitry, Juan).
+- Fixed grid column sorting not working properly for certain types (Nico919).
+- Updated libwebp to 0.4.3.
+- Updated ImageMagick to 6.9.1.1.
+- Updated Leanify 0.4.2.40 daily binaries.
+- Some minor optimizations and code cleanup.
+
+7.10 - 2015/02/20
+- Added Matroska support with mkclean for .mkv, .mka, and .mks file extensions (SpanishDogg).
+- Added XML (.xml, .fb2 .xsl, .xslt) support with Leanify.
+- Added LUA (.lua .luac) support with Leanify.
+- Allow concurrent executions of different FileOptimizer instances over different file sets.
+- Added more PDF profiles, including without downsampling, 100 dpi, 200 dpi and 600 dpi (stratos chatzi).
+- Added 250 dpi setting for PDF (Special).
+- Added INI option ExcludeMask="" to specify paths (folder/files) that contain it as substring will be excluded (Tomasz W.).
+- Exclusion list can now optionally contain more than one substrings if separated by semicolon (;).
+- Added INI option ZIPRecurse=false prevent Leanify inside ZIP files.
+- Added INI option XMLEnableLeanify=false enable Leanify on XML files.
+- Added INI option LUAEnableLeanify=false enable Leanify on LUA files.
+- Allow optimizing JPEG files when copy metadata is enabled by using new --keep-exif switch as well as inside ZIP files (Jaff).
+- Added .DEB, and .IPK file extensions to the GZ tool chain (maadjordan).
+- Added .FXG and .KML file extensions to the XML tool chain (maadjordan).
+- Added .BAR, .CDR, .CDT, .CSL, .DES, .FXG .IPSW, .KMZ, and .SWC file extensions to the ZIP tool chain (maadjordan).
+- Disabled ImageMagick for GIF optimization because in some cases it does quantization, and so on, causes quality loss (Vivil).
+- Implemented Restore defaults in options dialog to return to factory settings.
+- Add preference option for ExcludeMask (Tomasz W.).
+- Add option for ZIPRecurse.
+- Added LUA options tab.
+- Added XML options tab.
+- Add hints on Options pages with supported file types.
+- Made options dialog accept it faster by preventing changing the theme if not modified.
+- Slightly faster startup times.
+- Added Leanify to the JPEG tool chain.
+- Added Leanify to the EXE tool chain.
+- Added .rdb and .gft extensions to the ZIP tool chain.
+- Slightly smaller PDF recompression by using dDetectDuplicateImages=true Ghostscript switch.
+- Fixed log levels in Options dialog.
+- Updated to jHead 3.00.
+- Updated ImageMagick to 6.9.0.6.
+- Updated PNGOUT to 02/13/2015.
+- Better quality and smaller PDF by adding -dOptimize=true -dConvertCMYKImagesToRGB=true -dColorConversionStrategy=/sRGB -dColorImageDownsampleType=/Bicubic -dGrayImageDownsampleType=/Bicubic -dMonoImageDownsampleType=/Bicubic.
+- Updated TruePNG to 0.5.0.4.
+- Upgraded distributions to 7-Zip 9.38.
+- Minor source code improvements.
+
+7.00 - 2015/01/21
+- Added FLAC compression using FLACOUT (DotDotDot).
+- Added MP4 compression (.mp4 .m4a .m4b, .m4p, .m4r .m4v .acc) using mp4v2 (Francisco Eirea Bito-on).
+- Added Autodesk Revit (.rvt) and Solidworks formats (.sldprt, .slddrw, .sldasm) to the OLE tool chain (maadjordan).
+- Added .BSZ .GRS .ITA .MVZ .PK3 .R2SKIN .STZ .WBA extensions to ZIP toolchain (Jaff).
+- Added eDrawings (easm) to the ZIP tool chain (maadjordan).
+- Added SVG extension to GZ/SVG tool chain.
+- Integrated Leanify compression for GZ, SWF and ZIP formats.
+- Added TAR support with Leanify.
+- Updated Leanify 0.4.2 daily binaries with Windows XP compatibility. Thanks JayXon.
+- Added DWF extension to the ZIP tool chain (maadjordan).
+- Added .ksf, .wsz, .wal, .wmz, .mdz, .miz, .s3z, .xmz, .itz, .osk, .rmskin, .mmip, .msz extensions to the ZIP toolchain (Jaff).
+- Added .vlt extension to the GZ toolchain (Jaff).
+- Launch TruePNG before PNGOut to improve PNG compression (trlkly).
+- Added OCX and VBX extensions to the DLL toolchain.
+- Improved GIF compression ratio upgrading to gifsicle 1.87 (custom build).
+- Better GIF compression ratio adding --crop-transparency and if metadata should be removed --no-comments --no-extensions --no-names (Vivid).
+- Unpacked TruePNG.exe to avoid false positives with Symantec AVs (LayZee).
+- Improved WEBP compression ratio updating to libwebp 0.4.2.
+- Improved GZ, MNG, PNG, and ZIP compression ratio updating to AdvanceCOMP 1.20 beta.
+- Upgraded to Ghostscript 9.15.
+- Removed ImageMagick from the JPEG toolchain because it can cause quality loss (deluge).
+- Brand new plugin execution, easier to maintain, and also more efficient.
+- Enhanced keep file attributes option to also restore file last access time.
+- Updated APNG Optimizer to 1.3.
+- Updated mozjpeg to 3.00 which improves compression ratio, and fixes Photoshop incompatibilities (Lard).
+- Updated TruePNG to 0.5.0.3 (Jaff).
+- Updated jpegoptim to 1.4.2 (custom built) (Jaff).
+- Updated ImageMagick to 6.9.0.4.
+- Updated PngOptimizer to 2.4.1.
+- Added ini options bBMPCopyMetadata=false, bGIFCopyMetadata=false, bMiscCopyMetadata=false, bPCXCopyMetadata=false, bTIFFCopyMetadata=false to control copying metadata for other filetypes.
+- Do not suffix shortcuts on the installed with x86 or x64, since only once will be available (trlkly).
+- Added Leanify to PNG and ICO tool chains.
+- Fixed reopening FileOptimizer when closed minimized from the taskbar (d4k0).
+- Fixed Keep file attributes not properly restoring file modification timestamp (Tomasz W. and ksf).
+- Skipped files now have the Skipped status in the Status column instead of Pending.
+- Support Android 9-patch images by only allowing pngwolf, defluff and leanify to process them, and thus disabling advpng, deflopt, optipng, pngoptimizer, pngout, pngrewrite and truepng which seem to broke them (Tomasz W.).
+- Cancel optimization is now faster.
+- Remove Control+Alt+X accelerator in installer shortcuts (AdamDobay).
+- Improved GUI drawing performance.
+- Internal build number now matches subversion repository revision.
+- Better performance updating to ASMLib 2.35.
+- Updated to NSIS 3.0 beta 1.
+- Removed Launch wording in installer shortcuts (David Mártínez).
+- Slight WINE compatibility improvements (Jesus Alcaras).
+- Make sure file still was not deleted before processing (A user).
+- Launched plugins now do with the same process priority as FileOptimizer (A user).
+- Small installer/uninstaller improvements.
+- Upgraded to C++ Builder XE7 Update 1.
+- Upgraded distributions to 7-Zip 9.35.
+- cppcheck sanity fixes (Armin).
+- Source code migrated to a subversion repository at http://sourceforge.net/p/nikkhokkho/code/HEAD/tree/.
+
+6.80 - 2014/04/28
+- Added Nokia Refocus/SmartCam .NAR and Opera extensions .OEX extensions to the ZIP tool chain (Jaff).
+- Added .JPE and THM extension to the JPEG tool chain (Jaff).
+- Added the /y switch on TruePNG implemented in 6.70 which will cause it to ask for overwriting existing file each time the plugin was used.
+- Fixed a cosmetic problem where skipped files were counted sometimes in the stats as producing a size saving.
+- Minor source code improvements.
+
+6.70 - 2014/04/27
+- Faster PDF compression upgrading to Ghostscript 9.14.
+- Improved deflate compression by better combining deflopt and defluff.
+- Improved JPEG compression ratio including jhead.
+- Improved PNG compression ratio including TruePNG.
+- Improved GIF compression ratio upgrading to gifsicle 1.83 (custom build).
+- Upgraded jpegoptim to 1.3.1 (custom build with libjpeg 9).
+- jsmin build is now faster in both Win32 and Win64 versions.
+- Updated to ImageMagick 6.8.9.0.
+- Fixed a bug introduced in 6.50 that could cause files with extensions longer than 3 characters to not be processed.
+- Some minor optimizations and code cleanup.
+
+6.60 - 2014/04/26
+- Fixes extra title bar on Metropolis and Windows themes (trlkly).
+- Reenabled jpegtran as as in 5.90 because sometimes it is better than mozjpeg (webfork).
+- Installer now transparently detects OS bitness, and extracts only 32 or 64 bit binaries (trlkly).
+- Unpacked mozjpeg plugin to avoid antivirus false positives (Ryan Hietpas).
+- Installer version now properly registers on Add/Remove Programs.
+- Upgraded to C++ Builder XE6.
+- Project cleanup.
+
+6.50 - 2014/04/15
+- Added HTML optimization support with tidy-html5 (Metallicow).
+- Added CSS optimization support with TidyCSS.
+- Added JS optimization support with jsmin (custom built).
+- Added DCX to the PCX tool chain.
+- Added ini option HTMLEnableTidy=false to enable tidy-html5 when processing HTML files. When activated HTML files will be optimized, and be visually equal to the original, but may prevent the to be edited.
+- Added ini option CSSEnableTidy=false to enable CSSTidy when processing CSS files. When activated CSS files will be optimized, and be visually equal to the original, but may prevent the to be edited.
+- Added ini option CSSTemplate=low to set compression template in CSTidy, ranging from low (safer and less compression), to highest.
+- Added ini option JSEnableJSMin=false to enable jsmin when processing JS files. When activated JS files will be optimized, and be visually equal to the original, but may prevent the to be edited.
+- Added EXE options tab.
+- Added HTML options tab.
+- Added CSS options tab.
+- Added JS options tab.
+- Execute plugins passing short file names to avoid path size limitations.
+- Enhanced General options tab with DoNotUseRecycleBin (DotDotDot).
+- Added a Stop command to give up any pending optimization.
+- Implemented a donate button in the website and in the application. Contribute with the amount you consider my work deserves.
+- Reorganized help file with different sections (webfork).
+- Added tooltips in ribbon buttons.
+- Make about Window close with ESC and RETURN.
+- Totally rewritten Messagebox management for increased accessibility and flexibility.
+- Optimized internal icons.
+- Replaced 7-Zip SFX installer with NSIS 3.00a2 installer (including shortcuts and uninstaller).
+- Faster JPEG compression upgrading to mozjpeg 1.01 r43.
+- Updated strip to 2.25.
+- Upgraded to WinCHM 4.43.
+
+6.00 - 2014/04/06
+- Added PCX optimization support with PCXLite (no404error).
+- Do not allow adding the same file more than once (mario lópez)
+- Improved GIF compression ratio upgrading to gifsicle 1.82 (custom build).
+- Compiled gifsicle with Visual C++ 2013.
+- Improved JPEG compression replacing jpegtran with mozjpeg.
+- Improved GZ, MNG, PNG, and ZIP compression ratio updating to AdvanceCOMP 1.19.
+- Improved WEBP compression ratio updating to libwebp 0.4.0.
+- libwebp changed to without WIC codes to reduce external dependencies.
+- Upgraded ImageWorsener to 1.3.0.
+- Upgraded to zRecompress 2.12.
+- Updated to ImageMagick 6.8.8.10.
+- Fixed remove selected files out of bounds error.
+- Windows 8.1 compatibility enhancements.
+- Better performance updating to ASMLib 2.34.
+- Upgraded to WinCHM 4.35.
+- Upgraded distributions to 7-Zip 9.32.
+
+5.90 - 2013/09/11
+- Added ini option EXEDisablePETrim=false to disable PETrim when processing EXE files. Resulting executables will be larger, but it will prevent broking some SFX and installers as well as stripping digital signatures (Ascend4nt).
+- Added ini option DoNotUseRecycleBin=false to prevent copying original files to your Recycle Bin. Be aware that enabling such option will prevent recovering original files (Runner112).
+- Much improved WebP optimization by using cwebp and dwebp in libwebp (Runner112).
+- Improved PDF compression upgrading to Ghostscript 9.10.
+- Updated to ImageMagick 6.8.6.9.
+
+5.80 - 2013/07/30
+- Added JNG to the JPEG tool chain.
+- Implemented generic .aai .avs .dcx .pcc .pcx .fits .jp2 .jpc .hdr .hrz .mif .miff .mtv .otb .p7 .palm .pdb .pbm .pcd .pcds .pfm .pgm .picon .pic .pict .pnm .ppm .psb .psd .sun .vicar .viff .wbmp .xbm .xpm .xwd to the ImageMagic tool chain.
+- Updated to ImageMagick 6.8.6.7.
+- Better performance updating to ASMLib 2.31.
+- Included vcomp100.dll required by ImageMagick (Kolpotoru).
+- Upgraded to C++ Builder XE4 Update 1.
+
+5.70 - 2013/06/19
+- Improved PNG compression ratio and speed updating to PngOptimizer 2.3.
+- Upgraded Gifsicle to 1.71 (custom build).
+- Added support for Gifsicle x64 too (custom build).
+- Upgraded jpegoptim to 1.3.1 beta (custom build with libjpeg 9).
+- Prevented zRecompress generating larger files.
+- Closing windows is now more responsive.
+- Some minor optimizations and code cleanup.
+
+5.60 - 2013/05/01
+- Added ICO PNG optimization support with ImageMagick.
+- Added TIFF/FAX ZIP optimization support with ImageMagick.
+- Added DIB format to the BMP chain.
+- Updated ImageMagick to 6.8.5.3.
+- Upgraded to C++ Builder XE4.
+
+5.50 - 2013/04/06
+- Added BMP optimization support with ImageMagick (Chris Recon).
+- Improved GZ, MNG, PNG, and ZIP compression ratio updating to AdvanceCOMP 1.17.
+- Improved PNG compression updating pngwolf to pngwolf + zopfli (custom built http://encode.ru/threads/1689-Google-Compress-Data-More-Densely-with-Zopfli).
+- Improved PNG compression speed removing advdef which makes no sense together with advpng.
+- Improved JPEG compression updating to jpegtran 9.
+- Improved GIF and JPEG compression updating to ImageMagick 6.8.4.6.
+- Prevent optimizing Inno Setup EXE files because they get broken with strip and PETrim http://forum.bitsum.com/index.php/topic,2438.0.html (Mario).
+- Dynamic window title and application caption to show progress information (Jaff).
+- Original size and Optimized size columns are now right aligned for better legibility (DotDotDot).
+- Fixes some number formatting issues (Jaff).
+- Some minor cosmetic and usability improvements.
+- Other minor stability and performance improvements.
+
+5.10 - 2013/02/25
+- Improved PNG compression updating to PNGOUT 02/20/2013.
+- Window properties were not properly loaded (Dr. Bhavesh).
+- Make the minimized status of the ribbon permanent.
+- Remove horizontal scrollbar in files grid (Dr. Bhavesh).
+- Using a theme different that Windows, make drag&drop not work (Mario).
+- Process Priority=Realtime and Checkforupdates=Never were not restored properly (Mario).
+- Shorten manifest description (Dr. Bhavesh).
+- Make ribbon load faster/refresh better (Dr. Bhavesh).
+
+5.00 - 2013/02/17
+- Improved GIF compression by adding ImageMagick.
+- Improved JPEG compression by adding ImageMagick.
+- Improved PDF compression upgrading to Ghostscript 9.07.
+- EXE compression is now safer by removing /StripFixups:Y in PETrim.
+- Upgraded ImageWorsener to 1.1.0.
+- Upgraded Gifsicle to 1.70.
+- New ribbon interface, just for those complaining about ugly interface. For the rest, the traditional context menu is still available, and ribbon can be minimized to save screen space.
+- Implemented remove selected files option.
+- Total bytes saved are now shown when finishing the optimization.
+- Solved an issue with Add files dialog in Windows XP and older, by switching from TFileOpenDialog to TOpenDialog.
+- Fixed a Windows Vista incompatibility (lastMonkey).
+- Fixed a bug that caused the program to confirm more than one time to exit when process where still active.
+- Solved some issues optimizing OBJ/o and LIB/A files.
+- Prevented empty log creation in x64 build when LogLevel=0 (n6333373).
+- Prevented optimized files being larger that original ones in some rare scenarios.
+- Some minor cosmetic and usability improvements.
+- Other minor stability and performance improvements.
+- Upgraded to C++ Builder XE3 Update 2.
+
+4.00 - 2013/01/20
+- Added OBJ (OBJ, O, LIB and A) optimization support with strip.
+- Improved EXE and DLL compression by adding strip.
+- Added context menu for Add files.
+- Added context menu for Exit.
+- Added context menu for About.
+- Added ini option PDFProfile=ebook|screen|printer|prepress|default to set PDF recompression profile settings.
+- Added ini option LogLevel=0 to log output.
+- General performance improvements by using ASMLb 2.30.
+- Win64 performance improvements.
+- Win64 portability enhancements.
+- Other minor cosmetic and usability improvements.
+- Distribution size reduced by using 7-Zip archives/SFX.
+
+3.00 - 2012/12/30
+- Added native Win64 support (FileOptimizer64.exe).
+- Added ini option KeepAttributes=false to keep file attributes and timestamp after optimization.
+- Added ability to optimize read-only and system files.
+- Included 64 bit plugins (Ghostscript, ImageWorsener, jpegoptim, MP3packer, PngOptimizer, zRecompress).
+- Win64 portability improvements.
+- Upgraded to C++ Builder XE3 Update 1.
+
+2.30 - 2012/12/01
+- Improved GIF compression ratio upgrading to gifsicle 1.68.
+- Compiled gifsicle with Visual C++ 2012 Update 1 (Windows XP and later compatible).
+- Upgraded to zRecompress 2.11 (Windows XP and later compatible).
+- Compiled jpegoptim with Visual C++ 2012 Update 1 (Windows XP and later compatible).
+- Improved BMP and WEBP compression ratio upgrading to ImageWorsener 1.0.0.
+- Added BMP optimization support with ImageWorsener.
+- Fixed a null pointer exception in Windows XP and 2003 introduced in 2.00.
+- Fixed a bug that allowed to add files with no extension at all.
+- Upgraded to C++ Builder XE3 Update 1.
+
+2.20 - 2012/11/03
+- Improved PNG and APNG compression ratio upgrading to OptiPNG Hg 20121021.
+- Other minor stability and performance improvements.
+
+2.10 - 2012/09/26
+- Added Microsoft OLE Compound Files (DOC, PPT, XLS, CHM, Thumbs.db, StickyNotes.snt, ...) optimization support with Document Press (maadjordan).
+- Improved Office and Office 2007+ compression ratio by adding some additional file extensions
+- Allow dragging files even if FileOptimizer is elevated, and source process is not.
+- Added theme support (Windows, Luna -Office 2007 like-, Metropolis UI Black -Windows 8 Metro like-).
+- Added ini option Theme=Windows|Luna|Metropolis UI Black to set additional themes.
+- Improved WINE compatibility and appearance.
+- Slightly improved command line argument handling.
+- Switched back to flat Deflate on ZIP distribution file because of Deflate64 incompatibilities with Windows XP built-in ZIP extractor.
+
+2.00 - 2012/09/23
+- Improved PNG and APNG compression ratio upgrading to OptiPNG Hg 20120916.
+- Improved PNG and APNG compression ratio upgrading to PngOptimizer 2.2.
+- Improved APNG compression ratio upgrading to APNG Optimizer 1.2.
+- Added ini option Level=9 to set recompression ratio for GIF, GZ, MNG, PNG, APNG, ZIP.
+- Automatically copy processed files to Recycle Bin so you can easily restore its original versions if required.
+- Added ability to preview files in grid by double clicking them.
+- Implemented Windows 7 and later taskbar progress.
+- Allow files grid interaction even while optimizing is in progress.
+- Improved grid status column formatting to make sorting more natural.
+- Improved visual appearance on rare color scheme combinations and themes.
+- Enhanced status bar progress display.
+- Tweaked main window components in order to better fit in low screen resolutions.
+- Constrained main window minimum width and height to avoid component misplacing.
+- Enhanced and updated CHM help file.
+- Upgraded to C++ Builder XE3.
+- Main executable file is not packed anymore due to buggy antivirus raising false positives.
+- Slightly reduced ZIP distribution file by using Deflate64.
+
+1.70 - 2012/09/07
+- Improved PNG, APNG, ZIP and GZ compression ratio including defluff (m^2).
+- Improved PNG and APNG compression ratio upgrading to OptiPNG Hg 20120824.
+- It is possible to add files in several batches, until Optimize option is chosen.
+- Updated autoupdate functionality to new home at http://nikkhokkho.sourceforge.net
+
+1.65 - 2012/09/03
+- Improved APNG compression ratio enabling PngOptimizer.
+- Improved MP3 compression ratio upgrading to MP3packer 2.04.
+- Disabled grid selection to avoid confusion about Optimize and Delete operating against all items, or only selected ones.
+- Clarified that FileOptimizer will overwrite existing files, and advise to create a backup.
+- Ask user consent before enabling automatic check for updates (Skye).
+- Better Win64 compatibility by dynamically loading Wow64DisableWow64FsRedirection.
+- Better file type extension detection.
+- Improved Windows XP and older appearance by tweaking grid odd color.
+- Added ini option ProcessPriority=IDLE_PRIORITY_CLASS to set default process priority
+- Added ini option CheckForUpdates to enable/disable automatic check for updates functionality.
+- Added ini option GZCopyMetadata=false to enable copying GZ metadata.
+- Added ini option MP3CopyMetadata=false to enable copying MP3 metadata.
+- Added ini option ZIPCopyMetadata=false to enable copying ZIP metadata.
+- Programmatically modify process priority (jdeleca).
+- Detect number of cores in preparation for a future multithreaded version (jdeleca).
+
+1.60 - 2012/08/28
+- Added OGG optimization support with rehuff (jethro).
+- Implemented automatic update check.
+- Added ini option JPEGCopyMetadata=false to enable copying JPEG metadata (Stephan Busch).
+- Added ini option JPEGUseArithmeticEncoding=false to enable JPEG arithmetic encoding instead of Huffman.
+- Added ini option PNGCopyMetadata=false to enable copying PNG metadata.
+- Dynamically load Vista and later COMCTL32.DLL, so FileOptimizer works again under Windows XP (Robert Bass / Barry).
+
+1.51 - 2012/08/26
+- Properly clean temporary file, so in extreme scenarios plugin invocation works as expected (Stephan Busch).
+
+1.50 - 2012/08/25
+- Added BMP optimization support with ImageWorsener.
+- Added OGV optimization support with rehuff_theora (Stephan Busch).
+- Added WEBP optimization support with ImageWorsener.
+- Improved JPEG compression ratio instructing jpegtran to generate progressive images (Stephan Busch).
+- Improved PNG compression by adding pngwolf (m^2).
+- Improved PNG compression by adding pngrewrite (Stephan Busch).
+- Improved PNG compression by adding advdef (Stephan Busch).
+- Improved PNG compression by adding ImageWorsener.
+- Upgraded to AdvanceCOMP 1.16 Beta (maadjordan).
+- Removed advzip and DeflOpt from TIFF tool chain, since they have no effect, even on deflated TIFF (Stephan Busch).
+
+1.40 - 2012/08/20
+- Added MP3 recompression support.
+- Improved ZIP compression ration upgrading to zRecompress 2.10.
+- Improved APNG compression ratio by using PngOut and OptiPNG with them too.
+- Improved PNG compression ratio including PngOptimizer.
+- Improved PNG compression ratio by using tweaking OptiPNG parameters.
+- Improved JPEG compression ratio and speed updating to jpegoptim 1.2.4 (custom built with libjpeg 8d).
+- Assured that APNG files with PNG extension are properly detected regardless of the extension (maadjordan).
+- Removed 3dm and sis from the ZIP chain since they are in fact deflate (maadjordan).
+- Files grid column widths are now stored in the INI file in order to be permanent across executions.
+- Some internal code simplification and refactorization.
+
+1.30 - 2012/08/19
+- Improved SWF and GZ compression ratio by adding my brand new zRecompress.
+- Extended ZIP support to .3dm .odt .sis.
+- Gathered PNGOut redistribution permission from Ardfry Imaging, LLC.
+
+1.20 - 2012/08/16
+- Added DLL optimization support.
+- Improved PNG compression ratio by tweaking PNGOut and OptiPNG parameters.
+- Improved MNG compression ratio by tweaking advmng parameters.
+- Improved PDF compression ratio by tweaking Ghostscript parameters.
+- Improved EXE compression ratio and speed by replacing GNU strip and StripReloc with PETrim.
+- Improved GIF compression ratio and speed updating to Gifsicle 1.6.7 (custom built).
+- Improved ZIP and GZ compression ratio and speed updating to ZLib 1.2.7.
+- Slightly improved compression speed by launching plugins in quiet mode when available.
+- Disabled by default JPEG arithmetic encoding, and enabled huffman optimization again, due to incompatibilities with some programs and popular request. This causes file size to reduce less.
+- Bundled with CHM help file.
+- Grid contents can be sorted ascending and descending by clicking on column headers.
+- Better default grid columns width and number format.
+- Colored rows in files grid to make it easy to read.
+- Status bar with global progress and other information.
+- Better Win64 compatibility.
+- Prevent dragging files to the grid when there are already files.
+- Gracefully exit even if there are plugin processes running.
+- Make sure that resulting APNG, JPEG, PDF, and TIFF files are always smaller than original ones before overwriting them.
+
+1.10 - 2012/08/13
+- Added EXE optimization support.
+- Added TIFF recompression support.
+- Speedup ZIP and GZ compression by splitting it in separated paths.
+- Speedup PNG compression by removing Pngcrush.
+- Improved ZIP and GZ compression ratio and speed updating to ZLib 1.2.5.
+- Improved PNG compression ratio by tweaking PNGOut parameters.
+- Improved JPEG compression ratio by tweaking jpegtran parameters.
+- Added support for Ghostscript x64 too.
+- Extended ZIP support to .epub and .cbz
+- Ability to automate file optimization by invoking FileOptimizer with one or more command line parameters, supporting folders to recurse or files.
+- Stability and performance improvements on grid handling code.
+- During compression FileOptimizer is now more responsiveness.
+
+1.00 - 2012/08/11
+- Added PDF recompression support.
+- Added SWF recompression support.
+- Added APNG recompression support.
+- Improved JPEG compression ratio including jpegtran.
+- Improved PNG/MNG/APNG compression including pngcrush..
+- Extended PNG support to .ico.
+- Extended ZIP support to .air .apk .appx .docm .docx .dwfx .ipa .jar .mpp .oxps .pptm .pptx .pub .vsd .xlsm .xlsx .xps .zip.
+
+0.90 - 2012/08/09
+- Initial feature complete private beta.
+
+
+[b]Links[/b]
+- Official FileOptimizer's website: [url=https://nikkhokkho.sourceforge.io/static.php?page=FileOptimizer]nikkhokkho.sourceforge.net/static.php?page=FileOptimizer[/url]
+
+- Official author's website: [url=http://www.javiergutierrezchamorro.com]www.javiergutierrezchamorro.com[/url].
+
+
+[b]Awards[/b]
+[url=https://blogs.embarcadero.com/building-good-with-cbuilder-contest-results/][img=images/proudly_powered_cpp_builder.png][/url]
+
+[url=http://www.softpedia.com/get/PORTABLE-SOFTWARE/System/File-management/File-Optimizer.shtml][img=images/softpedia.gif][/url]
+
+[url=http://fileforum.betanews.com/detail/File-Optimizer/1344680027/1][img=images/fileforum.png][/url]
+
+[url=http://www.megaleechers.com/2017/02/fileoptimizer.html][img=images/megaleechers.png][/url]
+
+[url=http://www.start64.com/index.php?option=com_content&view=article&id=6019:fileoptimizer-64bit-version&catid=65:64bit-file-utilities&Itemid=140][img=images/start64.png][/url]
+
+[url=http://www.programosy.pl/program,fileoptimizer.html][img=images/programosy.png][/url]
+
+[url=http://www.giga.de/downloads/fileoptimizer/#utm_source=PS&utm_medium=BL&utm_campaign=Badge][img=images/giga.png][/url]
+
+[url=https://kubadownload.com/fileoptimizer-download.1360.html][img=images/kubadownload.png][/url]
+
+[url=https://fileoptimizer.en.lo4d.com/windows][img=images/lo4d.png][/url]
+
+[url=https://maddownload.com/utilities/file-compression/fileoptimizer][img=images/maddownload.png][/url]
+
+[url=https://windowshelper.co/png-compression-tools-for-windows/][img=images/windows_helper.png][/url]
+
+[url=https://www.itmagazine.ch/Freeware/15576/FileOptimizer.html][img=images/swiss_it_magazine.jpg][/url]
+
+[html]<!--<iframe src="//mediacpm.pl/serve/show.php?a=19114&b=728x90" width="728" height="90" frameBorder="0" scrolling="no" marginwidth="0" marginheight="0"></iframe>-->[/html]|DATE|1794728150

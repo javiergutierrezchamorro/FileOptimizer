@@ -1,0 +1,615 @@
+﻿# "Language ID: 1038 (0x040E)"
+# "Language Name: Hungarian"
+# "Project-Id-Version: FileOptimizer 17.10.2857"
+# "POT-Creation-Date: Sep 22 2025"
+# "MIME-Version: 1.0"
+# "Content-Type: text/plain; charset=ISO-8859-1"
+# "Content-Transfer-Encoding: 8bit"
+# "Language: hu-HU"
+# "Last-Translator: kekmacska"
+# "Language-Team: kekmacska"
+# "Plural-Forms: nplurals=2; plural=(n != 1);"
+
+msgid "FileOptimizer"
+msgstr ""
+
+msgid "&About..."
+msgstr "&Program leírása"
+
+msgid "Open the about window with internal and legal information"
+msgstr "A belső és jogi információk megismeréséhez nyisd meg a Program leírása ablakot"
+
+msgid "-"
+msgstr "-"
+
+msgid "Donate..."
+msgstr "Adományozás..."
+
+msgid "Support the development by easily and securely money donations"
+msgstr "Támogasd a fejlesztést könnyen és biztonságosan pénz adományozásával"
+
+msgid "&Information..."
+msgstr "Információk"
+
+msgid "Open information window with the list of currently supported file formats"
+msgstr "Nyisd meg az Információk ablakot a jelenleg támogatott fájlformátumok megismeréséhez"
+
+msgid "Help topics..."
+msgstr "Súgó témái..."
+
+msgid "Open help topics"
+msgstr "Súgótémák megnyitása"
+
+msgid "&Help"
+msgstr "Súgó"
+
+msgid "&Options..."
+msgstr "Beállítások"
+
+msgid "Open configuration options window"
+msgstr "Beállítások ablak megnyitása"
+
+msgid "&Stop"
+msgstr "Leállítás"
+
+msgid "Stop in-progress optimizations"
+msgstr "Folyamatban lévő optimalizációk leállítása"
+
+msgid "&Optimize all files"
+msgstr "Minden fájl optimalizálása"
+
+msgid "Optimize files in the optimization list"
+msgstr "A listában lévő fájlok optimalizálása"
+
+msgid "&Optimize"
+msgstr "Optimalizálás"
+
+msgid "E&xit..."
+msgstr "Kilépés"
+
+msgid "Exit the program"
+msgstr "Kilépés a programból"
+
+msgid "Open &containing folder..."
+msgstr "Tartalmazó mappa megnyitása"
+
+msgid "Open folder containing selected item"
+msgstr "A jelenleg kijelölt fájlt tartalmazó mappa megnyitása"
+
+msgid "&Open selected file"
+msgstr "Kijelölt fájl menyitása"
+
+msgid "Open selected file with the associated program"
+msgstr "A jelenleg kijelölt fájl megnyitása a vele társított programmal"
+
+msgid "&Clear all files"
+msgstr "Fájlok kiűrítése"
+
+msgid "Empty all files in the optimization list"
+msgstr "Minden fájl kiűrítése az optimalizációs listából"
+
+msgid "&Remove selected files"
+msgstr "Kiválasztott fájlok kidobása"
+
+msgid "Remove selected files from the optimization list"
+msgstr "A kiválasztott fájlok kidobása az optimalizációs listából"
+
+msgid "A&dd folder..."
+msgstr "Mappa hozzáadása"
+
+msgid "Add folder contents recursively from your computer to the optimization list"
+msgstr "Mappák rekurzív hozzáadása a számítógépről az optimalizációs listához"
+
+msgid "&Add files..."
+msgstr "Fájlok hozzáadása"
+
+msgid "Add files from your computer to the optimization list"
+msgstr "Fájlok hozzáadása a számítógépről az optimalizációs listához"
+
+msgid "&File"
+msgstr "Fájl"
+
+msgid "© Copyright 2012-2019 by Javier Gutiérrez Chamorro (Guti)"
+msgstr "© Minden jog fenntartva 2012-2019 Javier Gutiérrez Chamorro (Guti)"
+
+msgid "https://nikkhokkho.sourceforge.io/static.php?page=FileOptimizer"
+msgstr "https://nikkhokkho.sourceforge.io/static.php?page=FileOptimizer"
+
+msgid "Drag on the list below files you want to optimize, and when ready, click on the right button context menu to proceed. All processed files are copied to Recycle Bin, so you can easily restore them. You can disable moving to Recycle Bin if you like. Double click an item to preview it."
+msgstr "Húzd a listához az optimalizálandó fájlokat, ha kész, kattints a megfelelő gombra a kontextusmenüben a továbbhaladáshoz. Minden feldolgozott fájl a Lomtárba másolódik, így könnyen visszahozhatók. Ha szeretnéd, kikapcsolhatod ezt a funkciót. Dupla kattintással láthatod egy fájl előnézetét."
+
+msgid "File"
+msgstr "Fájl"
+
+msgid "Extension (Type)"
+msgstr "Kiterjesztés (Típus)"
+
+msgid "Original size"
+msgstr "Eredeti méret"
+
+msgid "Optimized size"
+msgstr "Optimalizált méret"
+
+msgid "Status"
+msgstr "Haladás"
+
+msgid "Optimization is still running. Do you want to stop and exit %s?"
+msgstr "Az optimalizáció még folyamatban lehet. Biztosan leállítod és kilépsz?"
+
+msgid "About"
+msgstr "Program leírása"
+
+msgid "&Close"
+msgstr "Bezárás"
+
+msgid "and %s file formats among many others."
+msgstr "és %s fájlformátumokat, többek között"
+
+msgid " is an advanced file optimizer featuring a lossless (no quality loss) file size reduction that supports: "
+msgstr " egy professzionális fájloptimalizáló veszteségmentes fájlméret csökkentéssel, amely támogat: "
+
+msgid "\n\nDONATOR INFORMATION\n"
+msgstr "\n\nADOMÁNYOZÓI INFORMÁCIÓK\n"
+
+msgid "Have not donated yet!"
+msgstr "Még nem adományozott"
+
+msgid "\nUser since %s %s"
+msgstr "\nFelhasználó %s %s óta"
+
+msgid "\n\nUSAGE STATISTICS\n- Time: %s\n- Opens: %s\n- Files: %s\n- Total: %s\n- Saved: %s\n"
+msgstr "\n\nFELHASZNÁLÁSI STATISZTIKÁK\n- Idő: %s\n- Megnyitások: %s\n- Fájlok: %s\n- Összesen: %s\n- Megtakarítva: %s\n"
+
+msgid "Information"
+msgstr "Információk"
+
+msgid "Options"
+msgstr "Beállítások"
+
+msgid "&Cancel"
+msgstr "Mégse"
+
+msgid "Discard any changes made to options."
+msgstr "Minden a beállításokon végzett változtatás eldobása"
+
+msgid "&OK"
+msgstr "OK"
+
+msgid "Accept and apply all changes made to options."
+msgstr "Beleegyezés és minden a beállításokon végzett változtatás érvényesítése."
+
+msgid "&Restore defaults"
+msgstr "Alapértelmezettre visszaállítás"
+
+msgid "Restore all options to its factory settings values."
+msgstr "Minden beállítás visszaállítása az eredetire"
+
+msgid "&Recurse"
+msgstr "Rekurzív"
+
+msgid "Enable optimization inside archives (recursive optimization)."
+msgstr "Optimalizáció engedélyezése archívumokon belül is."
+
+msgid "&Copy metadata"
+msgstr "Metaadatok átmásolása"
+
+msgid "Copy file metadata. Else strip all unneeded information."
+msgstr "A fájl metaadatainak másolása az új fájlba. Egyéb esetben minden szükségteken információ törlésre kerül."
+
+msgid "&ZIP"
+msgstr "ZIP"
+
+msgid "&Enable Leanify"
+msgstr "Leanify engedélyezése"
+
+msgid "Enable Leanify. Results in smaller files, but can happen they are not editable anymore."
+msgstr "Leanify engedélyezése. Kisebb lesz a fájlméret, de előfordulhat, hogy egyes alkalmazások nem fogják tudni módosítani a fájlt."
+
+msgid "&XML"
+msgstr "XML"
+
+msgid "&TIFF"
+msgstr "TIFF"
+
+msgid "&TGA"
+msgstr "TGA"
+
+msgid "&Allow lossy optimizations"
+msgstr "Veszteséges optimalizációk engedélyezése"
+
+msgid "Allowing lossy optimizations will get higher files reduction at the cost of some quality loss, even if visually unnoticeable or not"
+msgstr "A veszteséges optimalizácók engedélyezése komoly fájlméret-csökkenéshez vezethet, minimális minőségbeli romlással, ami meglátszik vagy nem. Továbbá előfordulhat, hogy egyes fájlok korrupttá válhatnak."
+
+msgid "&PNG"
+msgstr "PNG"
+
+msgid "&Skip layered"
+msgstr "Réteges fájlok átugrása"
+
+msgid "Skip processing of PDF files containing layered objects. Results in more compatible files with higher size."
+msgstr "Nem optimalizál olyan PDF fájlokat, amelyek réteges objektumokat tartalmaznak. A fájlok kompatibiltása jobb, méretük viszont nagyobb lesz."
+
+msgid "When custom profile is chosen, it allows you to specify a custom DPI for downsampling images"
+msgstr "Ha ki van választva egy egyéni profil, lehetőséged van egyéni DPI értéket megadni a képek pixelsűrűségének csökkentéséhez"
+
+msgid "Compression profile, from less size, to best quality."
+msgstr "Tömörítési profilok, legkisebb mérettől a legjobb minőségig."
+
+msgid "Custom"
+msgstr "Egyéni"
+
+msgid "Prepress: 300 dpi and color preserve"
+msgstr "Nyomtatás előtti: 300 dpi és színek megőrzése"
+
+msgid "Printer: 300 dpi"
+msgstr "Nyomtató: 300 dpi"
+
+msgid "Ebook: 150 dpi"
+msgstr "E-könyv: 150 dpi"
+
+msgid "Screen: 72 dpi"
+msgstr "Képernyő: 72 dpi"
+
+msgid "None: No downsampling (Default)"
+msgstr "Semennyi: Nincs pixelsűrűség-csökkentés (Alapértelmezett)"
+
+msgid "&Custom DPI"
+msgstr "Egyéni DPI"
+
+msgid "&Profile"
+msgstr "Profil"
+
+msgid "&PDF"
+msgstr "PDF"
+
+msgid "&PCX"
+msgstr "PCX"
+
+msgid "&MP4"
+msgstr "MP4"
+
+msgid "&MP3"
+msgstr "MP3"
+
+msgid "&Disable"
+msgstr "Letiltás"
+
+msgid "Disable processing of other file types. This could imply lossing some edit capabilities such as PSD/PSB where text layers will be rasterized."
+msgstr "Egyéb fájltípusok feldolgozásának letiltása. A PSD/PSB fájlok szövegrétegei tömörítéskor raszterizálódnak, így azok nem szerkeszthetők többé."
+
+msgid "&Miscellaneous"
+msgstr "Egyéb"
+
+msgid "&LUA"
+msgstr "LUA"
+
+msgid "Add extra extensions to be threated as JS/JSON."
+msgstr "Adj hozzá további JS/JSON-ként kezelendő kiterjesztéseket."
+
+msgid "&Enable JSMin"
+msgstr "JSMin bekapcsolása"
+
+msgid "Enable jsmin. Results in smaller files, but can happen they are not editable anymore."
+msgstr "jsmin bekapcsolása. Kisebb fájlokat eredményez, de a szerkesztésük nehézkes lehet."
+
+msgid "&Additional Extensions"
+msgstr "További kiterjesztések"
+
+msgid "&JS"
+msgstr "JS"
+
+msgid "&Use arithmetic encoding"
+msgstr "Aritmetikus kódolás alkalmazása"
+
+msgid "Arithmetic encoding gives additional saving reductions, but is incompatible with most programs."
+msgstr "Az aritmetikus kódolás további fájlméret-csökkenéshez vezethet, de előfordulhat, hogy nem kompatibilis egyes programokkal."
+
+msgid "&JPEG"
+msgstr "JPEG"
+
+msgid "&Enable Tidy"
+msgstr "Tidy engedélyzése"
+
+msgid "Enable Tidy. Results in smaller files, but can happen they are not editable anymore. Note that this applies to both SVG and HTML file types"
+msgstr "Tidy engedélyezése. Kisebb lesz a fájlméret, de előfordulhat, hogy egyes alkalmazások nem fogják tudni módosítani a fájlt. Ez vonatkozik SVG és HTML fájlokra egyaránt"
+
+msgid "&HTML"
+msgstr "HTML"
+
+msgid "&GZ"
+msgstr "GZ"
+
+msgid "&GIF"
+msgstr "GIF"
+
+msgid "&Enable UPX"
+msgstr "UPX engedélyezése"
+
+msgid "Enable UPX executable compression. When enabled, UPX will be used, resulting EXE and DLL size reduction at the cost of runtime decompression."
+msgstr "UPX programtömörítés engedélyezése. Amikor be van kapcsolva, az UPX használva lesz, ezáltal csökkenti az EXE és DLL fájlok méretét a futtatáskor való kitömörítés árán. Kicsivel lasabb programindításokhoz vezethet."
+
+msgid "&Disable PETrim"
+msgstr "PETrim letiltása"
+
+msgid "Disable PETrim. When enabled, PETrim will not be used, resulting in less EXE corruption at the cost of larger file size."
+msgstr "PETrim letiltása. Ha ez a beállítás aktív, a PETrim nem lesz használva. Ez egyes esetekben stabilabb programokhoz vezethet, de a fájlméret nagyobb lesz."
+
+msgid "&EXE"
+msgstr "EXE"
+
+msgid "Compression template, from safer and worse compression, to highest compression"
+msgstr "Tömörítési stratégia, a biztonságos és rossz tömörítéstől a legerősebb tömörítésig"
+
+msgid "Highest"
+msgstr "Legmagasabb"
+
+msgid "High"
+msgstr "Magas"
+
+msgid "Low (Default)"
+msgstr "Alacsony (Alapértelmezett)"
+
+msgid "Enable tidy. Results in smaller files, but can happen they are not editable anymore."
+msgstr "Tidy engedélyezése. Kisebb lesz a fájlméret, de előfordulhat, hogy egyes alkalmazások nem fogják tudni módosítani a fájlt."
+
+msgid "&Template"
+msgstr "Stratégia"
+
+msgid "&CSS"
+msgstr "CSS"
+
+msgid "&BMP"
+msgstr "BMP"
+
+msgid "User interface language"
+msgstr "Felhasználói környezet nyelve"
+
+msgid "&Hide ads"
+msgstr "Reklámok eltávolítása"
+
+msgid "Hide ads from being displayed."
+msgstr "Reklámok megjelenésének letiltása."
+
+msgid "Specify the format to display filenames in the list."
+msgstr "A fájlnevek megjelenítési formátumának megváltoztatása"
+
+msgid "Drive letter + Partial (path + Filename)"
+msgstr "Lemez betűjele + útvonal + fájlnév"
+
+msgid "Drive letter + Partial path + Filename"
+msgstr "Lemez betűjele + útvonal része + fájlnév"
+
+msgid "Filename only"
+msgstr "Csal fájlnév"
+
+msgid "Full path and Filename (Default)"
+msgstr "Teljes útvonal és fájlnév (alapértelmezett)"
+
+msgid "&Always on top"
+msgstr "Mindig a tetején"
+
+msgid "Show main window always on top."
+msgstr "A főablakok mindig mindennek a tetején legyenek."
+
+msgid "&Show toolbar"
+msgstr "Eszköztár megjelenítése"
+
+msgid "Show icons toolbar on main window"
+msgstr "Ikontár megjelenítése a fő ablakban"
+
+msgid "If you have already donated to support FileOptimizer development, enter here the email address or name you used"
+msgstr "Ha támogattad a FileOptimizer fejlesztését, írd be ide az email címedet vagy a nevet, amit használtál"
+
+msgid "&Language"
+msgstr "Nyelv"
+
+msgid "&Filename format"
+msgstr "Fájlnév formátuma"
+
+msgid "&Donator"
+msgstr "Adományozó"
+
+msgid "&Appearance"
+msgstr "Megjelenés"
+
+msgid "&Allow multiple instances"
+msgstr "Több példány engedélyezése"
+
+msgid "Allow having more than one FileOptimizer instance. If not, a warning will appear."
+msgstr "Engedélyezze több FileOptimizer példány futását egyidőben. Ha ez ki van kapcsolva, egy figyelmeztetés jelenik meg ha több példányt indítasz el."
+
+msgid "&Enable cache"
+msgstr "Gyorsítótár engedélyezése"
+
+msgid "Enable cache of already optimized files to automatically skip them."
+msgstr "Gyorsítótárazza a már optimalizát fájlokat, hogy legközelebb azokat átugorja."
+
+msgid "If specified, number of trial iterations in all Leanify executions will use this value. If not, iterations are calculated depending on the Optimization level."
+msgstr "Ha ide beírsz egy számot, a Leanify annyi iterációt fog végrehajtani. Ha nem, az iterációk az Optimalizációs szint alapján lesznek beállítva."
+
+msgid "&Allow duplicates"
+msgstr "Duplikátumok engedélyezése"
+
+msgid "Allow adding same file more than once. If enabled, adding to the grid will be much faster, specially on very large grids."
+msgstr "Engedélyezze a egy fájl többszöri hozzáadását. Ha ez be van kapcsolva, a rács hozzáadása sokkal gyorsabb lesz, különösen nagyon nagy rácsoké."
+
+msgid "&Clear when complete"
+msgstr "Kiűrítés, ha végzett"
+
+msgid "Automatically clear file list when optimization is completed."
+msgstr "Automatikusan kiűríti a fájlok listáját az optimalizáció végeztével"
+
+msgid "&Shutdown when done"
+msgstr "Kikapcsolás, ha kész"
+
+msgid "Shutdown computer when optimization completes."
+msgstr "Kikapcsolja a számítógépet az optimalizáció végeztekor."
+
+msgid "&Beep when done"
+msgstr "Pittyegés ha kész"
+
+msgid "Beep the speaker when optimization completes."
+msgstr "Pittyegjen, ha kész. Nem minden rendszeren működik."
+
+msgid "Allow excluding execution of certain plugins. It is case insensitive, and allows more than one item to be specified by using semicolon as separator."
+msgstr "Egyes pluginok végrehajtásának megakadályozásának engedélyezése. Nem érzékeny a kis- és nagybetűkre, több elemet is hozzá lehet adni, amiket ; -vel kell elválasztani."
+
+msgid "&Leanify iterations"
+msgstr "Leanify iterációk"
+
+msgid "&Disable plugin mask"
+msgstr "Plugin maszk kikapcsolása"
+
+msgid "General &2"
+msgstr "Alapbeállítások 2"
+
+msgid "If not empty specified directory will be used for temporary storage instead of system's %TEMP%."
+msgstr "Ha ez nem üres, a beleírt mappa lesz használva átmeneti mappaként, a rendszer alapértelmezett TEMP mappája helyett"
+
+msgid "D&o not create backups"
+msgstr "Ne készítsen biztonsági mentést"
+
+msgid "When checked original files will not be backed up in the current folder as a .BAK files."
+msgstr "Ha ez be van kapcsolva, nem készülnek a fájlok mappáiba .BAK kiterjesztésű másolatok."
+
+msgid "If not empty, only files containing this mask (substring) on name or path will be included from optimization. You can use semicolon to specify more than one substring being included."
+msgstr "Ha ez nem üres, csak azok a fájlok lesznek optimalizálva, amelyek tartalmazzák ezt a maszkot (subtringet) a nevükben vagy útvonalukban. Használd a ;-t, ha több ilyen substringet szeretnél hozzáadni."
+
+msgid "Files containing this mask (substring) on name or path will be excluded from optimization. You can use semicolon (;) to specify more than one substring being excluded."
+msgstr "A fájlok, amely ezt a maszkot (substringet) vagy nevet vagy útvonalat tartalmazzák, nem lesznek figyelembe véve az optimalizációkor. Használd a ;-t, ha több ilyen substringet szeretnél hozzáadni."
+
+msgid "&Do not use recycle bin"
+msgstr "Ne használja a Lomtárat"
+
+msgid "When checked original files will not be backed up in the system trashcan."
+msgstr "Amikor ez be van kapcsolva, a fájlok nem lesznek bemásolva a rendszer Lomtárába."
+
+msgid "Debugging level to output on program log."
+msgstr "Hibakeresési szint, ami a program naplójába írásra kerül."
+
+msgid "4: Information"
+msgstr "4: Információ"
+
+msgid "3: Warning"
+msgstr "3: Figyelmeztetés"
+
+msgid "2: Error"
+msgstr "2: Hiba"
+
+msgid "1: Critical"
+msgstr "1: Kritikus"
+
+msgid "0: None (Default)"
+msgstr "0: Semmi (Alapértelmezett)"
+
+msgid "Automatically check for program updates."
+msgstr "Automatikusan keressen frissítéseket."
+
+msgid "Never"
+msgstr "Soha"
+
+msgid "Automatically (Default)"
+msgstr "Automatikusan (Alapértelmezett)"
+
+msgid "Ask"
+msgstr "Kérdezzen"
+
+msgid "Process priority from most conservative to best performance."
+msgstr "Folyamat prioritása a legkonzervatívabbtól a legnagyobb teljesítményig"
+
+msgid "Realtime"
+msgstr "Valós idejű"
+
+msgid "Above normal"
+msgstr "Normál feletti"
+
+msgid "Normal (Default)"
+msgstr "Normál (Alapértelmezett)"
+
+msgid "Below normal"
+msgstr "Normál alatti"
+
+msgid "Idle"
+msgstr "Várakozó"
+
+msgid "Optimization level from best speed to best compression."
+msgstr "Optimalizációs szint a legjobb sebességtől a legjobb tömörítésig."
+
+msgid "9: Best"
+msgstr "9: Legjobb"
+
+msgid "8: Better"
+msgstr "8: Jobb"
+
+msgid "7: Good"
+msgstr "7: Jó"
+
+msgid "6:"
+msgstr "6:"
+
+msgid "5: Normal (Default)"
+msgstr "5: Normál (Alapértelmezett)"
+
+msgid "4:"
+msgstr "4:"
+
+msgid "3:"
+msgstr "3:"
+
+msgid "2: Fast"
+msgstr "2: Gyors"
+
+msgid "1: Faster"
+msgstr "1: Gyorsabb"
+
+msgid "0: Fastest"
+msgstr "0: Leggyorsabb"
+
+msgid "&Keep file attributes"
+msgstr "Fájlattribútomok megtartása"
+
+msgid "Keep original readonly, system, hidden and archive attributes as well as creation and modification timestamps."
+msgstr "Csak az eredeti csak olvasható, rendszer, rejtett és archívum attribútumok és a készítési, módosítási időbélyegek megőrzése."
+
+msgid "&Temp directory"
+msgstr "Ideiglenes mappa"
+
+msgid "&Include mask"
+msgstr "Figyelembevételi maszk"
+
+msgid "&Exclude mask"
+msgstr "Mellőzési maszk"
+
+msgid "&Log level"
+msgstr "Naplózási szint"
+
+msgid "&Check for updates"
+msgstr "Frissítések keresése"
+
+msgid "&Process priority"
+msgstr "Folyamat prioritása"
+
+msgid "&Optimization level"
+msgstr "Optimalizációs szint"
+
+msgid "General &1"
+msgstr "Alapbeállítások 1"
+
+msgid "Configure the appearance and behaviour of FileOptimizer"
+msgstr "A FileOptimizer megjelenésének és viselkedésének konfigurálása"
+
+msgid "General program options affecting all extensions (1/2)"
+msgstr "Alapvető programbállítások, amelyek minden kiterjesztésre hatással vannak (1/2)"
+
+msgid "General program options affecting all extensions (2/2)"
+msgstr "Alapvető programbállítások, amelyek minden kiterjesztésre hatással vannak (2/2)"
+
+msgid "Extensions affected: "
+msgstr "Érintett kiterjesztések: "
+
+msgid "Automatic: System default"
+msgstr "Automatikus: Rendszer alapértelmezése"
+
+msgid "3082: English - United States (Built-in)"
+msgstr "3082: Magyar - Magyarország"
+

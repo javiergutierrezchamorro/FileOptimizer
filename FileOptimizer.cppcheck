@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <platform>native</platform>
+    <analyze-all-vs-configs>true</analyze-all-vs-configs>
+    <check-headers>true</check-headers>
+    <check-unused-templates>true</check-unused-templates>
+    <inline-suppression>true</inline-suppression>
+    <max-ctu-depth>10</max-ctu-depth>
+    <max-template-recursion>100</max-template-recursion>
+    <includedir>
+        <dir name="C:/Program Files (x86)/Embarcadero/Studio/37.0/include/"/>
+        <dir name="Source/"/>
+        <dir name="C:/Program Files (x86)/Embarcadero/Studio/37.0/include/windows/"/>
+        <dir name="C:/Program Files (x86)/Embarcadero/Studio/37.0/include/x86_64-w64-mingw32/"/>
+        <dir name="C:/Program Files (x86)/Embarcadero/Studio/37.0/include/windows/vcl"/>
+        <dir name="./"/>
+        <dir name="C:/Program Files (x86)/Embarcadero/Studio/37.0/include/windows/rtl/"/>
+        <dir name="C:/Program Files (x86)/Embarcadero/Studio/37.0/include/windows/sdk/"/>
+    </includedir>
+    <defines>
+        <define name="PATH_MAX=256"/>
+    </defines>
+    <paths>
+        <dir name="./"/>
+    </paths>
+    <exclude>
+        <path name="Source/gifsicle/"/>
+        <path name="Source/jpegoptim/"/>
+        <path name="Source/jsmin/"/>
+        <path name="Source/mp4v2/"/>
+        <path name="Source/sqlite/"/>
+        <path name="Source/gifsicle-lossy/"/>
+    </exclude>
+    <libraries>
+        <library>windows</library>
+    </libraries>
+    <safe-checks>
+        <class-public/>
+    </safe-checks>
+    <addons>
+        <addon>threadsafety</addon>
+        <addon>y2038</addon>
+    </addons>
+    <check-level-exhaustive/>
+</project>

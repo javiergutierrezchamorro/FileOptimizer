@@ -1,0 +1,65 @@
+rem \ficheros\util\upx -9 --best --lzma --overlay=strip --ultra-brute Win32\Release\FileOptimizer.exe
+del *.zip
+del *.7z
+del *.7z.exe
+del FileOptimizerFull.7z.exe
+del FileOptimizerSetup.exe
+del Win32\Release\FileOptimizer32.exe
+del Win32\Release\FileOptimizer64.exe
+del Win32\Release\FileOptimizer.chm
+del Win32\Release\WebView2Loader.dll
+del /f /s /q Win32\Release\Plugins32\*.*
+del /f /s /q Win32\Release\Plugins64\*.*
+del /f /s /q Win32\Release\*.ini
+del /f /s /q Win32\Release\*.obj
+del /f /s /q Win32\Release\*.#*
+del /f /s /q Win32\Release\*.tds
+copy Help\FileOptimizer.chm Win32\Release\FileOptimizer.chm
+del Win32\Release\*.po
+copy Languages\*.po Win32\Release\
+copy Win32\Release\FileOptimizer.exe Win32\Release\FileOptimizer32.exe
+copy Win64x\Release\FileOptimizer.exe Win32\Release\FileOptimizer64.exe
+copy Win64x\Debug\WebView2Loader.dll Win32\Release\WebView2Loader.dll
+del /f /q Win32\Release\FileOptimizer.exe
+xcopy /e /s Win32\Debug\Plugins32\*.* Win32\Release\Plugins32\*.*
+xcopy /e /s Win64\Debug\Plugins64\*.* Win32\Release\Plugins64\*.*
+cd Win32\Release\Plugins32\
+..\..\..\_Tools\PatchPE64.exe "C:\PROGRAMAS\Borland\NSIS\MakeNSIS.exe"
+..\..\..\_Tools\PatchPE64.exe "C:\PROGRAMAS\Borland\NSIS\Bin\makensis.exe"
+..\..\..\_Tools\PatchPE64.exe guetzli.exe
+..\..\..\_Tools\PatchPE64.exe mutool.exe
+..\..\..\_Tools\PatchPE64.exe mozjpegtran.exe
+..\..\..\_Tools\PatchPE64.exe tidy.exe
+..\..\..\_Tools\PatchPE64.exe sqlite3.exe
+..\..\..\_Tools\PatchPE64.exe pngoptimizer.exe
+..\..\..\_Tools\PatchPE64.exe mkclean.exe
+..\..\..\_Tools\PatchPE64.exe jsmin.exe
+..\..\..\_Tools\PatchPE64.exe jpegoptim.exe
+..\..\..\_Tools\PatchPE64.exe imagew.exe
+..\..\..\_Tools\PatchPE64.exe gifsicle.exe
+cd ..\..\..\
+cd Win32\Release\Plugins64\
+..\..\..\_Tools\PatchPE64.exe guetzli.exe
+..\..\..\_Tools\PatchPE64.exe mutool.exe
+..\..\..\_Tools\PatchPE64.exe mozjpegtran.exe
+cd ..\..\..\
+Win64\Release\FileOptimizer .\Win32\Release
+Win32\Debug\Plugins32\petrim /stripfixups:Y .\Win32\Release\*.exe /r
+_Tools\PatchPE64.exe .\Win32\Release\FileOptimizer32.exe
+_Tools\PatchPE64.exe .\Win32\Release\FileOptimizer64.exe
+Win32\Debug\Plugins32\petrim .\Win32\Release\*.* /r
+copy Win32\Debug\Plugins32\pngquant.exe Win32\Release\Plugins32 /y
+copy Win64\Debug\Plugins64\pngquant.exe Win32\Release\Plugins64 /y
+del /f /s /q *.bak
+del /f /s /q *.dump
+"C:\PROGRAMAS\7-Zip\7z" a -t7z -mx=9 -mfb=273 -mmt=off -myx9 -m0=lzma2:d512m:fb273 FileOptimizerSource.7z *.cbproj *.bat *.txt *.chm *.mes *.res *.ico *.cpp *.h Source\*.* Source\gifsicle\*.* Source\gifsicle\src\*.* Source\gifsicle\include\*.* Source\gifsicle\include\lcdf\*.* Source\gifsicle\include\lcdfgif\*.* Source\gifsicle-lossy\*.* Source\gifsicle-lossy\src\*.* Source\gifsicle-lossy\include\*.* Source\gifsicle-lossy\include\lcdf\*.* Source\gifsicle-lossy\include\lcdfgif\*.* Source\jpegoptim\*.* Source\jpegoptim\libjpeg\*.* Source\jpegoptim\win32\*.* Source\jsmin\*.* Source\mp4v2\*.* Source\mp4v2\include\*.* Source\mp4v2\libplatform\*.* Source\mp4v2\libutil\*.* Source\mp4v2\src\*.* Source\mp4v2\util\*.* Source\mp4v2\vstudio10.0\*.* Source\sqlite\*.* Languages\*.po Resource\*.* Resource\Icon\*.* Help\*.* Help\Images\*.* Setup\*.*
+cd Win32\Release
+rem "\Archivos de programa\7-Zip\7z" a -mm=Deflate -mx=9 -mfb=258 -mpass=15 -mmt=off -tzip ..\..\FileOptimizerFull.zip FileOptimizer32.exe FileOptimizer64.exe FileOptimizer.chm Plugins32\*.* Plugins64\*.*
+C:\FICHEROS\UTIL\UPX -9 --best --lzma --ultra-brute "C:\PROGRAMAS\7-Zip\*.sfx"
+"C:\PROGRAMAS\7-Zip\7z" a -t7z -mx=9 -mfb=273 -mmt=off -myx9 -m0=lzma2:d512m:fb273 -sfx7z.sfx ..\..\FileOptimizerFull.7z.exe FileOptimizer32.exe FileOptimizer64.exe FileOptimizer.chm WebView2Loader.dll *.po Plugins32\*.* Plugins64\*.*
+cd ..\..\Setup\
+"C:\PROGRAMAS\Borland\NSIS\MakeNSIS.exe" FileOptimizerSetup.nsi
+cd ..
+Win64\Release\FileOptimizer .\FileOptimizerFull.7z.exe
+Win64\Release\FileOptimizer .\FileOptimizerSource.7z
+:end
