@@ -1,6 +1,5 @@
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
- 3.64. 23/11/2026. FileOptimizer. Removed FindProcess and RunProcess, which nothing uses anymore (the program has its own RunProcess with the priority, Stop and job handling, so the fixes had to be duplicated)
  3.63. 23/11/2026. FileOptimizer. SetIni also skips the write when the key exists with an empty value (the check required a non empty one, so every empty option rewrote the whole INI file on each save)
  3.62. 16/11/2026. FileOptimizer. MsgBox timeout travels in the dialog callback data instead of a shared static (workers could mix it), RunProcess does not let the child inherit the parent ends of its pipes (it never saw the end of its input) nor the process handles, SetRegistry creates the key when writing (the browser emulation key was never written when it did not exist), ExeVersion does not clear 4 KB on every call, GetFileVersionField bounded format
  3.61. 11/11/2026. FileOptimizer. SetIni does not rewrite the INI file when it already holds the same value (closing the program or accepting the options wrote about a hundred unchanged values, rewriting the whole file each time)
@@ -232,6 +231,36 @@ int __fastcall clsUtil::MsgBox(HWND phWnd, const TCHAR *pacText, const TCHAR *pa
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+HANDLE __fastcall clsUtil::FindProcess(const TCHAR *pacProcess)
+{
+	PROCESSENTRY32 udtEntry;
+	HANDLE hProcess = nullptr;
+
+
+	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+	if (hSnapshot != INVALID_HANDLE_VALUE)
+	{
+		udtEntry.dwSize = sizeof(PROCESSENTRY32);
+		bool bRes = Process32First(hSnapshot, &udtEntry);
+		while (bRes)
+		{
+			if (_tcsicmp(udtEntry.szExeFile, pacProcess) == 0)
+			{
+				//Limited access is enough to know that it is running (full access is denied for elevated processes or from other users). Caller must close the handle
+				hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | SYNCHRONIZE, FALSE, udtEntry.th32ProcessID);
+				break;
+			}
+			bRes = Process32Next(hSnapshot, &udtEntry);
+		}
+		CloseHandle(hSnapshot);
+	}
+	return (hProcess);
+}
+
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 unsigned long __fastcall clsUtil::ReadPipeAvailable(HANDLE hRead, void *pvData, unsigned int piSize)
 {
 	unsigned long lRead = 0;
@@ -247,6 +276,150 @@ unsigned long __fastcall clsUtil::ReadPipeAvailable(HANDLE hRead, void *pvData, 
 		}
 	}
 	return (lRead);
+}
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+unsigned long __fastcall clsUtil::RunProcess(const TCHAR *pacProcess, const TCHAR *pacDirectory, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait)
+{
+	unsigned long lExitCode = (unsigned long) -1;
+	unsigned long lRead = 0;
+	//One byte of the output buffer is never used, so the captured output is always NUL terminated
+	unsigned int iOutputMax = (piOutputLen > 0) ? (piOutputLen - 1) : 0;
+	STARTUPINFO udtSI = {};
+	PROCESS_INFORMATION udtPI = {};
+	SECURITY_ATTRIBUTES udtSA = {};
+	HANDLE hOutRead = nullptr, hOutWrite = nullptr;
+	HANDLE hInRead = nullptr, hInWrite = nullptr;
+	//The command line is not a path, so it must not go through GetShortName (on 64 bit Windows it would prefix long ones with \\?\ and break them). CreateProcess can modify it, so use a private writable copy
+	String sProcess = (String) pacProcess;
+	// Explicit writable buffer (CreateProcess may write into the command line while parsing)
+	const size_t iCmdLen = (size_t) sProcess.Length() + 1;
+	TCHAR *pacCmdLine = new TCHAR[iCmdLen];
+	_tcscpy(pacCmdLine, sProcess.c_str());
+
+	//Only the main thread can safely touch the VCL screen cursor
+	if (GetCurrentThreadId() == MainThreadID)
+	{
+		Screen->Cursor = crHourGlass;
+	}
+	udtSA.nLength = sizeof(udtSA);
+	udtSA.bInheritHandle = true;
+	udtSA.lpSecurityDescriptor = nullptr;
+
+	udtSI.cb = sizeof(udtSI);
+	udtSI.dwFlags = STARTF_USESHOWWINDOW;
+	udtSI.wShowWindow = SW_HIDE;
+
+	//Capture the child output through a dedicated pipe. A separate stdin pipe is used so the child never sees its own stdout on stdin (the previous reuse of the output read end mixed the two streams for any plugin that both writes and reads).
+	if ((pacOutput != nullptr) && (piOutputLen > 0) && (CreatePipe(&hOutRead, &hOutWrite, &udtSA, piOutputLen)))
+	{
+		//Provide an empty stdin (EOF) via a second pipe; the write end is closed right after CreateProcess
+		if (!CreatePipe(&hInRead, &hInWrite, &udtSA, 0))
+		{
+			hInRead = nullptr;
+			hInWrite = nullptr;
+		}
+		if (hInRead != nullptr)
+		{
+			//The ends kept by the parent must not be inherited: the child would keep its own copy of the write end of its input open, so it would never see the end of it
+			SetHandleInformation(hOutRead, HANDLE_FLAG_INHERIT, 0);
+			SetHandleInformation(hInWrite, HANDLE_FLAG_INHERIT, 0);
+		}
+		udtSI.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
+		udtSI.hStdInput = (hInRead != nullptr) ? hInRead : hOutRead;	//fallback only if stdin pipe failed
+		udtSI.hStdOutput = hOutWrite;
+		//The child also gets the write end as its standard error, or its error output would go to an invalid handle (and capturing it helps debugging plugin failures)
+		udtSI.hStdError = hOutWrite;
+		//The output buffer is zeroed in advance, and the last byte is never written
+		memset(pacOutput, 0, piOutputLen);
+	}
+
+	//Handles are only inherited when the output is captured (the child needs the pipe handles set as its standard input and output). The process and thread handles are never inheritable, or other children created meanwhile would keep them alive
+	if (CreateProcess(nullptr, pacCmdLine, nullptr, nullptr, (hOutWrite != nullptr), NULL, nullptr, pacDirectory, &udtSI, &udtPI))
+	{
+		//Close the write ends in the parent immediately: the child then sees EOF on stdin and the output pipe can signal end-of-data without deadlock
+		if (hOutWrite != nullptr)
+		{
+			CloseHandle(hOutWrite);
+			hOutWrite = nullptr;
+		}
+		if (hInWrite != nullptr)
+		{
+			CloseHandle(hInWrite);
+			hInWrite = nullptr;
+		}
+
+		if (pbWait)
+		{
+			bool bExited = false;
+			do
+			{
+				//Only the main thread can process messages: workers would dispatch them in the wrong thread
+				if (GetCurrentThreadId() == MainThreadID)
+				{
+					Application->ProcessMessages();
+				}
+				//Drain the pipe while waiting, or a child writing more than the pipe capacity would block forever, deadlocking the parent too
+				if (lRead < iOutputMax)
+				{
+					lRead += ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
+				}
+				else
+				{
+					//The output buffer is full, so drain and discard the rest, or the child would block the same way
+					unsigned char acDiscard[1024];
+					ReadPipeAvailable(hOutRead, acDiscard, sizeof(acDiscard));
+				}
+				//Give the process a 100 ms time slice. Any result other than timeout means it exited (or the wait failed, and the loop would never end otherwise). The exit code is not checked to exit the loop: a child legitimately returning STILL_ACTIVE (259) would loop forever
+				if (WaitForSingleObject(udtPI.hProcess, 100) != WAIT_TIMEOUT)
+				{
+					bExited = true;
+				}
+			}
+			while (!bExited);
+			GetExitCodeProcess(udtPI.hProcess, &lExitCode);
+		}
+		else
+		{
+			GetExitCodeProcess(udtPI.hProcess, &lExitCode);
+		}
+		CloseHandle(udtPI.hProcess);
+		CloseHandle(udtPI.hThread);
+	}
+
+	if (hOutWrite != nullptr)
+	{
+		CloseHandle(hOutWrite);
+	}
+	if (hInWrite != nullptr)
+	{
+		CloseHandle(hInWrite);
+	}
+	if (hInRead != nullptr)
+	{
+		CloseHandle(hInRead);
+	}
+
+	if (hOutRead != nullptr)
+	{
+		//Read what is left in the pipe, since the child could have exited before the last drain
+		if (lRead < iOutputMax)
+		{
+			ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
+		}
+		CloseHandle(hOutRead);
+	}
+
+	//Only the main thread can safely touch the VCL screen cursor
+	if (GetCurrentThreadId() == MainThreadID)
+	{
+		Screen->Cursor = crDefault;
+	}
+
+	delete[] pacCmdLine;
+	return (lExitCode);
 }
 
 

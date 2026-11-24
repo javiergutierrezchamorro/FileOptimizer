@@ -6,10 +6,11 @@
         <AppType>Application</AppType>
         <MainSource>FileOptimizer.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
-        <Platform Condition="'$(Platform)'==''">Win64x</Platform>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1048579</TargetedPlatforms>
         <ProjectName Condition="'$(ProjectName)'==''">FileOptimizer</ProjectName>
+        <CC_Suffix Condition="'$(CC_Suffix)'==''">c</CC_Suffix>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -194,7 +195,6 @@
         <DCC_MinimumEnumSize>4</DCC_MinimumEnumSize>
         <DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
-        <ILINK_iOSMinimumVersion>5.0</ILINK_iOSMinimumVersion>
         <BCC_MergeDuplicateStrings>true</BCC_MergeDuplicateStrings>
         <ILINK_MapFileType>None</ILINK_MapFileType>
         <BCC_StringsInWriteableDataSeg>true</BCC_StringsInWriteableDataSeg>
@@ -363,8 +363,6 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule"/>
-                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgstl.dylib" Class="DependencyModule"/>
                 <DeployFile Condition="'$(UsingDelphiRTL)'=='true'" LocalName="$(BDS)\bin64\borlndmm.dll" Class="DependencyModule">
                     <Platform Name="Win64">
                         <Overwrite>true</Overwrite>
@@ -492,16 +490,6 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\binarm64ec\cc64370mt.dll" Class="DependencyModule">
-                    <Platform Name="WinARM64EC">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\binarm64ec\cc64380.dll" Class="DependencyModule">
-                    <Platform Name="WinARM64EC">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\binarm64ec\cc64380mt.dll" Class="DependencyModule">
                     <Platform Name="WinARM64EC">
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -1485,7 +1473,6 @@
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSSimARM64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>

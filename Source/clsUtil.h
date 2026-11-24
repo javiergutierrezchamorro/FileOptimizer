@@ -49,7 +49,9 @@ class clsUtil
 		static const void * __fastcall MemMem (const void *buf, size_t buf_len, const void *byte_sequence, size_t byte_sequence_len);
 		static HRESULT CALLBACK TaskDialogCallbackProc (HWND phWnd, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData);
 		static int __fastcall MsgBox(HWND phWnd, const TCHAR *pacText, const TCHAR *pacTitle, unsigned int piType, unsigned int piTimeout = 0);
+		static HANDLE __fastcall FindProcess(const TCHAR *pacProcess);
 		static unsigned long __fastcall ReadPipeAvailable(HANDLE hRead, void *pvData, unsigned int piSize);
+		static unsigned long __fastcall RunProcess(const TCHAR *pacProcess, const TCHAR *pacDirectory, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait);
 		static bool __fastcall ExistsFile(const TCHAR *pacFile);
 		static bool __fastcall RenameFile(const TCHAR *pacNewName, const TCHAR *pacOldName);
 		static unsigned long long __fastcall SizeFile(const TCHAR *pacFile);

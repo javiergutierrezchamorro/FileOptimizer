@@ -44,3 +44,11 @@
 *.pdi
 *.d
 *.d
+*.ilc
+*.ild
+*.ilf
+*.map
+*.ils
+*.pdi
+*.tds
+*.d
