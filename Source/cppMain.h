@@ -8,9 +8,6 @@
 #include "clsUtil.h"
 #include "clsLanguage.h"
 #include <SHDocVw.hpp>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <System.Actions.hpp>
 #include <System.Classes.hpp>
 #include <System.ImageList.hpp>
@@ -251,7 +248,7 @@ __published: // IDE-managed Components
 	TToolButton *tooOptimizeOptimize;
 	TToolButton *tooOptimizeStop;
 	TToolButton *tooSeparator5;
-	TToolButton *tooOptimizeIptions;
+	TToolButton *tooOptimizeOptions;
 	TToolButton *tooSeparator3;
 	TToolButton *tooHelpHelp;
 	TToolButton *tooSeparator6;

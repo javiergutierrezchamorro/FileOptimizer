@@ -150,7 +150,7 @@ object frmMain: TfrmMain
       ImageIndex = 9
       Style = tbsSeparator
     end
-    object tooOptimizeIptions: TToolButton
+    object tooOptimizeOptions: TToolButton
       Left = 312
       Top = 0
       Action = actOptions
