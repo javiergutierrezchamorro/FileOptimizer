@@ -15,7 +15,6 @@
 #include <System.Classes.hpp>
 #include <System.ImageList.hpp>
 #include <Vcl.ActnList.hpp>
-#include <Vcl.ActnMan.hpp>
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.Dialogs.hpp>
@@ -24,7 +23,6 @@
 #include <Vcl.ImgList.hpp>
 #include <Vcl.Menus.hpp>
 #include <Vcl.OleCtrls.hpp>
-#include <Vcl.PlatformDefaultStyleActnCtrls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.ToolWin.hpp>
 
@@ -193,10 +191,10 @@ __published: // IDE-managed Components
 	TMenuItem *N2;
 	TMenuItem *mnuFilesOptions;
 	TMenuItem *mnuFilesAbout;
-	TMenuItem *mnuFilesExit;
-	TMenuItem *mnuFilesHelp;
+	TMenuItem *mnuFilesOpenFolder;
+	TMenuItem *mnuFilesOpen;
 	TOpenDialog *dlgAddFiles;
-	TActionManager *mgrMain;
+	TActionList *alsMain;
 	TAction *actAdd;
 	TAction *actRemove;
 	TAction *actClear;

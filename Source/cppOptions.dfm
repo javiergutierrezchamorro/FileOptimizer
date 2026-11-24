@@ -14,7 +14,6 @@ object frmOptions: TfrmOptions
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  GlassFrame.Enabled = True
   KeyPreview = True
   Position = poScreenCenter
   OnClose = FormClose
@@ -31,7 +30,6 @@ object frmOptions: TfrmOptions
     Anchors = [akLeft, akTop, akRight]
     Brush.Style = bsClear
     Pen.Color = clWhite
-    ExplicitWidth = 556
   end
   object lblTitle: TLabel
     Left = 8
@@ -86,7 +84,6 @@ object frmOptions: TfrmOptions
       3011000030110000301100003011000030110001}
     Proportional = True
     Transparent = True
-    ExplicitHeight = 58
   end
   object lblDescription: TLabel
     Left = 8
@@ -102,7 +99,6 @@ object frmOptions: TfrmOptions
     ParentShowHint = False
     ShowHint = True
     WordWrap = True
-    ExplicitWidth = 672
   end
   object shpDialogLineG1: TShape
     Left = 0
@@ -112,7 +108,6 @@ object frmOptions: TfrmOptions
     Anchors = [akLeft, akTop, akRight]
     Brush.Color = clGray
     Pen.Color = clGray
-    ExplicitWidth = 556
   end
   object tabOptions: TPageControl
     Left = 0

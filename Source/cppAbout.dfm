@@ -14,7 +14,6 @@ object frmAbout: TfrmAbout
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  GlassFrame.Enabled = True
   KeyPreview = True
   Position = poScreenCenter
   OnClose = FormClose
@@ -258,7 +257,6 @@ object frmAbout: TfrmAbout
     ShowHint = True
     Stretch = True
     OnDblClick = imgAboutDblClick
-    ExplicitWidth = 425
   end
   object lblProduct: TLabel
     Left = 8
@@ -274,7 +272,6 @@ object frmAbout: TfrmAbout
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
-    ExplicitWidth = 257
   end
   object lblCopyright: TLabel
     Left = 8
@@ -293,8 +290,6 @@ object frmAbout: TfrmAbout
     ParentShowHint = False
     ShowHint = True
     OnClick = lblCopyrightClick
-    ExplicitTop = 368
-    ExplicitWidth = 347
   end
   object lblDetail: TLabel
     Left = 259
@@ -305,7 +300,6 @@ object frmAbout: TfrmAbout
     Alignment = taRightJustify
     Anchors = [akLeft, akTop, akRight]
     AutoSize = False
-    ExplicitWidth = 192
   end
   object butClose: TButton
     Left = 360

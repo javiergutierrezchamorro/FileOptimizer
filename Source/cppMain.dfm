@@ -13,7 +13,6 @@ object frmMain: TfrmMain
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  GlassFrame.Enabled = True
   KeyPreview = True
   Menu = mnuMain
   Position = poDefault
@@ -48,7 +47,6 @@ object frmMain: TfrmMain
     Layout = tlCenter
     WordWrap = True
     OnClick = lblCopyrightClick
-    ExplicitWidth = 3
   end
   object lblInstructions: TLabel
     AlignWithMargins = True
@@ -71,7 +69,6 @@ object frmMain: TfrmMain
     ShowHint = True
     Layout = tlCenter
     WordWrap = True
-    ExplicitWidth = 808
   end
   object tooMain: TToolBar
     AlignWithMargins = True
@@ -332,10 +329,10 @@ object frmMain: TfrmMain
     object N3: TMenuItem
       Caption = '-'
     end
-    object mnuFilesHelp: TMenuItem
+    object mnuFilesOpen: TMenuItem
       Action = actOpen
     end
-    object mnuFilesExit: TMenuItem
+    object mnuFilesOpenFolder: TMenuItem
       Action = actOpenFolder
     end
   end
@@ -351,11 +348,10 @@ object frmMain: TfrmMain
     Left = 624
     Top = 264
   end
-  object mgrMain: TActionManager
+  object alsMain: TActionList
     Images = imgMain
     Left = 424
     Top = 256
-    StyleName = 'Platform Default'
     object actAdd: TAction
       Caption = '&Add files...'
       Hint = 'Add files from your computer to the optimization list'

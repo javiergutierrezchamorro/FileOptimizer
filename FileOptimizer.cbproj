@@ -6,11 +6,10 @@
         <AppType>Application</AppType>
         <MainSource>FileOptimizer.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Win64x</Platform>
         <TargetedPlatforms>1048579</TargetedPlatforms>
         <ProjectName Condition="'$(ProjectName)'==''">FileOptimizer</ProjectName>
-        <CC_Suffix Condition="'$(CC_Suffix)'==''">c</CC_Suffix>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -86,7 +85,6 @@
         <BCC_PCHCache>true</BCC_PCHCache>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VCL_Custom_Styles>Luna|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\19.0\Styles\Luna.vsf;&quot;Metropolis UI Black|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\19.0\Styles\MetropolisUIBlack.vsf&quot;</VCL_Custom_Styles>
         <TASM_FloatingPoint>Real</TASM_FloatingPoint>
         <RunBCCOutOfProcess>true</RunBCCOutOfProcess>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
@@ -94,7 +92,7 @@
         <SanitizedProjectName>FileOptimizer</SanitizedProjectName>
         <ProjectType>CppVCLApplication</ProjectType>
         <_TCHARMapping>wchar_t</_TCHARMapping>
-        <AllPackageLibs>rtl.lib;vcl.lib;vclactnband.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</AllPackageLibs>
+        <AllPackageLibs>rtl.lib;vcl.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</AllPackageLibs>
         <Multithreaded>true</Multithreaded>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
@@ -107,7 +105,7 @@
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\release\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
         <SubProcessesNumber>16</SubProcessesNumber>
         <BCC_EnableBatchCompilation>true</BCC_EnableBatchCompilation>
-        <PackageImports>adortl;bcbie;bcbsmp;bindcomp;bindcompdbx;bindcompfmx;bindcompvcl;bindengine;CloudService;CustomIPTransport;DataSnapClient;DataSnapCommon;DataSnapConnectors;DatasnapConnectorsFreePascal;DataSnapFireDAC;DataSnapIndy10ServerTransport;DataSnapNativeClient;DataSnapProviderClient;DataSnapServer;DataSnapServerMidas;dbexpress;dbrtl;dbxcds;DbxClientDriver;DbxCommonDriver;DBXDb2Driver;DBXFirebirdDriver;DBXInformixDriver;DBXInterBaseDriver;DBXMSSQLDriver;DBXMySQLDriver;DBXOdbcDriver;DBXOracleDriver;DBXSqliteDriver;DBXSybaseASADriver;DBXSybaseASEDriver;dsnap;dsnapcon;dsnapxml;emsclient;emsclientfiredac;FireDAC;FireDACADSDriver;FireDACASADriver;FireDACCommon;FireDACCommonDriver;FireDACDb2Driver;FireDACDBXDriver;FireDACDSDriver;FireDACIBDriver;FireDACInfxDriver;FireDACMSAccDriver;FireDACMSSQLDriver;FireDACMySQLDriver;FireDACODBCDriver;FireDACOracleDriver;FireDACPgDriver;FireDACSqliteDriver;fmx;fmxase;fmxdae;fmxFireDAC;fmxobj;FMXTee;FmxTeeUI;frx21;frxDB21;frxe21;frxTee21;IndyCore;IndyIPClient;IndyIPCommon;IndyIPServer;IndyProtocols;IndySystem;inet;inetdb;inetdbxpress;Intraweb;MetropolisUILiveTile;RESTBackendComponents;RESTComponents;rtl;soapmidas;soaprtl;soapserver;svn;Tee;TeeDB;TeeUI;tethering;vcl;vclactnband;vcldb;vcldsnap;vclFireDAC;vclie;vclimg;VCLRESTComponents;vclribbon;VclSmp;vcltouch;vclx;xmlrtl;$(PackageImports)</PackageImports>
+        <PackageImports>adortl;bcbie;bcbsmp;bindcomp;bindcompdbx;bindcompfmx;bindcompvcl;bindengine;CloudService;CustomIPTransport;DataSnapClient;DataSnapCommon;DataSnapConnectors;DatasnapConnectorsFreePascal;DataSnapFireDAC;DataSnapIndy10ServerTransport;DataSnapNativeClient;DataSnapProviderClient;DataSnapServer;DataSnapServerMidas;dbexpress;dbrtl;dbxcds;DbxClientDriver;DbxCommonDriver;DBXDb2Driver;DBXFirebirdDriver;DBXInformixDriver;DBXInterBaseDriver;DBXMSSQLDriver;DBXMySQLDriver;DBXOdbcDriver;DBXOracleDriver;DBXSqliteDriver;DBXSybaseASADriver;DBXSybaseASEDriver;dsnap;dsnapcon;dsnapxml;emsclient;emsclientfiredac;FireDAC;FireDACADSDriver;FireDACASADriver;FireDACCommon;FireDACCommonDriver;FireDACDb2Driver;FireDACDBXDriver;FireDACDSDriver;FireDACIBDriver;FireDACInfxDriver;FireDACMSAccDriver;FireDACMSSQLDriver;FireDACMySQLDriver;FireDACODBCDriver;FireDACOracleDriver;FireDACPgDriver;FireDACSqliteDriver;fmx;fmxase;fmxdae;fmxFireDAC;fmxobj;FMXTee;FmxTeeUI;frx21;frxDB21;frxe21;frxTee21;IndyCore;IndyIPClient;IndyIPCommon;IndyIPServer;IndyProtocols;IndySystem;inet;inetdb;inetdbxpress;Intraweb;MetropolisUILiveTile;RESTBackendComponents;RESTComponents;rtl;soapmidas;soaprtl;soapserver;svn;Tee;TeeDB;TeeUI;tethering;vcl;vcldb;vcldsnap;vclFireDAC;vclie;vclimg;VCLRESTComponents;vclribbon;VclSmp;vcltouch;vclx;xmlrtl;$(PackageImports)</PackageImports>
         <IncludePath>Source\;$(BDSINCLUDE)\windows\vcl;$(IncludePath)</IncludePath>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -157,7 +155,7 @@
         <CLANG_UnwindTables>true</CLANG_UnwindTables>
         <ILINK_LibraryPath>$(BDSLIB)\$(PLATFORM)\debug;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;vclactnband.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi</LinkPackageImports>
         <BT_BuildType>Debug</BT_BuildType>
         <BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
         <BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
@@ -167,7 +165,7 @@
         <VerInfo_Debug>true</VerInfo_Debug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <LinkPackageImports>rtl.bpi;vcl.bpi;vclactnband.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi;vclie.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi;vclie.bpi</LinkPackageImports>
         <BCC_AllCodeguardOptions>true</BCC_AllCodeguardOptions>
         <LinkPackageStatics>vcledge.lib</LinkPackageStatics>
         <ILINK_LibraryPath>$(BDSLIB)\$(PLATFORM)$(CC_SUFFIX)\debug;$(ILINK_LibraryPath)</ILINK_LibraryPath>
@@ -180,13 +178,13 @@
         <VerInfo_Debug>true</VerInfo_Debug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <LinkPackageImports>rtl.bpi;vcl.bpi;vclactnband.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi;vclie.bpi;vcledge.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi;vclie.bpi;vcledge.bpi</LinkPackageImports>
         <Icon_MainIcon>FileOptimizer.ico</Icon_MainIcon>
         <VerInfo_Debug>true</VerInfo_Debug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64x)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;vclactnband.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi;vclie.bpi;vcledge.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;vclx.bpi;vclimg.bpi;VclSmp.bpi;vclie.bpi;vcledge.bpi</LinkPackageImports>
         <ILINK_NXCompat>false</ILINK_NXCompat>
         <ILINK_DynamicBase>false</ILINK_DynamicBase>
         <ILINK_HighEntropyVa>false</ILINK_HighEntropyVa>
@@ -212,7 +210,7 @@
         <ILINK_FastTLS>true</ILINK_FastTLS>
         <ILINK_ImageChecksum>true</ILINK_ImageChecksum>
         <ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
-        <LinkPackageStatics>rtl.lib;vcl.lib;vclactnband.lib;vclx.lib;vclimg.lib;VclSmp.lib</LinkPackageStatics>
+        <LinkPackageStatics>rtl.lib;vcl.lib;vclx.lib;vclimg.lib;VclSmp.lib</LinkPackageStatics>
         <BT_BuildType>Debug</BT_BuildType>
         <BCC_OptimizeMaximum>true</BCC_OptimizeMaximum>
         <BCC_DisableCPPAccesControls>true</BCC_DisableCPPAccesControls>
@@ -246,14 +244,14 @@
         <ILINK_LinkwithZLib>false</ILINK_LinkwithZLib>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <LinkPackageStatics>rtl.lib;vcl.lib;vclactnband.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</LinkPackageStatics>
+        <LinkPackageStatics>rtl.lib;vcl.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</LinkPackageStatics>
         <DCC_AdditionalSwitches>-x-Ox</DCC_AdditionalSwitches>
         <ILINK_DelayLoadDll>SHCORE.DLL;$(ILINK_DelayLoadDll)</ILINK_DelayLoadDll>
         <UsingDelphiRTL>false</UsingDelphiRTL>
         <Icon_MainIcon>FileOptimizer.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <LinkPackageStatics>rtl.lib;vcl.lib;vclactnband.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</LinkPackageStatics>
+        <LinkPackageStatics>rtl.lib;vcl.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</LinkPackageStatics>
         <DCC_AdditionalSwitches>-x-Ox</DCC_AdditionalSwitches>
         <UsingDelphiRTL>false</UsingDelphiRTL>
         <ILINK_DelayLoadDll>SHCORE.DLL;$(ILINK_DelayLoadDll)</ILINK_DelayLoadDll>
@@ -261,7 +259,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64x)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
-        <LinkPackageStatics>rtl.lib;vcl.lib;vclactnband.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</LinkPackageStatics>
+        <LinkPackageStatics>rtl.lib;vcl.lib;vclx.lib;vclimg.lib;VclSmp.lib;vclie.lib;vcledge.lib</LinkPackageStatics>
         <ILINK_GCSections>true</ILINK_GCSections>
         <UsingDelphiRTL>false</UsingDelphiRTL>
         <Icon_MainIcon>FileOptimizer.ico</Icon_MainIcon>
@@ -352,7 +350,6 @@
                 <DeployFile LocalName="$(BDS)\Redist\Win64\VclSmp250.bpl" Configuration="Debug" Class="DependencyPackage"/>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\rtl250.bpl" Configuration="Debug" Class="DependencyPackage"/>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\vcl250.bpl" Configuration="Debug" Class="DependencyPackage"/>
-                <DeployFile LocalName="$(BDS)\Redist\Win64\vclactnband250.bpl" Configuration="Debug" Class="DependencyPackage"/>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\vclie250.bpl" Configuration="Debug" Class="DependencyPackage"/>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\vclimg250.bpl" Configuration="Debug" Class="DependencyPackage"/>
                 <DeployFile LocalName="$(BDS)\Redist\Win64\vclx250.bpl" Configuration="Debug" Class="DependencyPackage"/>
