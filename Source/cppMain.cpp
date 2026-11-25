@@ -17,6 +17,8 @@ struct udtOptions gudtOptions  = {};
 SYSTEM_INFO gudtSystemInfo = {};
 bool gbProcess = false;
 bool gbStop = false;
+//Set (per thread) when RunProcess killed a plugin that exceeded its maximum run time, so its partial output is never used
+static __thread bool mbPluginTimedOut;
 //Multithreaded optimization: handles of the workers still running (so closing can wait for them), and whether the form is already closing
 static HANDLE mahWorkerThreads[MAXIMUM_WAIT_OBJECTS];
 static int miWorkerThreads = 0;
@@ -459,6 +461,7 @@ static const struct udtOptionsInt
 	{_T("CheckForUpdates"), _T("Number. Default: 1. Automatically check for program updates."), offsetof(udtOptions, iCheckForUpdates), 1},
 	{_T("LogLevel"), _T("Number. Default: 0. Debugging level to output on program log."), offsetof(udtOptions, iLogLevel), 0},
 	{_T("FilenameFormat"), _T("Number. Default: 0. Specify the format to display filenames in the list."), offsetof(udtOptions, iFilenameFormat), 0},
+	{_T("PluginTimeout"), _T("Number. Default: 3600. Maximum seconds a plugin can run before it is considered hung and killed, so it does not block the optimization forever. A minute for every MB of the file is added, since big files take longer. 0 disables the limit."), offsetof(udtOptions, iPluginTimeout), 3600},
 	{_T("StartupDelay"), _T("Number. Default: 3000. Integer from 1000ms to 29000ms specifying the delay before start adding files."), offsetof(udtOptions, iStartupDelay), 3000},
 	{_T("Zoom"), _T("Number. Default: 100. Interface zoom as a percentage of the normal size, from 50 to 400. Enlarges text and controls on small or high resolution screens."), offsetof(udtOptions, iZoom), KI_ZOOM_DEFAULT},
 	{_T("Threads"), _T("Number. Default: -1. If specified, number of threads to use. -1 is auto-detect. This option is not compatible with Allow Duplicates."), offsetof(udtOptions, iThreads), -1},
@@ -543,6 +546,9 @@ void __fastcall TfrmMain::LoadOptions(void)
 
 	//Out of range zoom (hand edited INI, or command line) would make the interface unusable
 	gudtOptions.iZoom = max(KI_ZOOM_MIN, min(gudtOptions.iZoom, KI_ZOOM_MAX));
+
+	//A negative timeout (hand edited INI, or command line) means no limit
+	gudtOptions.iPluginTimeout = max(0, gudtOptions.iPluginTimeout);
 
 	//Donator and donation are validated before use, so they are loaded manually
 	clsUtil::CopyString(gudtOptions.acDonator, sizeof(gudtOptions.acDonator) / sizeof(TCHAR), GetOption(_T("Options"), _T("Donator"), _T("")));
@@ -2059,9 +2065,9 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 				LeaveCriticalSection(&mudtCriticalSection);
 				//SizeFile is expensive, so call it only once
 				lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-				if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop))
+				if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
 				{
-					clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str());
+					clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
 					EnterCriticalSection(&mudtCriticalSection);
 					grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
 					LeaveCriticalSection(&mudtCriticalSection);
@@ -2086,9 +2092,9 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 					LeaveCriticalSection(&mudtCriticalSection);
 					//SizeFile is expensive, so call it only once
 					lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-					if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop))
+					if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
 					{
-						clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str());
+						clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
 						EnterCriticalSection(&mudtCriticalSection);
 						grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
 						LeaveCriticalSection(&mudtCriticalSection);
@@ -2568,9 +2574,9 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 					//If there is size reduction check it is not so high to detect corrupted encrypted PDF
 					unsigned long long lTmpFilePdfSize = clsUtil::SizeFile(sTmpFilePdf.c_str());
 					unsigned long long lInputFileSize = clsUtil::SizeFile(sInputFile.c_str());
-					if ((lTmpFilePdfSize < lInputFileSize) && (lTmpFilePdfSize > 3000) && (lInputFileSize > 20000) && (!gbStop))
+					if ((lTmpFilePdfSize < lInputFileSize) && (lTmpFilePdfSize > 3000) && (lInputFileSize > 20000) && (!gbStop) && (!mbPluginTimedOut))
 					{
-						clsUtil::CopyFile(sTmpFilePdf.c_str(), sInputFile.c_str());
+						clsUtil::CopyFile(sTmpFilePdf.c_str(), sInputFile.c_str(), true);
 					}
 					if (!gudtOptions.bDebug)
 					{
@@ -2804,18 +2810,18 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		{
 			String sTmpOutputFile = ChangeFileExt(sInputFile, ".$wf");
 			RunPlugin((unsigned int) iCount, "flasm (1/5)", (sPluginsDirectory + "flasm.exe -x \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-			//A flasm killed by Stop leaves a partial file, which must not replace the input
-			if (!gbStop)
+			//A flasm killed by Stop (or because it hung) leaves a partial file, which must not replace the input
+			if ((!gbStop) && (!mbPluginTimedOut))
 			{
-				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str());
+				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
 			}
 			clsUtil::DeleteFile(sTmpOutputFile.c_str());
 
 			RunPlugin((unsigned int) iCount, "flasm (2/5)", (sPluginsDirectory + "flasm.exe -u \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-			//A flasm killed by Stop leaves a partial file, which must not replace the input
-			if (!gbStop)
+			//A flasm killed by Stop (or because it hung) leaves a partial file, which must not replace the input
+			if ((!gbStop) && (!mbPluginTimedOut))
 			{
-				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str());
+				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
 			}
 			clsUtil::DeleteFile(sTmpOutputFile.c_str());
 
@@ -2827,9 +2833,9 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			LeaveCriticalSection(&mudtCriticalSection);
 			//SizeFile is expensive, so call it only once
 			lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-			if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop))
+			if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
 			{
-				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str());
+				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
 				EnterCriticalSection(&mudtCriticalSection);
 				grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
 				LeaveCriticalSection(&mudtCriticalSection);
@@ -2958,9 +2964,9 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 				LeaveCriticalSection(&mudtCriticalSection);
 				//SizeFile is expensive, so call it only once
 				lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-				if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop))
+				if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
 				{
-					clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str());
+					clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
 					EnterCriticalSection(&mudtCriticalSection);
 					grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
 					LeaveCriticalSection(&mudtCriticalSection);
@@ -2985,9 +2991,9 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 					LeaveCriticalSection(&mudtCriticalSection);
 					//SizeFile is expensive, so call it only once
 					lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-					if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop))
+					if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
 					{
-						clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str());
+						clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
 						EnterCriticalSection(&mudtCriticalSection);
 						grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
 						LeaveCriticalSection(&mudtCriticalSection);
@@ -3601,6 +3607,9 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 	String sInputFile, sOutputFile, sTmpInputFile, sTmpOutputFile, sCommandLine;
 	TCHAR acTempPath[PATH_MAX + 1] = _T("");
 
+	//Whether the last plugin of this worker was killed for taking too long is only meaningful for the plugin that is about to run (the blocks that read its output file themselves check it)
+	mbPluginTimedOut = false;
+
 	//Thread local deep copies of the shared application name and plugins directory, so concurrent workers do not update the reference count of shared Strings
 	String sAppName, sPluginsDirectory;
 	EnterCriticalSection(&mudtCriticalSection);
@@ -3726,7 +3735,14 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 	if (lSize > 0)
 	{
 		dteStart = TDateTime::CurrentDateTime();
-		iError = (int) RunProcess(sCommandLine.c_str(), NULL, 0, true);
+		//Maximum run time, so a plugin that hangs does not block its worker forever: the configured seconds (0 = no limit) plus a minute for every MB of the file, since big files legitimately take longer
+		unsigned int iTimeout = 0;
+		if (gudtOptions.iPluginTimeout > 0)
+		{
+			unsigned long long lTimeout = (((unsigned long long) gudtOptions.iPluginTimeout) * 1000) + ((lSize >> 20) * 60000);
+			iTimeout = (lTimeout < 0xFFFFFFF0ULL) ? (unsigned int) lTimeout : 0xFFFFFFF0U;
+		}
+		iError = (int) RunProcess(sCommandLine.c_str(), NULL, 0, true, iTimeout);
 		dteEnd = TDateTime::CurrentDateTime();
 
 		//Check exit errorlevel. A plugin killed by Stop leaves a partial output, which must never replace the input file
@@ -3738,7 +3754,7 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 				lSizeNew = clsUtil::SizeFile(sTmpOutputFile.c_str());
 				if ((lSizeNew >= 8) && (lSizeNew < lSize))
 				{
-					if (!clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str()))
+					if (!clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true))
 					{
 						iError = -9998;
 						//Nothing was replaced, so do not report the smaller size
@@ -3751,7 +3767,7 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 				lSizeNew = clsUtil::SizeFile(sTmpInputFile.c_str());
 				if ((lSizeNew >= 8) && (lSizeNew < lSize))
 				{
-					if (!clsUtil::CopyFile(sTmpInputFile.c_str(), sInputFile.c_str()))
+					if (!clsUtil::CopyFile(sTmpInputFile.c_str(), sInputFile.c_str(), true))
 					{
 						iError = -9997;
 						//Nothing was replaced, so do not report the smaller size
@@ -3941,15 +3957,22 @@ String __fastcall TfrmMain::GetExtensionByContent (const String psFilename, bool
 		if (pvFile != nullptr)
 		{
 			const unsigned char *pacFileData = (const unsigned char *) pvFile;
-			//Copy footer, only if file is big enough and the whole file is available in the view (otherwise the offset would be wrong)
-			if ((lFileSize >= 512) && (lFileSize <= UINT_MAX) && (iSize >= (unsigned int) lFileSize))
+			try
 			{
-				memcpy(&acBuffer[512], pacFileData + (unsigned int) lFileSize - 512, 512);
+				//Copy footer, only if file is big enough and the whole file is available in the view (otherwise the offset would be wrong)
+				if ((lFileSize >= 512) && (lFileSize <= UINT_MAX) && (iSize >= (unsigned int) lFileSize))
+				{
+					memcpy(&acBuffer[512], pacFileData + (unsigned int) lFileSize - 512, 512);
+				}
+				//Copy header
+				memcpy(acBuffer, pacFileData, ((iSize < 512) ? iSize : 512));
+				bFilled = true;
 			}
-			//Copy header
-			memcpy(acBuffer, pacFileData, ((iSize < 512) ? iSize : 512));
+			catch (...)
+			{
+				//I/O error while reading the mapped pages (the file was truncated by another program, a network share was lost...): it is treated as not matching
+			}
 			clsUtil::UnmapFileView(pvFile, bMapped);
-			bFilled = true;
 		}
 		else
 		{
@@ -4202,7 +4225,7 @@ unsigned long long __inline TfrmMain::ParseNumberThousand (String psNumber)
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait)
+unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait, unsigned int piTimeout)
 {
 	unsigned long lExitCode = (unsigned long) -1;
 	unsigned long lRead = 0;
@@ -4282,6 +4305,7 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 	if ((pbWait) && (udtPI.hProcess))
 	{
 		bool bExited = false;
+		unsigned int iWaitStart = GetTickCount();
 		do
 		{
 			//Only the main thread can process messages: workers would dispatch them in the wrong thread
@@ -4293,6 +4317,13 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 			{
 				//Not exit code 0, which would look like a successful run
 				TerminateProcess(udtPI.hProcess, (unsigned int) -1);
+			}
+			else if ((piTimeout > 0) && ((GetTickCount() - iWaitStart) >= piTimeout))
+			{
+				//The plugin exceeded its maximum run time, so it is hung: kill it, and its worker goes on with the next file. Not exit code 0 either, and the caller is told so it never uses the partial output
+				TerminateProcess(udtPI.hProcess, (unsigned int) -1);
+				mbPluginTimedOut = true;
+				piTimeout = 0;
 			}
 			//Drain the pipe while waiting, or a child writing more than the pipe capacity would block forever, deadlocking the parent too
 			if (lRead < iOutputMax)
@@ -4382,36 +4413,44 @@ bool __fastcall TfrmMain::IsAPNG(const TCHAR *pacFile)
 		acBuffer = (unsigned char *) clsUtil::MapFileView(pacFile, &iSize, &bMapped);
 		if (acBuffer != nullptr)
 		{
-			if (iSize > sizeof(udtPNGHeader))
+			try
 			{
-				unsigned int iPos = 0;
-				memcpy(&udtPNGHeader, &acBuffer[iPos], sizeof(udtPNGHeader));
-				iPos += sizeof(udtPNGHeader);
-				if (memcmp(udtPNGHeader.acSignature, "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A", sizeof(udtPNGHeader.acSignature)) == 0)
+				if (iSize > sizeof(udtPNGHeader))
 				{
-					while ((iPos + sizeof(udtPNGChunk)) <= iSize)
+					unsigned int iPos = 0;
+					memcpy(&udtPNGHeader, &acBuffer[iPos], sizeof(udtPNGHeader));
+					iPos += sizeof(udtPNGHeader);
+					if (memcmp(udtPNGHeader.acSignature, "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A", sizeof(udtPNGHeader.acSignature)) == 0)
 					{
-						memcpy(&udtPNGChunk, &acBuffer[iPos], sizeof(udtPNGChunk));
-						iPos += sizeof(udtPNGChunk);
-						udtPNGChunk.iLength = ((udtPNGChunk.iLength >> 24) & 0xFF) | ((udtPNGChunk.iLength << 8) & 0xFF0000) | ((udtPNGChunk.iLength >> 8) & 0xFF00) | ((udtPNGChunk.iLength << 24) & 0xFF000000);
-						if ((memcmp(udtPNGChunk.acType, "fcTL", sizeof(udtPNGChunk.acType)) == 0) || (memcmp(udtPNGChunk.acType, "acTL", sizeof(udtPNGChunk.acType)) == 0) || (memcmp(udtPNGChunk.acType, "fdAT", sizeof(udtPNGChunk.acType)) == 0))
+						while ((iPos + sizeof(udtPNGChunk)) <= iSize)
 						{
-							bRes = true;
-							break;
+							memcpy(&udtPNGChunk, &acBuffer[iPos], sizeof(udtPNGChunk));
+							iPos += sizeof(udtPNGChunk);
+							udtPNGChunk.iLength = ((udtPNGChunk.iLength >> 24) & 0xFF) | ((udtPNGChunk.iLength << 8) & 0xFF0000) | ((udtPNGChunk.iLength >> 8) & 0xFF00) | ((udtPNGChunk.iLength << 24) & 0xFF000000);
+							if ((memcmp(udtPNGChunk.acType, "fcTL", sizeof(udtPNGChunk.acType)) == 0) || (memcmp(udtPNGChunk.acType, "acTL", sizeof(udtPNGChunk.acType)) == 0) || (memcmp(udtPNGChunk.acType, "fdAT", sizeof(udtPNGChunk.acType)) == 0))
+							{
+								bRes = true;
+								break;
+							}
+							//Animation chunks always precede the image data, so there is no need to look any further
+							if (memcmp(udtPNGChunk.acType, "IDAT", sizeof(udtPNGChunk.acType)) == 0)
+							{
+								break;
+							}
+							//Corrupted chunk length, stop looking
+							if (udtPNGChunk.iLength > (iSize - iPos))
+							{
+								break;
+							}
+							iPos += udtPNGChunk.iLength + 4;
 						}
-						//Animation chunks always precede the image data, so there is no need to look any further
-						if (memcmp(udtPNGChunk.acType, "IDAT", sizeof(udtPNGChunk.acType)) == 0)
-						{
-							break;
-						}
-						//Corrupted chunk length, stop looking
-						if (udtPNGChunk.iLength > (iSize - iPos))
-						{
-							break;
-						}
-						iPos += udtPNGChunk.iLength + 4;
 					}
 				}
+			}
+			catch (...)
+			{
+				//I/O error while reading the mapped pages (the file was truncated by another program, a network share was lost...): it is treated as not matching
+				bRes = false;
 			}
 			clsUtil::UnmapFileView(acBuffer, bMapped);
 		}
@@ -4442,49 +4481,57 @@ bool __fastcall TfrmMain::IsEXESFX(const TCHAR *pacFile)
 	if (acBuffer != nullptr)
 	{
 		
-		//Check if it is EXE
-		if ((iSize >= 2) && ((memcmp(acBuffer, "MZ", 2) == 0) || (memcmp(acBuffer, "ZM", 2) == 0)))
+		try
 		{
-			//Check if it is an Inno Setup Installer
-			if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "Inno Setup", 10) != NULL)
+			//Check if it is EXE
+			if ((iSize >= 2) && ((memcmp(acBuffer, "MZ", 2) == 0) || (memcmp(acBuffer, "ZM", 2) == 0)))
 			{
-				bRes = true;
+				//Check if it is an Inno Setup Installer
+				if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "Inno Setup", 10) != NULL)
+				{
+					bRes = true;
+				}
+				//Check if it is an InstallShield Wizard
+				else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "InstallShield", 13) != NULL)
+				{
+					bRes = true;
+				}
+				//Check if it is an NSIS
+				else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "Nullsoft Install System", 23) != NULL)
+				{
+					bRes = true;
+				}
+				//Check if it is an RTPatch Updater
+				else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "RTPatch", 7) != NULL)
+				{
+					bRes = true;
+				}
+				//Check if it is a RAR SFX
+				else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "\x52\x61\x72\x21\x1A\x07", 6) != NULL)
+				{
+					bRes = true;
+				}
+				//Check if it is a ZIP SFX
+				else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "\x50\x4B\x03\x04", 4) != NULL)
+				{
+					bRes = true;
+				}
+				//Check if it is a 7-ZIP SFX
+				else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "\x37\x7A\xBC\xAF\x27\x1C", 6) != NULL)
+				{
+					bRes = true;
+				}
+				//Check if it is a SFXCAB
+				else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "MSCF", 4) != NULL)
+				{
+					bRes = true;
+				}
 			}
-			//Check if it is an InstallShield Wizard
-			else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "InstallShield", 13) != NULL)
-			{
-				bRes = true;
-			}
-			//Check if it is an NSIS
-			else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "Nullsoft Install System", 23) != NULL)
-			{
-				bRes = true;
-			}
-			//Check if it is an RTPatch Updater
-			else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "RTPatch", 7) != NULL)
-			{
-				bRes = true;
-			}
-			//Check if it is a RAR SFX
-			else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "\x52\x61\x72\x21\x1A\x07", 6) != NULL)
-			{
-				bRes = true;
-			}
-			//Check if it is a ZIP SFX
-			else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "\x50\x4B\x03\x04", 4) != NULL)
-			{
-				bRes = true;
-			}
-			//Check if it is a 7-ZIP SFX
-			else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "\x37\x7A\xBC\xAF\x27\x1C", 6) != NULL)
-			{
-				bRes = true;
-			}
-			//Check if it is a SFXCAB
-			else if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "MSCF", 4) != NULL)
-			{
-				bRes = true;
-			}
+		}
+		catch (...)
+		{
+			//I/O error while reading the mapped pages (the file was truncated by another program, a network share was lost...): it is treated as not matching
+			bRes = false;
 		}
 		clsUtil::UnmapFileView(acBuffer, bMapped);
 	}
@@ -4509,67 +4556,75 @@ bool __fastcall TfrmMain::IsEXEManagedNet(const TCHAR *pacFile)
 			unsigned char* pacBaseAddress = (unsigned char*) MapViewOfFile(hOpenFileMapping, FILE_MAP_READ, 0, 0, 0);
 			if (pacBaseAddress)
 			{
-				//having mapped the executable ,now start navigating through the sections
-				//DOS header is straightforward. It is the topmost structure in the PE file
-				//i.e. the one at the lowest offset into the file
-				IMAGE_DOS_HEADER* udtDOSHeader = (IMAGE_DOS_HEADER*) pacBaseAddress;
-				//Do not trust the headers: on a damaged executable e_lfanew can point outside the file, and dereferencing it would crash. All offsets are validated against the file size before use
-				if ((lFileSize >= sizeof(IMAGE_DOS_HEADER)) && (udtDOSHeader->e_magic == IMAGE_DOS_SIGNATURE) && (udtDOSHeader->e_lfanew > 0) && (((unsigned long long) udtDOSHeader->e_lfanew + sizeof(IMAGE_NT_HEADERS)) <= lFileSize))
+				try
 				{
-					//the only important data in the DOS header is the e_lfanew
-					//the e_lfanew points to the offset of the beginning of NT Headers data
-					IMAGE_NT_HEADERS* udtNTHeaders = (IMAGE_NT_HEADERS*) ((unsigned char*) udtDOSHeader + udtDOSHeader->e_lfanew);
-					//store the section header for future use. This will later be need to check to see if metadata lies within
-					//the area as indicated by the section headers
-					//The optional header differs between 32 bit (PE32) and 64 bit (PE32+) files whatever the architecture of this program is, so the section table is located using the real size of the optional header stored in the file header
-					IMAGE_SECTION_HEADER* udtSectionHeader = IMAGE_FIRST_SECTION(udtNTHeaders);
-					//Now, start parsing
-					//check if it is a PE file first of all. All assemblies are PE files. The optional header and the section headers table must also fit inside the file, or walking them would read past its end
-					if ((udtNTHeaders->Signature == IMAGE_NT_SIGNATURE) && (((unsigned long long) udtDOSHeader->e_lfanew + offsetof(IMAGE_NT_HEADERS, OptionalHeader) + udtNTHeaders->FileHeader.SizeOfOptionalHeader + ((unsigned long long) udtNTHeaders->FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER))) <= lFileSize))
+					//having mapped the executable ,now start navigating through the sections
+					//DOS header is straightforward. It is the topmost structure in the PE file
+					//i.e. the one at the lowest offset into the file
+					IMAGE_DOS_HEADER* udtDOSHeader = (IMAGE_DOS_HEADER*) pacBaseAddress;
+					//Do not trust the headers: on a damaged executable e_lfanew can point outside the file, and dereferencing it would crash. All offsets are validated against the file size before use
+					if ((lFileSize >= sizeof(IMAGE_DOS_HEADER)) && (udtDOSHeader->e_magic == IMAGE_DOS_SIGNATURE) && (udtDOSHeader->e_lfanew > 0) && (((unsigned long long) udtDOSHeader->e_lfanew + sizeof(IMAGE_NT_HEADERS)) <= lFileSize))
 					{
-						//start parsing COM table ( this is what points to the metadata and other information ). It is the 15th data directory, at a different offset in PE32 and PE32+
-						unsigned int iNETHeaderTableLocation = 0;
-						unsigned int iOptionalSize = udtNTHeaders->FileHeader.SizeOfOptionalHeader;
-						if (udtNTHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC)
+						//the only important data in the DOS header is the e_lfanew
+						//the e_lfanew points to the offset of the beginning of NT Headers data
+						IMAGE_NT_HEADERS* udtNTHeaders = (IMAGE_NT_HEADERS*) ((unsigned char*) udtDOSHeader + udtDOSHeader->e_lfanew);
+						//store the section header for future use. This will later be need to check to see if metadata lies within
+						//the area as indicated by the section headers
+						//The optional header differs between 32 bit (PE32) and 64 bit (PE32+) files whatever the architecture of this program is, so the section table is located using the real size of the optional header stored in the file header
+						IMAGE_SECTION_HEADER* udtSectionHeader = IMAGE_FIRST_SECTION(udtNTHeaders);
+						//Now, start parsing
+						//check if it is a PE file first of all. All assemblies are PE files. The optional header and the section headers table must also fit inside the file, or walking them would read past its end
+						if ((udtNTHeaders->Signature == IMAGE_NT_SIGNATURE) && (((unsigned long long) udtDOSHeader->e_lfanew + offsetof(IMAGE_NT_HEADERS, OptionalHeader) + udtNTHeaders->FileHeader.SizeOfOptionalHeader + ((unsigned long long) udtNTHeaders->FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER))) <= lFileSize))
 						{
-							IMAGE_OPTIONAL_HEADER32* udtOptional32 = (IMAGE_OPTIONAL_HEADER32*) &udtNTHeaders->OptionalHeader;
-							if ((iOptionalSize >= (offsetof(IMAGE_OPTIONAL_HEADER32, DataDirectory) + ((IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR + 1) * sizeof(IMAGE_DATA_DIRECTORY)))) && (udtOptional32->NumberOfRvaAndSizes > IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR))
+							//start parsing COM table ( this is what points to the metadata and other information ). It is the 15th data directory, at a different offset in PE32 and PE32+
+							unsigned int iNETHeaderTableLocation = 0;
+							unsigned int iOptionalSize = udtNTHeaders->FileHeader.SizeOfOptionalHeader;
+							if (udtNTHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC)
 							{
-								iNETHeaderTableLocation = udtOptional32->DataDirectory[IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR].VirtualAddress;
-							}
-						}
-						else if (udtNTHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC)
-						{
-							IMAGE_OPTIONAL_HEADER64* udtOptional64 = (IMAGE_OPTIONAL_HEADER64*) &udtNTHeaders->OptionalHeader;
-							if ((iOptionalSize >= (offsetof(IMAGE_OPTIONAL_HEADER64, DataDirectory) + ((IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR + 1) * sizeof(IMAGE_DATA_DIRECTORY)))) && (udtOptional64->NumberOfRvaAndSizes > IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR))
-							{
-								iNETHeaderTableLocation = udtOptional64->DataDirectory[IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR].VirtualAddress;
-							}
-						}
-						if (iNETHeaderTableLocation)
-						{
-							//.Net header data does exist for this module, find it's location in one of the sections
-							unsigned int iActualAddressFromRVA = 0;
-							unsigned int iSections = udtNTHeaders->FileHeader.NumberOfSections;
-							for (unsigned int iSection = 0; iSection < iSections; iSection++, udtSectionHeader++)
-							{
-								unsigned int iMaxOnDisk = min(udtSectionHeader->Misc.VirtualSize, udtSectionHeader->SizeOfRawData);
-								unsigned int iStartSectRVA = udtSectionHeader->VirtualAddress;
-								unsigned int iEndSectRVA = iStartSectRVA + iMaxOnDisk;
-								if ((iNETHeaderTableLocation >= iStartSectRVA) && (iNETHeaderTableLocation < iEndSectRVA))
+								IMAGE_OPTIONAL_HEADER32* udtOptional32 = (IMAGE_OPTIONAL_HEADER32*) &udtNTHeaders->OptionalHeader;
+								if ((iOptionalSize >= (offsetof(IMAGE_OPTIONAL_HEADER32, DataDirectory) + ((IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR + 1) * sizeof(IMAGE_DATA_DIRECTORY)))) && (udtOptional32->NumberOfRvaAndSizes > IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR))
 								{
-									iActualAddressFromRVA = (udtSectionHeader->PointerToRawData) + (iNETHeaderTableLocation - iStartSectRVA);
-									break;
+									iNETHeaderTableLocation = udtOptional32->DataDirectory[IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR].VirtualAddress;
 								}
 							}
-							if (iActualAddressFromRVA)
+							else if (udtNTHeaders->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC)
 							{
-								//valid address obtained. Suffices to say , this is good enough to identify this as a
-								//valid managed component
-								bRes = true;
+								IMAGE_OPTIONAL_HEADER64* udtOptional64 = (IMAGE_OPTIONAL_HEADER64*) &udtNTHeaders->OptionalHeader;
+								if ((iOptionalSize >= (offsetof(IMAGE_OPTIONAL_HEADER64, DataDirectory) + ((IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR + 1) * sizeof(IMAGE_DATA_DIRECTORY)))) && (udtOptional64->NumberOfRvaAndSizes > IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR))
+								{
+									iNETHeaderTableLocation = udtOptional64->DataDirectory[IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR].VirtualAddress;
+								}
+							}
+							if (iNETHeaderTableLocation)
+							{
+								//.Net header data does exist for this module, find it's location in one of the sections
+								unsigned int iActualAddressFromRVA = 0;
+								unsigned int iSections = udtNTHeaders->FileHeader.NumberOfSections;
+								for (unsigned int iSection = 0; iSection < iSections; iSection++, udtSectionHeader++)
+								{
+									unsigned int iMaxOnDisk = min(udtSectionHeader->Misc.VirtualSize, udtSectionHeader->SizeOfRawData);
+									unsigned int iStartSectRVA = udtSectionHeader->VirtualAddress;
+									unsigned int iEndSectRVA = iStartSectRVA + iMaxOnDisk;
+									if ((iNETHeaderTableLocation >= iStartSectRVA) && (iNETHeaderTableLocation < iEndSectRVA))
+									{
+										iActualAddressFromRVA = (udtSectionHeader->PointerToRawData) + (iNETHeaderTableLocation - iStartSectRVA);
+										break;
+									}
+								}
+								if (iActualAddressFromRVA)
+								{
+									//valid address obtained. Suffices to say , this is good enough to identify this as a
+									//valid managed component
+									bRes = true;
+								}
 							}
 						}
 					}
+				}
+				catch (...)
+				{
+					//I/O error while reading the mapped pages (the file was truncated by another program, a network share was lost...): it is treated as not matching
+					bRes = false;
 				}
 				//cleanup
 				UnmapViewOfFile(pacBaseAddress);
@@ -4597,8 +4652,16 @@ bool __fastcall TfrmMain::IsPDFLayered(const TCHAR *pacFile)
 	acBuffer = (unsigned char *) clsUtil::MapFileView(pacFile, &iSize, &bMapped);
 	if (acBuffer != nullptr)
 	{
-		//Look for a OCG (Optional Content Groups)
-		bRes = (clsUtil::MemMem(acBuffer, iSize, "<< /Type /OCG /Name", 19) != NULL);
+		try
+		{
+			//Look for a OCG (Optional Content Groups)
+			bRes = (clsUtil::MemMem(acBuffer, iSize, "<< /Type /OCG /Name", 19) != NULL);
+		}
+		catch (...)
+		{
+			//I/O error while reading the mapped pages (the file was truncated by another program, a network share was lost...): it is treated as not matching
+			bRes = false;
+		}
 		clsUtil::UnmapFileView(acBuffer, bMapped);
 	}
 	return (bRes);
@@ -4618,36 +4681,44 @@ bool __fastcall TfrmMain::IsJPEGCMYK(const TCHAR *pacFile)
 	acBuffer = (unsigned char *) clsUtil::MapFileView(pacFile, &iSize, &bMapped);
 	if (acBuffer != nullptr)
 	{
-		if ((iSize >= 4) && (acBuffer[0] == 0xFF) && (acBuffer[1] == 0xD8))
+		try
 		{
-			//Walk the segments until SOF (Start Of Frame) and check the number of components (4 = CMYK)
-			unsigned int iPos = 2;
-			while ((iPos + 4) <= iSize)
+			if ((iSize >= 4) && (acBuffer[0] == 0xFF) && (acBuffer[1] == 0xD8))
 			{
-				if (acBuffer[iPos] != 0xFF)
+				//Walk the segments until SOF (Start Of Frame) and check the number of components (4 = CMYK)
+				unsigned int iPos = 2;
+				while ((iPos + 4) <= iSize)
 				{
-					break;
+					if (acBuffer[iPos] != 0xFF)
+					{
+						break;
+					}
+					unsigned char cMarker = acBuffer[iPos + 1];
+					//Fill byte
+					if (cMarker == 0xFF)
+					{
+						iPos++;
+						continue;
+					}
+					//SOFn, except DHT, JPG and DAC
+					if ((cMarker >= 0xC0) && (cMarker <= 0xCF) && (cMarker != 0xC4) && (cMarker != 0xC8) && (cMarker != 0xCC))
+					{
+						bRes = (((iPos + 10) <= iSize) && (acBuffer[iPos + 9] == 4));
+						break;
+					}
+					//SOS or EOI
+					if ((cMarker == 0xDA) || (cMarker == 0xD9))
+					{
+						break;
+					}
+					iPos += 2 + ((acBuffer[iPos + 2] << 8) | acBuffer[iPos + 3]);
 				}
-				unsigned char cMarker = acBuffer[iPos + 1];
-				//Fill byte
-				if (cMarker == 0xFF)
-				{
-					iPos++;
-					continue;
-				}
-				//SOFn, except DHT, JPG and DAC
-				if ((cMarker >= 0xC0) && (cMarker <= 0xCF) && (cMarker != 0xC4) && (cMarker != 0xC8) && (cMarker != 0xCC))
-				{
-					bRes = (((iPos + 10) <= iSize) && (acBuffer[iPos + 9] == 4));
-					break;
-				}
-				//SOS or EOI
-				if ((cMarker == 0xDA) || (cMarker == 0xD9))
-				{
-					break;
-				}
-				iPos += 2 + ((acBuffer[iPos + 2] << 8) | acBuffer[iPos + 3]);
 			}
+		}
+		catch (...)
+		{
+			//I/O error while reading the mapped pages (the file was truncated by another program, a network share was lost...): it is treated as not matching
+			bRes = false;
 		}
 		clsUtil::UnmapFileView(acBuffer, bMapped);
 	}
@@ -4838,6 +4909,24 @@ void __fastcall TfrmMain::UpdateTheme(void)
 	//Reenable form updates
 	LockWindowUpdate(NULL);
 }
+
+
+//---------------------------------------------------------------------------
+//Follows the Windows light/dark app theme while the program is running: the VCL only applies the style that the program selects, so it does not change by itself
+void __fastcall TfrmMain::WMSettingChange(TMessage &udtMessage)
+{
+	TForm::Dispatch(&udtMessage);
+	//The color mode change is notified with this text. It is sent several times for the same change, but nothing is done when the style is already the right one
+	if ((udtMessage.LParam != 0) && (_tcscmp((const TCHAR *) udtMessage.LParam, _T("ImmersiveColorSet")) == 0))
+	{
+		String sStyle = (clsUtil::GetRegistryI(HKEY_CURRENT_USER, _T("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"), _T("AppsUseLightTheme")) == 0) ? "Windows10 Dark" : "Windows";
+		if (Vcl::Themes::TStyleManager::ActiveStyle->Name != sStyle)
+		{
+			Vcl::Themes::TStyleManager::TrySetStyle(sStyle, false);
+		}
+	}
+}
+
 
 
 //---------------------------------------------------------------------------

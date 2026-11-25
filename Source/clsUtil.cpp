@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
+ 3.64. 24/11/2026. FileOptimizer. CopyFile can replace the destination safely (copy next to it and swap, ReplaceFile/MoveFileEx, with the direct copy as the last option). ReadFile survives I/O errors on mapped pages
  3.63. 23/11/2026. FileOptimizer. SetIni also skips the write when the key exists with an empty value (the check required a non empty one, so every empty option rewrote the whole INI file on each save)
  3.62. 16/11/2026. FileOptimizer. MsgBox timeout travels in the dialog callback data instead of a shared static (workers could mix it), RunProcess does not let the child inherit the parent ends of its pipes (it never saw the end of its input) nor the process handles, SetRegistry creates the key when writing (the browser emulation key was never written when it did not exist), ExeVersion does not clear 4 KB on every call, GetFileVersionField bounded format
  3.61. 11/11/2026. FileOptimizer. SetIni does not rewrite the INI file when it already holds the same value (closing the program or accepting the options wrote about a hundred unchanged values, rewriting the whole file each time)
@@ -507,8 +508,20 @@ bool __fastcall clsUtil::ReadFile(const TCHAR *pacFile, void *pvData, unsigned i
 							void *pacBuffer = MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, iSize);
 							if (pacBuffer != nullptr)
 							{
-								memcpy(pvData, pacBuffer, iSize);
-								bRes = UnmapViewOfFile(pacBuffer);
+								try
+								{
+									memcpy(pvData, pacBuffer, iSize);
+									bRes = true;
+								}
+								catch (...)
+								{
+									//I/O error while reading the mapped pages (the file was truncated by another program, a network share was lost...): the regular read below reports it
+									bRes = false;
+								}
+								if (!UnmapViewOfFile(pacBuffer))
+								{
+									bRes = false;
+								}
 							}
 						}
 					}
@@ -901,10 +914,29 @@ bool __fastcall clsUtil::DownloadFilePost(const TCHAR *pacServer, const TCHAR *p
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool __fastcall clsUtil::CopyFile(const TCHAR *pacSource, const TCHAR *pacDestination)
+bool __fastcall clsUtil::CopyFile(const TCHAR *pacSource, const TCHAR *pacDestination, bool pbReplace)
 {
+	String sSource = GetApiName(pacSource);
+	String sDestination = GetApiName(pacDestination);
+
+	//Replacing an existing file (the optimized copy over the original): it is copied next to it first, and swapped only when complete, so the original is never left half written if the program, the system or the power fails in the middle. It must be on the same volume, which is why it is not the temporary directory. ReplaceFile keeps the attributes, the permissions and the alternate streams of the original; MoveFileEx is the second option (file systems where ReplaceFile is not available), and the direct copy below is the last one (such as a folder where new files cannot be created), so it never works worse than before
+	if (pbReplace)
+	{
+		String sTemp = sDestination + ".fo~";
+		if (CopyFileEx(sSource.c_str(), sTemp.c_str(), nullptr, nullptr, nullptr, COPY_FILE_ALLOW_DECRYPTED_DESTINATION))
+		{
+			//REPLACEFILE_IGNORE_MERGE_ERRORS (2): a failure keeping the attributes or the permissions must not prevent the replacement
+			if ((ReplaceFile(sDestination.c_str(), sTemp.c_str(), nullptr, 2, nullptr, nullptr)) || (MoveFileEx(sTemp.c_str(), sDestination.c_str(), MOVEFILE_REPLACE_EXISTING)))
+			{
+				return (true);
+			}
+			//The API one: inside this class DeleteFile is the member that would convert the path again
+			::DeleteFile(sTemp.c_str());
+		}
+	}
+
 	//Buffered on purpose: the copy is read again right away (by the next plugin), so keeping it in the system cache is faster, and Windows already switches to unbuffered IO by itself for big files. A second try without flags was useless once the unbuffered flag is gone
-	return (CopyFileEx(GetApiName(pacSource).c_str(), GetApiName(pacDestination).c_str(), nullptr, nullptr, nullptr, COPY_FILE_ALLOW_DECRYPTED_DESTINATION) != 0);
+	return (CopyFileEx(sSource.c_str(), sDestination.c_str(), nullptr, nullptr, nullptr, COPY_FILE_ALLOW_DECRYPTED_DESTINATION) != 0);
 }
 
 

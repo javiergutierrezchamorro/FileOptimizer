@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
+ 1.02. 24/11/2026. FileOptimizer. The captions and hints of the toolbar buttons, and the hint and the panels text of the status bar, are also translated
  1.01. 14/11/2026. FileOptimizer. The lock is released on any exit (a failing LoadFromFile left it locked forever), PO escapes are decoded in a single pass (the sequential replacements turned an escaped backslash followed by n into a new line), no more NOT_FOUND marker that a real translation could collide with, iterations over the controls skip every property that did not change and are not even started when there is nothing to translate
  1.00. 22/11/2017. FileOptimizer. Initial version
  */
@@ -412,7 +413,8 @@ static void EnumerateControls(TComponent *poComponent)
 		(!TranslateCaptionHint<TMenuItem>(poComponent)) &&
 		(!TranslateCaptionHint<TButton>(poComponent)) &&
 		(!TranslateCaptionHint<TAction>(poComponent)) &&
-		(!TranslateCaptionHint<TTabSheet>(poComponent)))
+		(!TranslateCaptionHint<TTabSheet>(poComponent)) &&
+		(!TranslateCaptionHint<TToolButton>(poComponent)))
 	{
 		if (TEdit *oEdit = dynamic_cast<TEdit *>(poComponent))
 		{
@@ -449,6 +451,20 @@ static void EnumerateControls(TComponent *poComponent)
 				if (sTranslated != sItem)
 				{
 					oComboBox->Items->Strings[iItem] = sTranslated;
+				}
+			}
+		}
+		else if (TStatusBar *oStatusBar = dynamic_cast<TStatusBar *>(poComponent))
+		{
+			TranslateHint(oStatusBar);
+			for (int iPanel = oStatusBar->Panels->Count - 1; iPanel >= 0; iPanel--)
+			{
+				String sText = oStatusBar->Panels->Items[iPanel]->Text;
+				String sTranslated = clsLanguage::Get(sText);
+				//Writing a panel repaints the status bar, so only do it if it changed
+				if (sTranslated != sText)
+				{
+					oStatusBar->Panels->Items[iPanel]->Text = sTranslated;
 				}
 			}
 		}

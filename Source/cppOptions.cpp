@@ -1,10 +1,17 @@
 // ---------------------------------------------------------------------------
 #include "cppOptions.h"
+#include <shlobj.h>
 
 
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
+
+
+// ---------------------------------------------------------------------------
+//Explorer context menu entries, for the current user only (no administrator rights needed). One for files and one for folders
+#define KS_CONTEXT_MENU_FILES		_T("Software\\Classes\\*\\shell\\FileOptimizer")
+#define KS_CONTEXT_MENU_FOLDERS		_T("Software\\Classes\\Directory\\shell\\FileOptimizer")
 
 
 // ---------------------------------------------------------------------------
@@ -64,6 +71,8 @@ void __fastcall TfrmOptions::FormCreate(TObject *Sender)
 
 	chkAllowDuplicates->Checked = gudtOptions.bAllowDuplicates;
 	chkAllowMultipleInstances->Checked = gudtOptions.bAllowMultipleInstances;
+	//The Explorer entry is not an option of the INI, so it is checked where it is
+	chkExplorerContextMenu->Checked = (_tcslen(clsUtil::GetRegistry(HKEY_CURRENT_USER, KS_CONTEXT_MENU_FILES _T("\\command"), _T(""))) > 0);
 	chkAlwaysOnTop->Checked = gudtOptions.bAlwaysOnTop;
 	chkBeepWhenDone->Checked = gudtOptions.bBeepWhenDone;
 
@@ -351,6 +360,60 @@ void __fastcall TfrmOptions::butOKClick(TObject *Sender)
 
 	frmMain->SaveOptions();
 	frmMain->UpdateTheme();
+
+	//Explorer context menu and Send to. After the theme, so the text uses the language that has just been selected
+	const TCHAR *const apacContextMenu[2] = {KS_CONTEXT_MENU_FILES, KS_CONTEXT_MENU_FOLDERS};
+	//Send to shortcut, in the Send to folder of the current user
+	TCHAR acSendTo[MAX_PATH + 1] = _T("");
+	String sShortcut = (SHGetSpecialFolderPath(NULL, acSendTo, CSIDL_SENDTO, FALSE)) ? (IncludeTrailingPathDelimiter(acSendTo) + Application->Name + ".lnk") : (String) "";
+	if (chkExplorerContextMenu->Checked)
+	{
+		//Written every time, so it always points to this executable (it could have been moved)
+		String sLabel;
+		sLabel.printf(_((TCHAR *) _T("Optimize with %s")), Application->Name.c_str());
+		String sIcon = "\"" + Application->ExeName + "\",0";
+		String sCommand = "\"" + Application->ExeName + "\" \"%1\"";
+		for (int iKey = 0; iKey < 2; iKey++)
+		{
+			String sKey = apacContextMenu[iKey];
+			clsUtil::SetRegistry(HKEY_CURRENT_USER, sKey.c_str(), _T(""), sLabel.c_str());
+			clsUtil::SetRegistry(HKEY_CURRENT_USER, sKey.c_str(), _T("Icon"), sIcon.c_str());
+			//All the selected files are passed to a single instance ("Player") instead of starting one for each
+			clsUtil::SetRegistry(HKEY_CURRENT_USER, sKey.c_str(), _T("MultiSelectModel"), _T("Player"));
+			clsUtil::SetRegistry(HKEY_CURRENT_USER, (sKey + "\\command").c_str(), _T(""), sCommand.c_str());
+		}
+
+		//Send to has no limit of selected files, unlike the context menu entry
+		IShellLink *pLink = nullptr;
+		if ((!sShortcut.IsEmpty()) && (SUCCEEDED(::CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (void **) &pLink))) && (pLink))
+		{
+			pLink->SetPath(Application->ExeName.c_str());
+			pLink->SetWorkingDirectory(ExtractFilePath(Application->ExeName).c_str());
+			pLink->SetIconLocation(Application->ExeName.c_str(), 0);
+			pLink->SetDescription(sLabel.c_str());
+			IPersistFile *pFile = nullptr;
+			if ((SUCCEEDED(pLink->QueryInterface(IID_IPersistFile, (void **) &pFile))) && (pFile))
+			{
+				pFile->Save(sShortcut.c_str(), TRUE);
+				pFile->Release();
+			}
+			pLink->Release();
+		}
+	}
+	else
+	{
+		//Nothing is checked before deleting: what does not exist is simply not deleted. The command goes first, since a key with subkeys cannot be deleted
+		for (int iKey = 0; iKey < 2; iKey++)
+		{
+			String sKey = apacContextMenu[iKey];
+			clsUtil::DeleteRegistry(HKEY_CURRENT_USER, (sKey + "\\command").c_str());
+			clsUtil::DeleteRegistry(HKEY_CURRENT_USER, sKey.c_str());
+		}
+		if (!sShortcut.IsEmpty())
+		{
+			clsUtil::DeleteFile(sShortcut.c_str());
+		}
+	}
 
 	if (iOldLanguage != gudtOptions.iLanguage)
 	{

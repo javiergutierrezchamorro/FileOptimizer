@@ -146,6 +146,7 @@ struct udtOptions
 	int iPNGWolfIterations;
 	int iLanguage;
 	int iStartupDelay;
+	int iPluginTimeout;
 	int iZoom;
 	bool bDebug;
 	bool bHideAds;
@@ -292,14 +293,17 @@ private: // User declarations
 	BEGIN_MESSAGE_MAP
 		// add message handler for WM_DROPFILES
 		VCL_MESSAGE_HANDLER(WM_DROPFILES, TWMDropFiles, WMDropFiles)
+		// follow the Windows light/dark theme
+		VCL_MESSAGE_HANDLER(WM_SETTINGCHANGE, TMessage, WMSettingChange)
 	END_MESSAGE_MAP(TComponent)
 	String __fastcall GetExtensionByContent (const String psFilename, bool pbForce = false);
 	String __inline FormatNumberThousand (unsigned long long plNumber);
 	String __inline FormatNumberThousandUnit (unsigned long long plNumber);
 	unsigned long long __inline ParseNumberThousand (String psNumber);
 	int __fastcall RunPlugin(unsigned int piCurrent, String psStatus, String psCommandLine, String psInputFile, String psOutputFile, int piErrorMin = INT_MIN, int piErrorMax = INT_MAX);
-	unsigned long __fastcall RunProcess(const TCHAR *pacProcess, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait);
+	unsigned long __fastcall RunProcess(const TCHAR *pacProcess, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait, unsigned int piTimeout = 0);
 	void __fastcall WMDropFiles(const TWMDropFiles &udtMessage);
+	void __fastcall WMSettingChange(TMessage &udtMessage);
 	void __fastcall AddFilesInitializeExist(void);
 	bool __fastcall AddFilesExist(const String psFile);
 	void __fastcall AddFiles(const TCHAR *pacFile, const WIN32_FIND_DATA *pudtKnown = nullptr);

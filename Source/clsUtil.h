@@ -65,7 +65,8 @@ class clsUtil
 		static bool __fastcall DirectoryCreate(String psDirectory);
 		static bool __fastcall DownloadFile(const TCHAR *pacUrl, void *pvData, unsigned int piSize);
 		static bool __fastcall DownloadFilePost(const TCHAR *pacServer, const TCHAR *pacPage, const char *pacParameters, void *pvData, unsigned int piSize, bool pbHttps = false);
-		static bool __fastcall CopyFile(const TCHAR *pacSource, const TCHAR *pacDestination);
+		//pbReplace: the destination is an existing file that must never be left half written, so it is copied next to it and then swapped
+		static bool __fastcall CopyFile(const TCHAR *pacSource, const TCHAR *pacDestination, bool pbReplace = false);
 		static const TCHAR * __fastcall ExeVersion(const TCHAR *pacFile);
 		static size_t __fastcall GetFileVersionField(const TCHAR *fn, const TCHAR *info, TCHAR *ret, size_t len);
 		static const TCHAR * __fastcall GetIniPath(bool pbAllUsers = false);

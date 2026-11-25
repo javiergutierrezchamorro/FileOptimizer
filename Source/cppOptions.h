@@ -120,6 +120,7 @@ __published: // IDE-managed Components
 	TComboBox *cboLanguage;
 	TLabel *lblLanguage;
 	TCheckBox *chkAllowMultipleInstances;
+	TCheckBox *chkExplorerContextMenu;
 	TLabel *lblThreads;
 	TSpinEdit *spnThreads;
 	TLabel *lblZoom;

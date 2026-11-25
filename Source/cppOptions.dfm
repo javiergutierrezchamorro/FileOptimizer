@@ -502,6 +502,20 @@ object frmOptions: TfrmOptions
         ShowHint = True
         TabOrder = 7
       end
+      object chkExplorerContextMenu: TCheckBox
+        Left = 7
+        Top = 214
+        Width = 281
+        Height = 17
+        Hint = 
+          'Adds an entry to the Explorer right button menu and to the Sen' +
+          'd to menu, to optimize files and folders. It only applies to t' +
+          'he current user, and no administrator rights are required.'
+        Caption = 'Add to E&xplorer menu and Send to'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 9
+      end
       object spnThreads: TSpinEdit
         Left = 168
         Top = 14
