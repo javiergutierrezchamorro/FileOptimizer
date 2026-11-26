@@ -423,6 +423,8 @@ static const struct udtOptionsBool
 	{_T("PDFSkipLayered"), _T("Boolean. Default: false. Skip processing of PDF files containing layered objects. Results in more compatible files with higher size."), offsetof(udtOptions, bPDFSkipLayered), false},
 	{_T("PNGCopyMetadata"), _T("Boolean. Default: false. Copy file metadata. Else strip all unneeded information."), offsetof(udtOptions, bPNGCopyMetadata), false},
 	{_T("PNGAllowLossy"), _T("Boolean. Default: false. Allowing lossy optimizations will get higher files reduction at the cost of some quality loss, even if visually unnoticeable or not."), offsetof(udtOptions, bPNGAllowLossy), false},
+	{_T("SVGEnableSvgcleaner"), _T("Boolean. Default: false. Enable svgcleaner for SVG files. Lossless and recommended."), offsetof(udtOptions, bSVGEnableSvgcleaner), false},
+	{_T("SVGEnableSvgop"), _T("Boolean. Default: false. Enable svgop (SVGO packaged). Large binary, use only if needed."), offsetof(udtOptions, bSVGEnableSvgop), false},
 	{_T("TGACopyMetadata"), _T("Boolean. Default: false. Copy file metadata. Else strip all unneeded information."), offsetof(udtOptions, bTGACopyMetadata), false},
 	{_T("TIFFCopyMetadata"), _T("Boolean. Default: false. Copy file metadata. Else strip all unneeded information."), offsetof(udtOptions, bTIFFCopyMetadata), false},
 	{_T("WAVCopyMetadata"), _T("Boolean. Default: false. Copy file metadata. Else strip all unneeded information."), offsetof(udtOptions, bWAVCopyMetadata), false},
@@ -2241,19 +2243,45 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			}
 			RunPlugin((unsigned int) iCount, "Columbo (10/10)", (sPluginsDirectory + "columbo.exe " + sFlags + "\"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 		}
-		// HTML: tidy-html5, Minify, Leanify
+		// HTML / SVG: svgcleaner, svgop, tidy-html5, Minify, Leanify
 		if (PosEx(sExtensionByContent, KS_EXTENSION_HTML) > 0)
 		{
+			const bool bIsSVG = (PosEx(_T(" .svg "), sExtensionByContent) > 0);
+
+			if (bIsSVG)
+			{
+				if (gudtOptions.bSVGEnableSvgcleaner)
+				{
+					RunPlugin((unsigned int) iCount, "svgcleaner (1/5)", (sPluginsDirectory + "svgcleaner.exe --quiet \"%INPUTFILE%\" \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+				}
+				if (gudtOptions.bSVGEnableSvgop)
+				{
+					RunPlugin((unsigned int) iCount, "svgop (2/5)", (sPluginsDirectory + "svgop.exe \"%INPUTFILE%\" \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+				}
+			}
+
 			if (gudtOptions.bHTMLEnableTidy)
 			{
-				RunPlugin((unsigned int) iCount, "tidy (1/3)", (sPluginsDirectory + "tidy.exe -config tidy.config -quiet -output \"%TMPOUTPUTFILE%\" \"%INPUTFILE%\" ").c_str(), sInputFile, "", 0, 0);
-				
-				RunPlugin((unsigned int) iCount, "Minify (2/3)", (sPluginsDirectory + "minify.exe \"%INPUTFILE%\" --output \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-
-				sFlags = "";
-				//iLevel = min(gudtOptions.iLevel * 8 / 9, 8) + 1;
-				sFlags += "-i " + sLeanifyIterations + " ";
-				RunPlugin((unsigned int) iCount, "Leanify (3/3)", (sPluginsDirectory + "leanify.exe -q -p " + sFlags + "\"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+				if (bIsSVG)
+				{
+					RunPlugin((unsigned int) iCount, "tidy (3/5)", (sPluginsDirectory + "tidy.exe -config tidy.config -quiet -output \"%TMPOUTPUTFILE%\" \"%INPUTFILE%\" ").c_str(), sInputFile, "", 0, 0);
+					RunPlugin((unsigned int) iCount, "Minify (4/5)", (sPluginsDirectory + "minify.exe \"%INPUTFILE%\" --output \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+					sFlags = "-i " + sLeanifyIterations + " ";
+					RunPlugin((unsigned int) iCount, "Leanify (5/5)", (sPluginsDirectory + "leanify.exe -q -p " + sFlags + "\"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+				}
+				else
+				{
+					RunPlugin((unsigned int) iCount, "tidy (1/3)", (sPluginsDirectory + "tidy.exe -config tidy.config -quiet -output \"%TMPOUTPUTFILE%\" \"%INPUTFILE%\" ").c_str(), sInputFile, "", 0, 0);
+					RunPlugin((unsigned int) iCount, "Minify (2/3)", (sPluginsDirectory + "minify.exe \"%INPUTFILE%\" --output \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+					sFlags = "-i " + sLeanifyIterations + " ";
+					RunPlugin((unsigned int) iCount, "Leanify (3/3)", (sPluginsDirectory + "leanify.exe -q -p " + sFlags + "\"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+				}
+			}
+			else if (bIsSVG && (gudtOptions.bSVGEnableSvgcleaner || gudtOptions.bSVGEnableSvgop))
+			{
+				// Without Tidy, still run Leanify on SVG when any SVG-specific tool is enabled
+				sFlags = "-i " + sLeanifyIterations + " ";
+				RunPlugin((unsigned int) iCount, "Leanify (5/5)", (sPluginsDirectory + "leanify.exe -q -p " + sFlags + "\"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 			}
 		}
 		// ICO: ImageMagick, Leanify
@@ -3152,18 +3180,30 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			}
 			RunPlugin((unsigned int) iCount, "Columbo (8/8)", (sPluginsDirectory + "columbo.exe " + sFlags + "\"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 		}
-		// 7Z: m7zRepacker
+		// 7Z / XZ: xz.exe (always for .xz/.lz/.lzma) + m7zRepacker (high levels)
+		// CreateProcess does not interpret shell redirection, so xz is invoked via cmd /c.
 		if (PosEx(sExtensionByContent, KS_EXTENSION_7Z) > 0)
 		{
-			//Very slow, use it only in high compression profiles
+			// .xz and .lzma are native xz formats; .lz is lzip and is left for m7zRepacker/other tools
+			if ((PosEx(_T(" .xz "), sExtensionByContent) > 0) || (PosEx(_T(" .lzma "), sExtensionByContent) > 0))
+			{
+				RunPlugin((unsigned int) iCount, "xz (1/2)", ("cmd.exe /c \"\"" + sPluginsDirectory + "xz.exe\" -e -9 -k -f -c \"%INPUTFILE%\" > \"%TMPOUTPUTFILE%\"\"").c_str(), sInputFile, "", 0, 0);
+			}
+
+			// Very slow; only in high compression profiles (classic 7z)
 			if (gudtOptions.iLevel > 7)
 			{
 				#if defined(_WIN64)
-					RunPlugin((unsigned int) iCount, "m7zRepacker (1/1)", (sPluginsDirectory + "m7zrepacker.exe -m1 -d1024 -mem2048 \"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+					RunPlugin((unsigned int) iCount, "m7zRepacker (2/2)", (sPluginsDirectory + "m7zrepacker.exe -m1 -d1024 -mem2048 \"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 				#else
-					RunPlugin((unsigned int) iCount, "m7zRepacker (1/1)", (sPluginsDirectory + "m7zrepacker.exe -m1 -d128 -mem512 \"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+					RunPlugin((unsigned int) iCount, "m7zRepacker (2/2)", (sPluginsDirectory + "m7zrepacker.exe -m1 -d128 -mem512 \"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 				#endif
 			}
+		}
+		// FONT: ttfautohint (TTF/OTF/TTC only; WOFF/WOFF2 are containers ttfautohint does not read)
+		if ((PosEx(_T(" .ttf "), sExtensionByContent) > 0) || (PosEx(_T(" .otf "), sExtensionByContent) > 0) || (PosEx(_T(" .ttc "), sExtensionByContent) > 0))
+		{
+			RunPlugin((unsigned int) iCount, "ttfautohint (1/1)", (sPluginsDirectory + "ttfautohint.exe -f none \"%INPUTFILE%\" \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 		}
 		// MISC: ImageMagick
 		if (PosEx(sExtensionByContent, KS_EXTENSION_MISC) > 0)

@@ -1106,6 +1106,34 @@ object frmOptions: TfrmOptions
         TabOrder = 1
       end
     end
+    object pagSVG: TTabSheet
+      Caption = 'SV&G'
+      ImageIndex = 11
+      object chkSVGEnableSvgcleaner: TCheckBox
+        Left = 7
+        Top = 22
+        Width = 281
+        Height = 17
+        Hint = 
+          'Enable svgcleaner for SVG files. Lossless and recommended.'
+        Caption = 'Enable &svgcleaner'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+      end
+      object chkSVGEnableSvgop: TCheckBox
+        Left = 7
+        Top = 41
+        Width = 281
+        Height = 17
+        Hint = 
+          'Enable svgop (SVGO packaged). Large binary; use only if needed.'
+        Caption = 'Enable sv&gop'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+      end
+    end
     object pagTGA: TTabSheet
       Caption = '&TGA'
       ImageIndex = 8

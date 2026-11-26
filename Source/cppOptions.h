@@ -36,6 +36,7 @@ __published: // IDE-managed Components
 	TTabSheet *pagPCX;
 	TTabSheet *pagPNG;
 	TTabSheet *pagPDF;
+	TTabSheet *pagSVG;
 	TTabSheet *pagTGA;
 	TTabSheet *pagTIFF;
 	TTabSheet *pagXML;
@@ -69,6 +70,8 @@ __published: // IDE-managed Components
 	TComboBox *cboPDFProfile;
 	TCheckBox *chkPNGCopyMetadata;
 	TCheckBox *chkPNGAllowLossy;
+	TCheckBox *chkSVGEnableSvgcleaner;
+	TCheckBox *chkSVGEnableSvgop;
 	TCheckBox *chkXMLEnableLeanify;
 	TCheckBox *chkZIPCopyMetadata;
 	TCheckBox *chkZIPRecurse;

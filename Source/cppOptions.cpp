@@ -64,6 +64,7 @@ void __fastcall TfrmOptions::FormCreate(TObject *Sender)
 	pagPCX->Hint = _("Extensions affected: ") + (String) KS_EXTENSION_PCX;
 	pagPDF->Hint = _("Extensions affected: ") + (String) KS_EXTENSION_PDF;
 	pagPNG->Hint = _("Extensions affected: ") + (String) KS_EXTENSION_PNG KS_EXTENSION_ICO;
+	pagSVG->Hint = _("Extensions affected: .svg");
 	pagTGA->Hint = _("Extensions affected: ") + (String) KS_EXTENSION_TGA;
 	pagTIFF->Hint = _("Extensions affected: ") + (String) KS_EXTENSION_TIFF;
 	pagXML->Hint = _("Extensions affected: ") + (String) KS_EXTENSION_XML KS_EXTENSION_HTML;
@@ -184,6 +185,8 @@ void __fastcall TfrmOptions::FormCreate(TObject *Sender)
 
 	chkPNGCopyMetadata->Checked = gudtOptions.bPNGCopyMetadata;
 	chkPNGAllowLossy->Checked = gudtOptions.bPNGAllowLossy;
+	chkSVGEnableSvgcleaner->Checked = gudtOptions.bSVGEnableSvgcleaner;
+	chkSVGEnableSvgop->Checked = gudtOptions.bSVGEnableSvgop;
 	chkTGACopyMetadata->Checked = gudtOptions.bTGACopyMetadata;
 	chkTIFFCopyMetadata->Checked = gudtOptions.bTIFFCopyMetadata;
 	chkXMLEnableLeanify->Checked = gudtOptions.bXMLEnableLeanify;
@@ -339,6 +342,8 @@ void __fastcall TfrmOptions::butOKClick(TObject *Sender)
 
 	gudtOptions.bPNGCopyMetadata = chkPNGCopyMetadata->Checked;
 	gudtOptions.bPNGAllowLossy = chkPNGAllowLossy->Checked;
+	gudtOptions.bSVGEnableSvgcleaner = chkSVGEnableSvgcleaner->Checked;
+	gudtOptions.bSVGEnableSvgop = chkSVGEnableSvgop->Checked;
 	gudtOptions.bTGACopyMetadata = chkTGACopyMetadata->Checked;
 	gudtOptions.bTIFFCopyMetadata = chkTIFFCopyMetadata->Checked;
 	gudtOptions.bXMLEnableLeanify = chkXMLEnableLeanify->Checked;

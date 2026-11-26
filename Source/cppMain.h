@@ -48,10 +48,10 @@
 #define KS_EXTENSION_EXE	_T(" .exe .scr ")
 #define KS_EXTENSION_FLAC	_T(" .flac ")
 #define KS_EXTENSION_GIF	_T(" .gif ")
-#define KS_EXTENSION_GZ		_T(" .gz .deb .ipk .tgz .svgz .vlt ")
-#define KS_EXTENSION_HTML	_T(" .htm .html .mht .mhtml .xhtml .xml .sgml .svg ")
+#define KS_EXTENSION_GZ		_T(" .gz .deb .ipk .tgz .svgz .vlt .Z .z .taz ")
+#define KS_EXTENSION_HTML	_T(" .htm .html .mht .mhtml .xhtml .xml .sgml .svg .rss .atom .gpx ")
 #define KS_EXTENSION_ICO	_T(" .ico .cur .spl ")
-#define KS_EXTENSION_JPG	_T(" .jfi .jif .jfif .jng .jpe .jpg .jpeg .thm .mpo .jps ")
+#define KS_EXTENSION_JPG	_T(" .jfi .jif .jfif .jng .jpe .jpg .jpeg .thm .mpo .jps .jxr .wdp .hdp ")
 #define KS_EXTENSION_JP2	_T(" .jp2 .j2c .j2k ")
 #define KS_EXTENSION_JS		_T(" .js .json ")
 #define KS_EXTENSION_JXL	_T(" .jxl ")
@@ -60,13 +60,13 @@
 #define KS_EXTENSION_MKV	_T(" .mkv .mka .mks .mk3d .webm .weba ")
 #define KS_EXTENSION_MNG	_T(" .mng ")
 #define KS_EXTENSION_MP3	_T(" .mp3 ")
-#define KS_EXTENSION_MP4	_T(" .mp4 .3gp .3gg .3g2 .m4a .m4b .m4p .m4r .m4v .acc .avi .mpg .mpeg .vob .flv .wmv .wma .rv .ra .rm .rmvb .ram .smil .qt .mov ")
+#define KS_EXTENSION_MP4	_T(" .mp4 .3gp .3gg .3g2 .m4a .m4b .m4p .m4r .m4v .acc .avi .mpg .mpeg .vob .flv .wmv .wma .rv .ra .rm .rmvb .ram .smil .qt .mov .f4v .m4s .ismv .3gpp ")
 #define KS_EXTENSION_OBJ	_T(" .obj .o .lib .a ")
 #define KS_EXTENSION_OGG	_T(" .ogg .oga .ogx .ogm .spx .opus ")
 #define KS_EXTENSION_OGV	_T(" .ogg .ogv .ogx ")
-#define KS_EXTENSION_OLE	_T(" .ac .adp .apr .art .chm .chi .chq .chs .chw .db .doc .dot .fla .fpx .its .lit .max .mce .mdb .mdt .mic .mix .mpd .mpp .mpt .msc .msi .msg .msp .mst .mtw .mzz .ole .ole2 .one .opt .ost .pps .ppt .pub .puz .rfa .rft .rte .rvt .sldasm .sldprt .slddrw .sou .spo stickynotes.snt thumbs.db .vsd .vst .vss .wiz .wps .xl .xla .xlc .xlm .xls .xlw .xsf .xsn ")
+#define KS_EXTENSION_OLE	_T(" .ac .adp .apr .art .chm .chi .chq .chs .chw .db .doc .dot .fla .fpx .its .lit .max .mce .mdb .mdt .mic .mix .mpd .mpp .mpt .msc .msi .msg .msp .mst .mtw .mzz .ole .ole2 .one .opt .ost .pps .ppt .pub .puz .rfa .rft .rte .rvt .sldasm .sldprt .slddrw .sou .spo stickynotes.snt thumbs.db .vsd .vst .vss .wiz .wps .xl .xla .xlc .xlm .xls .xlw .xsf .xsn .onepkg ")
 #define KS_EXTENSION_PCX	_T(" .dcx .pcc .pcx ")
-#define KS_EXTENSION_PDF	_T(" .epdf .pdf .fdf .ai ")
+#define KS_EXTENSION_PDF	_T(" .epdf .pdf .fdf .ai .eps .ps ")
 #define KS_EXTENSION_PNG	_T(" .apng .ico .png .pns ")
 #define KS_EXTENSION_SQLITE	_T(" .sqlite .sqlite3 .sqlite2 .db ")
 #define KS_EXTENSION_SWF	_T(" .swf ")
@@ -76,11 +76,12 @@
 #define KS_EXTENSION_TENCENTQQ	_T(" .gft .rdb ")
 #define KS_EXTENSION_WAV	_T(" .wav ")
 #define KS_EXTENSION_WEBP	_T(" .webp ")
-#define KS_EXTENSION_XML	_T(" .xml .fb2 .fxg .kml .xsl .xslt .xhtml ")
-#define KS_EXTENSION_ZIP	_T(" .air .apk .appx .bar .bsz .cbz .cdr .cdt .csl .des .docm .docx .dotx .dotm .dwf .dwfx .ear .easm .eprt .epub .fxg .gallery .gallerycollection .galleryitem .grs .ink .ipsw .itz .ipa .ita .jar .kmz .ksf .lxf .mdz .miz .mmip .mvz .mpp .msz .nar .nbk .notebook .ora .odb .odf .odg .odp .ods .odt .oex .osk .oxps .pk3 .ppam .potm .potx .ppsm .ppsx .pptm .pptx .pub .qwk .r2skin .rdb .rmskin .s3z .sldm .sldx .stz .swc .vdx .vtx .vsx .wal .war .wba .wmz .wsz .xap .xlam .xlsb .xlsm .xlsx .xltm .xltx .xnk .xmz .xpi .xps .z01 .z02 .z03 .z04 .z05 .z06 .z07 .z08 .z09 .z10 .zip .zx01 .zx02 .zx03 .zx04 .zx05 .zx06 .zx07 .zx08 .zx09 .zx10 .zipx ")
-#define KS_EXTENSION_7Z		_T(" .7z .lzma ")	
-#define KS_EXTENSION_MISC	_T(" .aai .art .avs .bpg .cin .cmyk .cmyka .dds .dpx .epdf .fax .fits .fpx .gray .hdr .hrz .inline .jpc .jpt .mono .mif .miff .mpc .mpr .msl .mtv .mvg .otb .p7 .palm .pcd .pcds .pcl .pcls .pdb .pbm .pfs .pfm .pgm .picon .pic .pict .pnm .ppm .psb .psd .ptif .ptiff .rfg .rgb .rgba .sgi .sun .uyvy .vicar .viff .wbmp .x .xbm .xpm .xwd .ycbr .ycbra .yub ")
-#define KS_EXTENSION_ALL	(StringReplace((KS_EXTENSION_BMP KS_EXTENSION_AVIF KS_EXTENSION_CSS KS_EXTENSION_DLL KS_EXTENSION_EXE KS_EXTENSION_FLAC KS_EXTENSION_GIF KS_EXTENSION_GZ KS_EXTENSION_HTML KS_EXTENSION_ICO KS_EXTENSION_JP2 KS_EXTENSION_JPG KS_EXTENSION_JXL KS_EXTENSION_JS KS_EXTENSION_LUA KS_EXTENSION_MIME KS_EXTENSION_MKV KS_EXTENSION_MNG KS_EXTENSION_MP3 KS_EXTENSION_MP4 KS_EXTENSION_OBJ KS_EXTENSION_OGG KS_EXTENSION_OGV KS_EXTENSION_OLE KS_EXTENSION_PCX KS_EXTENSION_PDF KS_EXTENSION_PNG KS_EXTENSION_SQLITE KS_EXTENSION_SWF KS_EXTENSION_TAR KS_EXTENSION_TENCENTQQ KS_EXTENSION_TGA KS_EXTENSION_TIFF KS_EXTENSION_WAV KS_EXTENSION_WEBP KS_EXTENSION_XML KS_EXTENSION_ZIP KS_EXTENSION_7Z KS_EXTENSION_MISC), "  ", " ", TReplaceFlags() << rfReplaceAll))
+#define KS_EXTENSION_XML	_T(" .xml .fb2 .fxg .kml .xsl .xslt .xhtml .rss .atom .gpx ")
+#define KS_EXTENSION_ZIP	_T(" .air .apk .appx .bar .bsz .cbz .cdr .cdt .csl .des .docm .docx .dotx .dotm .dwf .dwfx .ear .easm .eprt .epub .fxg .gallery .gallerycollection .galleryitem .grs .ink .ipsw .itz .ipa .ita .jar .kmz .ksf .lxf .mdz .miz .mmip .mvz .mpp .msz .nar .nbk .notebook .ora .odb .odf .odg .odp .ods .odt .oex .osk .oxps .pk3 .ppam .potm .potx .ppsm .ppsx .pptm .pptx .pub .qwk .r2skin .rdb .rmskin .s3z .sldm .sldx .stz .swc .vdx .vtx .vsx .wal .war .wba .wmz .wsz .xap .xlam .xlsb .xlsm .xlsx .xltm .xltx .xnk .xmz .xpi .xps .z01 .z02 .z03 .z04 .z05 .z06 .z07 .z08 .z09 .z10 .zip .zx01 .zx02 .zx03 .zx04 .zx05 .zx06 .zx07 .zx08 .zx09 .zx10 .zipx .crx .vsix .nupkg .whl .egg .sar .vsdx ")
+#define KS_EXTENSION_7Z		_T(" .7z .lzma .xz .lz ")
+#define KS_EXTENSION_FONT	_T(" .ttf .otf .ttc .woff .woff2 ")
+#define KS_EXTENSION_MISC	_T(" .aai .art .avs .bpg .cin .cmyk .cmyka .dds .dpx .epdf .fax .fits .fpx .gray .hdr .hrz .inline .jpc .jpt .mono .mif .miff .mpc .mpr .msl .mtv .mvg .otb .p7 .palm .pcd .pcds .pcl .pcls .pdb .pbm .pfs .pfm .pgm .picon .pic .pict .pnm .ppm .psb .psd .ptif .ptiff .rfg .rgb .rgba .sgi .sun .uyvy .vicar .viff .wbmp .x .xbm .xpm .xwd .ycbr .ycbra .yub .qoi .jxr ")
+#define KS_EXTENSION_ALL	(StringReplace((KS_EXTENSION_BMP KS_EXTENSION_AVIF KS_EXTENSION_CSS KS_EXTENSION_DLL KS_EXTENSION_EXE KS_EXTENSION_FLAC KS_EXTENSION_GIF KS_EXTENSION_GZ KS_EXTENSION_HTML KS_EXTENSION_ICO KS_EXTENSION_JP2 KS_EXTENSION_JPG KS_EXTENSION_JXL KS_EXTENSION_JS KS_EXTENSION_LUA KS_EXTENSION_MIME KS_EXTENSION_MKV KS_EXTENSION_MNG KS_EXTENSION_MP3 KS_EXTENSION_MP4 KS_EXTENSION_OBJ KS_EXTENSION_OGG KS_EXTENSION_OGV KS_EXTENSION_OLE KS_EXTENSION_PCX KS_EXTENSION_PDF KS_EXTENSION_PNG KS_EXTENSION_SQLITE KS_EXTENSION_SWF KS_EXTENSION_TAR KS_EXTENSION_TENCENTQQ KS_EXTENSION_TGA KS_EXTENSION_TIFF KS_EXTENSION_WAV KS_EXTENSION_WEBP KS_EXTENSION_XML KS_EXTENSION_ZIP KS_EXTENSION_7Z KS_EXTENSION_FONT KS_EXTENSION_MISC), "  ", " ", TReplaceFlags() << rfReplaceAll))
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -111,6 +112,8 @@ struct udtOptions
 	bool bPDFSkipLayered;
 	bool bPNGCopyMetadata;
 	bool bPNGAllowLossy;
+	bool bSVGEnableSvgcleaner;
+	bool bSVGEnableSvgop;
 	bool bTGACopyMetadata;
 	bool bTIFFCopyMetadata;
 	bool bWAVCopyMetadata;
