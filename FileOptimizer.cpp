@@ -89,11 +89,12 @@ int WINAPI _tWinMain(HINSTANCE phInstance, HINSTANCE phPrevInstance, LPTSTR pacC
 
 		if (!TfrmMain::GetOption(_T("Options"), _T("AllowMultipleInstances"), false))
 		{
-			//Create it directly instead of Open + Create, to avoid a race when two instances start at the same time
+			// Create directly (no OpenMutex + CreateMutex) to avoid a race when two instances start at the same time.
 			SetLastError(0);
 			hMutex = CreateMutex(nullptr, false, Application->Name.c_str());
-			//Read it once, or the second call could already see a different error. ERROR_ACCESS_DENIED means it already exists, but it belongs to a process with higher privileges
-			unsigned long lLastError = GetLastError();
+			// Read GetLastError only once. ERROR_ALREADY_EXISTS = same privilege level already running.
+			// ERROR_ACCESS_DENIED = already running under higher privileges (UIPI).
+			const unsigned long lLastError = GetLastError();
 			if (((hMutex) && (lLastError == ERROR_ALREADY_EXISTS)) || ((!hMutex) && (lLastError == ERROR_ACCESS_DENIED)))
 			{
 				if (clsUtil::MsgBox(nullptr, ("There is one instance of " + Application->Name + " still running.\r\n\r\nDo you want to open another?").c_str(), _T("Still running"), MB_YESNO | MB_ICONQUESTION) == IDNO)
@@ -101,6 +102,7 @@ int WINAPI _tWinMain(HINSTANCE phInstance, HINSTANCE phPrevInstance, LPTSTR pacC
 					if (hMutex)
 					{
 						CloseHandle(hMutex);
+						hMutex = nullptr;  // avoid double-close on the normal exit path
 					}
 					return (1);
 				}

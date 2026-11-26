@@ -381,11 +381,14 @@ void __fastcall TfrmMain::CopyFilesToClipboard(void)
 {
 	unsigned int iRows = (unsigned int) grdFiles->RowCount - 1;
 	TStringList *lstFiles = new TStringList();
+	//Ctrl-C is allowed while optimizing, so the cells are read under the critical section, like the painting does
+	EnterCriticalSection(&mudtCriticalSection);
 	for (unsigned int iRow = 1; iRow <= iRows; iRow++)
 	{
 		//The .c_str() deep copy keeps the list away from the grid Strings, whose reference count is not updated atomically
 		lstFiles->Add(GetCellValue(grdFiles->Cells[KI_GRID_FILE][(int) iRow], 1).c_str());
 	}
+	LeaveCriticalSection(&mudtCriticalSection);
 	Clipboard()->AsText = lstFiles->Text;
 	delete lstFiles;
 }
@@ -1015,7 +1018,11 @@ void __fastcall TfrmMain::grdFilesMouseMove(TObject *Sender, TShiftState Shift, 
 void __fastcall TfrmMain::grdFilesDblClick(TObject *Sender)
 {
 	//Double click synonymous Open selected file
-	actOpenExecute(Sender);
+	//The Open action is disabled while optimizing: do not bypass it from here, or the cell would be read while the workers update the grid
+	if (!gbProcess)
+	{
+		actOpenExecute(Sender);
+	}
 }
 
 
@@ -1849,10 +1856,10 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 
 	//Required indirection
 	String sCaption;
-	sCaption.printf(_((TCHAR *) _T("Processing %s...")), sInputFile.c_str());
-	//Interface updates only on the main thread: workers would compete for them, and in multithreaded mode the main loop already refreshes the global progress
+	//Interface updates only on the main thread: workers would compete for them, and in multithreaded mode the main loop already refreshes the global progress. Workers do not use the caption, so they do not even build it
 	if (GetCurrentThreadId() == MainThreadID)
 	{
+		sCaption.printf(_((TCHAR *) _T("Processing %s...")), sInputFile.c_str());
 		stbMain->Panels->Items[0]->Text = sCaption;
 
 		stbMain->Hint = stbMain->Panels->Items[0]->Text;
@@ -1867,11 +1874,15 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 
 	bool bExcluded = false;
 
-	//If include mask is specified, by default all files are excluded, except the specified. The masks were already split and upper cased when the optimization started, so only the file name has to be upper cased for every file
+	//If include mask is specified, by default all files are excluded, except the specified. The masks were already split and upper cased when the optimization started, so the file name is upper cased only once for both mask lists
+	String sInputFileUpper;
+	if ((siIncludeMasks > 0) || (siExcludeMasks > 0))
+	{
+		sInputFileUpper = sInputFile.UpperCase();
+	}
 	if (siIncludeMasks > 0)
 	{
 		bExcluded = true;
-		String sInputFileUpper = sInputFile.UpperCase();
 		for (unsigned int iMask = 0; iMask < siIncludeMasks; iMask++)
 		{
 			if ((sppacIncludeMasks[iMask][0] != NULL) && (_tcsstr(sInputFileUpper.c_str(), sppacIncludeMasks[iMask]) != nullptr))
@@ -1884,7 +1895,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 
 	if (siExcludeMasks > 0)
 	{
-		String sInputFileUpper = sInputFile.UpperCase();
 		for (unsigned int iMask = 0; iMask < siExcludeMasks; iMask++)
 		{
 			if ((sppacExcludeMasks[iMask][0] != NULL) && (_tcsstr(sInputFileUpper.c_str(), sppacExcludeMasks[iMask]) != nullptr))
@@ -3413,18 +3423,72 @@ bool __fastcall TfrmMain::AddFilesExist(const String psFile)
 
 
 // ---------------------------------------------------------------------------
+//Starts (pbStart) or stops the marquee (back and forth) animation of the progress bar, used while adding files. The VCL wrapper has no property for it on all the compiler versions in use, so the style bit is changed directly on the control handle. PBM_SETMARQUEE comes from comctl32 v6, which is a system requirement anyway (Vista or later)
+#ifndef PBS_MARQUEE
+	#define PBS_MARQUEE 0x00000008
+#endif
+#ifndef PBM_SETMARQUEE
+	#define PBM_SETMARQUEE (WM_USER + 10)
+#endif
+static void SetMarqueeProgressBar(TProgressBar *pgbProgress, const bool pbStart)
+{
+	if (pgbProgress)
+	{
+		const LONG lStyle = GetWindowLong(pgbProgress->Handle, GWL_STYLE);
+		//The style bit is changed only when it differs, so a call with the current state does nothing
+		if ((pbStart) && ((lStyle & PBS_MARQUEE) == 0))
+		{
+			SetWindowLong(pgbProgress->Handle, GWL_STYLE, lStyle | PBS_MARQUEE);
+		}
+		if ((!pbStart) && ((lStyle & PBS_MARQUEE) != 0))
+		{
+			SetWindowLong(pgbProgress->Handle, GWL_STYLE, lStyle & ~PBS_MARQUEE);
+		}
+		//Starts or stops the animation. A speed of 0 means the default 30 milliseconds per animation step
+		SendMessage(pgbProgress->Handle, PBM_SETMARQUEE, (WPARAM) pbStart, (LPARAM) 0);
+	}
+}
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+//Adds one element of the file list (a file, folder or wildcard), expanding folders recursively. It only does the marquee bookkeeping around AddFilesScan, inside a try/__finally so the animation cannot be left running if something unexpected throws
 void __fastcall TfrmMain::AddFiles(const TCHAR *pacFile, const WIN32_FIND_DATA *pudtKnown)
 {
-	WIN32_FIND_DATA udtFindFileData;
-	WIN32_FILE_ATTRIBUTE_DATA udtFileAttribute;
-	static unsigned int iLastRefresh = 0;
-
-
 	//The program is being closed while adding files, so do not keep adding
 	if (gbClosing)
 	{
 		return;
 	}
+	//Number of nested AddFiles calls in progress, so the marquee is started once per batch and not restarted on every recursion level
+	static unsigned int siAddFilesDepth = 0;
+	siAddFilesDepth++;
+	//While adding files the final count is not known until the whole scan ends, so instead of the stepped bar (which can look stalled on a big folder) the progress bar animates as a marquee (back and forth), making clear the program is working. Only the outermost call touches it, or every recursion would restart it, and not while optimizing, where the workers feed it with the real progress
+	if ((siAddFilesDepth == 1) && (!gbProcess))
+	{
+		SetMarqueeProgressBar(pgbProgress, true);
+	}
+	try
+	{
+		AddFilesScan(pacFile, pudtKnown);
+	}
+	__finally
+	{
+		//The marquee is stopped only when the outermost call ends, because the callers add one element per call
+		siAddFilesDepth--;
+		if (siAddFilesDepth == 0)
+		{
+			SetMarqueeProgressBar(pgbProgress, false);
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TfrmMain::AddFilesScan(const TCHAR *pacFile, const WIN32_FIND_DATA *pudtKnown)
+{
+	WIN32_FIND_DATA udtFindFileData;
+	WIN32_FILE_ATTRIBUTE_DATA udtFileAttribute;
+	static unsigned int iLastRefresh = 0;
+
 	//Keep the interface alive and showing the growing list while adding many files, even inside a huge folder, but only 10 times per second because refreshing is expensive
 	if ((GetTickCount() - iLastRefresh) >= 100)
 	{
@@ -3477,11 +3541,11 @@ void __fastcall TfrmMain::AddFiles(const TCHAR *pacFile, const WIN32_FIND_DATA *
 				//Check if already added
 				if (!gudtOptions.bAllowDuplicates)
 				{
-					//if (grdFiles->Cols[KI_GRID_FILE]->IndexOf(sCellFile) >= 0)
-					if (AddFilesExist(sCellFile))
-					{
-						return;
-					}
+				//if (grdFiles->Cols[KI_GRID_FILE]->IndexOf(sCellFile) >= 0)
+				if (AddFilesExist(sCellFile))
+				{
+					return;
+				}
 				}
 
 				String sExtensionByContent = GetExtensionByContent(pacFile);
@@ -3698,7 +3762,6 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 		Application->ProcessMessages();
 	}
 
-	bool bOutputFile = (PosEx("%OUTPUTFILE%", psCommandLine) != 0);
 	bool bTmpOutputFile = (PosEx("%TMPOUTPUTFILE%", psCommandLine) != 0);
 	bool bTmpInputFile = (PosEx("%TMPINPUTFILE%", psCommandLine) != 0);
 	//Copy the original file only when the plugin really works on the temporary copy: copying it for the ones that use the input file in place (Ghostscript, shntool, flasm...) was a wasted copy of the whole file
@@ -3731,10 +3794,15 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 		sCommandLine = "\"" + sCommandLine.SubString(1, iProgramEnd - 1) + "\"" + sCommandLine.SubString(iProgramEnd, MaxInt);
 	}
 	int iError;
+	//The timestamps are only used by the log, so they are not queried when logging is disabled (two GetLocalTime calls per plugin saved)
 	TDateTime dteStart, dteEnd;
+	bool bLogTime = (gudtOptions.iLogLevel > 3);
 	if (lSize > 0)
 	{
-		dteStart = TDateTime::CurrentDateTime();
+		if (bLogTime)
+		{
+			dteStart = TDateTime::CurrentDateTime();
+		}
 		//Maximum run time, so a plugin that hangs does not block its worker forever: the configured seconds (0 = no limit) plus a minute for every MB of the file, since big files legitimately take longer
 		unsigned int iTimeout = 0;
 		if (gudtOptions.iPluginTimeout > 0)
@@ -3743,7 +3811,10 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 			iTimeout = (lTimeout < 0xFFFFFFF0ULL) ? (unsigned int) lTimeout : 0xFFFFFFF0U;
 		}
 		iError = (int) RunProcess(sCommandLine.c_str(), NULL, 0, true, iTimeout);
-		dteEnd = TDateTime::CurrentDateTime();
+		if (bLogTime)
+		{
+			dteEnd = TDateTime::CurrentDateTime();
+		}
 
 		//Check exit errorlevel. A plugin killed by Stop leaves a partial output, which must never replace the input file
 		if ((iError >= piErrorMin) && (iError <= piErrorMax) && (!gbStop))
@@ -3780,8 +3851,11 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 	}
 	else
 	{
-		dteStart = TDateTime::CurrentDateTime();
-		dteEnd = dteStart;
+		if (bLogTime)
+		{
+			dteStart = TDateTime::CurrentDateTime();
+			dteEnd = dteStart;
+		}
 		iError = -9999;
 	}
 
@@ -4249,6 +4323,11 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 		Screen->Cursor = crAppStart;
 	}
 
+	//CreateProcess can modify the command line while parsing, so it gets a private writable copy: the caller passes the buffer of a reference counted String. Same fix clsUtil::RunProcess got
+	const size_t iCmdLen = _tcslen(pacProcess) + 1;
+	TCHAR *pacCmdLine = new TCHAR[iCmdLen];
+	_tcscpy(pacCmdLine, pacProcess);
+
 	//Disable Windows error handling. Do not use GetErrorMode because it requires Vista or later.
 	SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOALIGNMENTFAULTEXCEPT | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
 
@@ -4285,7 +4364,7 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 	}
 
 	//Handles are only inherited when the output is captured. The process and thread handles are never inheritable, or the plugins that other workers launch at the same time would keep them alive
-	if (!CreateProcess(NULL, (TCHAR *) pacProcess, NULL, NULL, (hOutWrite != NULL), ((unsigned long) gudtOptions.iProcessPriority) | CREATE_NO_WINDOW, NULL, NULL /*(TCHAR *) pacDirectory*/, &udtSI, &udtPI))
+	if (!CreateProcess(NULL, pacCmdLine, NULL, NULL, (hOutWrite != NULL), ((unsigned long) gudtOptions.iProcessPriority) | CREATE_NO_WINDOW, NULL, NULL /*(TCHAR *) pacDirectory*/, &udtSI, &udtPI))
 	{
 		//_stprintf(acTmp, _T("Cannot launch %s"), pacProcess);
 	}
@@ -4381,6 +4460,7 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 		Screen->Cursor = crDefault;
 	}
 
+	delete[] pacCmdLine;
 	return (lExitCode);
 }
 
@@ -5176,8 +5256,8 @@ const TCHAR * __fastcall TfrmMain::GetOptionArgument(const TCHAR *pacKey)
 	//Clear previous result, or the value of a previous key would be returned when this key is not in the command line
 	acRes[0] = NULL;
 	acArgument[0] = '/';
-	_tcsncpy(&acArgument[1], pacKey, (sizeof(acArgument) / sizeof(TCHAR)) - 2);
-	acArgument[(sizeof(acArgument) / sizeof(TCHAR)) - 1] = NULL;
+	//lstrcpyn always terminates and, unlike _tcsncpy, it does not NUL pad the rest of the buffer (that cleared up to PATH_MAX characters on every option lookup)
+	lstrcpyn(&acArgument[1], pacKey, (sizeof(acArgument) / sizeof(TCHAR)) - 1);
 	pcStart = StrStrI(GetOptionCommandLine(), acArgument);
 	//The key must be directly followed by the assignment character, or a longer option name or a path containing the same text could match, so keep looking until one does. The whole argument matched, so the character after it can be read (even if it is the terminator)
 	while ((pcStart) && (pcStart[_tcslen(pacKey) + 1] != _T('=')))

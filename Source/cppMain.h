@@ -307,6 +307,7 @@ private: // User declarations
 	void __fastcall AddFilesInitializeExist(void);
 	bool __fastcall AddFilesExist(const String psFile);
 	void __fastcall AddFiles(const TCHAR *pacFile, const WIN32_FIND_DATA *pudtKnown = nullptr);
+	void __fastcall AddFilesScan(const TCHAR *pacFile, const WIN32_FIND_DATA *pudtKnown);
 	void __fastcall CheckForUpdates(bool pbSilent = true);
 	bool __fastcall IsAPNG(const TCHAR *pacFile);
 	bool __fastcall IsEXESFX(const TCHAR *pacFile);

@@ -283,18 +283,23 @@ static bool Search(const String &psText, THashedStringList *plstLanguage, String
 		String sLine = plstLanguage->Strings[iLine];
 		if (StartsStr("msgid \"", sLine))
 		{
-			break;
+			break;  // next entry reached (including plural forms)
 		}
 		if (StartsStr("msgstr \"", sLine))
 		{
-			//The texts collected in this session end with a new line
+			// Texts collected in this session may end with a new line
 			if (sLine.Pos("\n") > 0)
 			{
 				sLine = ReplaceStr(sLine, "\n", "");
 			}
-			//Remove first msgstr \" and last quote
-			psTranslation = UnescapePo(sLine.SubString(9, sLine.Length() - 9));
-			return (true);
+			// Guard against a truncated/malformed msgstr line
+			if (sLine.Length() >= 9)
+			{
+				// Remove leading msgstr " and trailing quote
+				psTranslation = UnescapePo(sLine.SubString(9, sLine.Length() - 9));
+				return (true);
+			}
+			break;
 		}
 	}
 	return (false);
