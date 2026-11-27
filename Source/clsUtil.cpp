@@ -202,7 +202,6 @@ int __fastcall clsUtil::MsgBox(HWND phWnd, const TCHAR *pacText, const TCHAR *pa
 			}
 			bShown = SUCCEEDED((*TaskDialogIndirect)(&udtFlags, &iButton, nullptr, nullptr));
 		}
-		//FreeLibrary(hComCtl32);
 	}
 	//Fallback when library not loaded, TaskDialogIndirect not exists, or it failed (otherwise the message would never be shown)
 	if (!bShown)
@@ -296,12 +295,10 @@ unsigned long __fastcall clsUtil::RunProcess(const TCHAR *pacProcess, const TCHA
 	SECURITY_ATTRIBUTES udtSA = {};
 	HANDLE hOutRead = nullptr, hOutWrite = nullptr;
 	HANDLE hInRead = nullptr, hInWrite = nullptr;
-	//The command line is not a path, so it must not go through GetShortName (on 64 bit Windows it would prefix long ones with \\?\ and break them). CreateProcess can modify it, so use a private writable copy
-	String sProcess = (String) pacProcess;
-	// Explicit writable buffer (CreateProcess may write into the command line while parsing)
-	const size_t iCmdLen = (size_t) sProcess.Length() + 1;
+	//The command line is not a path, so it must not go through GetShortName (on 64 bit Windows it would prefix long ones with \\?\ and break them). Explicit writable buffer, because CreateProcess can write into the command line while parsing it
+	const size_t iCmdLen = _tcslen(pacProcess) + 1;
 	TCHAR *pacCmdLine = new TCHAR[iCmdLen];
-	_tcscpy(pacCmdLine, sProcess.c_str());
+	memcpy(pacCmdLine, pacProcess, iCmdLen * sizeof(TCHAR));
 
 	//Only the main thread can safely touch the VCL screen cursor
 	if (GetCurrentThreadId() == MainThreadID)
@@ -856,7 +853,8 @@ bool __fastcall clsUtil::DownloadFile(const TCHAR *pacUrl, void *pvData, unsigne
 		if (hHttp != nullptr)
 		{
 			unsigned long lRead;
-			bRes = ReadInternetResponse(hHttp, pvData, piSize, &lRead);
+			//An empty response is a failure, so the caller never mistakes it for a valid download
+			bRes = ((ReadInternetResponse(hHttp, pvData, piSize, &lRead)) && (lRead > 0));
 			InternetCloseHandle(hHttp);
 		}
 		InternetCloseHandle(hInternet);
@@ -1169,7 +1167,7 @@ const TCHAR * __fastcall clsUtil::GetIni(const TCHAR *pacSection, const TCHAR *p
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int __fastcall clsUtil::GetIni(const TCHAR *pacSection, const TCHAR *pacKey, int piDefault)
 {
-	TCHAR acDefault[2048];
+	TCHAR acDefault[32];
 
 
 	_itot(piDefault, acDefault, 10);
@@ -1270,7 +1268,7 @@ bool __fastcall clsUtil::SetIni(const TCHAR *pacSection, const TCHAR *pacKey, bo
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool __fastcall clsUtil::SetIni(const TCHAR *pacSection, const TCHAR *pacKey, int piValue, const TCHAR *pacComment)
 {
-	TCHAR acValue[2048];
+	TCHAR acValue[32];
 
 
 	_itot(piValue, acValue, 10);
@@ -1444,7 +1442,6 @@ bool __fastcall clsUtil::DeleteRegistry(HKEY phKey, const TCHAR *pacSubkey)
 	bool bRes;
 
 
-	//bRes = (RegDeleteTree(phKey, pacSubkey) == ERROR_SUCCESS);
 	bRes = (RegDeleteKey(phKey, pacSubkey) == ERROR_SUCCESS);
 
 	return (bRes);
@@ -1640,7 +1637,6 @@ void __fastcall clsUtil::Log(int piLevel, const TCHAR *pacValue, int piDesiredLe
 	if ((piDesiredLevel) > piLevel)
 	{
 		FILE *pLog = _tfopen(GetLogPath(), _T("at"));
-		//TDateTime dteDate = dteDate.CurrentDateTime();
 		if (pLog)
 		{
 			_ftprintf(pLog, _T("%s\n"), pacValue);

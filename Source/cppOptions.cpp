@@ -30,13 +30,6 @@ __fastcall TfrmOptions::TfrmOptions(TComponent* Owner): TForm(Owner)
 
 
 
-// ---------------------------------------------------------------------------
-__fastcall TfrmOptions::~TfrmOptions()
-{
-}
-
-
-
 //---------------------------------------------------------------------------
 #pragma argsused
 void __fastcall TfrmOptions::FormCreate(TObject *Sender)
@@ -159,7 +152,6 @@ void __fastcall TfrmOptions::FormCreate(TObject *Sender)
 	chkJSEnableJSMin->Checked = gudtOptions.bJSEnableJSMin;
 	chkLUAEnableLeanify->Checked = gudtOptions.bLUAEnableLeanify;
 	chkMiscDisable->Checked = gudtOptions.bMiscDisable;
-	//chkMiscCopyMetadata->Enabled = !gudtOptions.bMiscDisable;
 	chkMiscCopyMetadata->Checked = gudtOptions.bMiscCopyMetadata;
 	chkMP3CopyMetadata->Checked = gudtOptions.bMP3CopyMetadata;
 	chkMP4CopyMetadata->Checked = gudtOptions.bMP4CopyMetadata;
@@ -295,7 +287,7 @@ void __fastcall TfrmOptions::butOKClick(TObject *Sender)
 	gudtOptions.iFilenameFormat = cboFilenameFormat->ItemIndex;
 	clsUtil::CopyString(gudtOptions.acIncludeMask, sizeof(gudtOptions.acIncludeMask) / sizeof(TCHAR), txtIncludeMask->Text.c_str());
 	gudtOptions.iThreads = spnThreads->Value;
-	gudtOptions.iZoom = max(KI_ZOOM_MIN, min((int) spnZoom->Value, KI_ZOOM_MAX));
+	gudtOptions.iZoom = max(KI_ZOOM_MIN, min(spnZoom->Value, KI_ZOOM_MAX));
 	gudtOptions.iLeanifyIterations = spnLeanifyIterations->Value;
 	gudtOptions.iLogLevel = cboLogLevel->ItemIndex;
 	gudtOptions.iLevel = cboOptimizationLevel->ItemIndex;

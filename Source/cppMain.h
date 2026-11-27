@@ -168,9 +168,6 @@ struct udtOptions
 
 
 extern struct udtOptions gudtOptions;
-extern bool gbProcess;
-extern bool gbStop;
-extern unsigned int miStartTicks;
 
 // ---------------------------------------------------------------------------
 class TfrmMain : public TForm
@@ -328,13 +325,11 @@ private: // User declarations
 
 public: // User declarations
 	__fastcall TfrmMain(TComponent* Owner);
-	__fastcall ~TfrmMain();
 	void __fastcall LoadOptions(void); 
 	void __fastcall SaveOptions(void); 
 	void __fastcall RefreshStatus(bool pbUpdateStatusBar = true, unsigned int piCurrent = 0, unsigned long long plTotalBytes = 0, unsigned long long plSavedBytes = 0);
 	void __fastcall UpdateAds(void);
 	void __fastcall UpdateTheme(void);
-	static const TCHAR * __fastcall GetOptionCommandLine(void);
 	static const TCHAR * __fastcall GetOptionArgument(const TCHAR *pacKey);
 	static const TCHAR * __fastcall GetOption(const TCHAR *pacSection, const TCHAR *pacKey, const TCHAR *pacDefault);
 	static int __fastcall GetOption(const TCHAR *pacSection, const TCHAR *pacKey, int piDefault);

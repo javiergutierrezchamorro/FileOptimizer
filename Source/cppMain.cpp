@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------------------
 #include "cppMain.h"
 #include <memory>
+#include <new>
 #include <string>
 #include <unordered_set>
 
@@ -14,16 +15,17 @@
 // ---------------------------------------------------------------------------
 TfrmMain *frmMain = nullptr;
 struct udtOptions gudtOptions  = {};
-SYSTEM_INFO gudtSystemInfo = {};
-bool gbProcess = false;
-bool gbStop = false;
+//Only used inside this file, so they get internal linkage
+static SYSTEM_INFO gudtSystemInfo = {};
+static bool gbProcess = false;
+static bool gbStop = false;
 //Set (per thread) when RunProcess killed a plugin that exceeded its maximum run time, so its partial output is never used
 static __thread bool mbPluginTimedOut;
 //Multithreaded optimization: handles of the workers still running (so closing can wait for them), and whether the form is already closing
 static HANDLE mahWorkerThreads[MAXIMUM_WAIT_OBJECTS];
 static int miWorkerThreads = 0;
 static bool gbClosing = false;
-unsigned int miStartTicks;
+static unsigned int miStartTicks;
 //Files already in the grid, to detect duplicates in constant time: a sorted list needed a linear insertion per added file, which made adding huge folders quadratic
 static std::unordered_set<std::wstring> *msetFilesExist = nullptr;
 //Cache section of the INI file, loaded once per batch of added files (see AddFiles), and the number of cache lookups the batch has done so far
@@ -35,20 +37,13 @@ static CRITICAL_SECTION mudtCriticalSection;
 static int miAppliedZoom = KI_ZOOM_DEFAULT;
 //Guards the INI file writes of the workers. They are slow (the whole file is rewritten), so they must not hold the one above, or the interface painting would wait for them
 static CRITICAL_SECTION mudtCriticalSectionIni;
-//Se emitió un Navigate() sobre el navegador de anuncios: su motor (Edge/WebView2) puede seguir inicializándose de forma asíncrona
+//A Navigate() was issued on the ads browser: its engine (Edge/WebView2) can still be initializing asynchronously
 static bool mbWebAdsNavigateRequested = false;
 
 
 
 // ---------------------------------------------------------------------------
 __fastcall TfrmMain::TfrmMain(TComponent* Owner) : TForm(Owner)
-{
-}
-
-
-
-// ---------------------------------------------------------------------------
-__fastcall TfrmMain::~TfrmMain()
 {
 }
 
@@ -238,7 +233,7 @@ void __fastcall TfrmMain::LoadPersistentGrid(void)
 	unsigned int iRows = (unsigned int) clsUtil::GetIni(_T("grdFiles"), _T("Rows"), 0);
 	if (iRows > 0)
 	{
-		TCHAR *acSection = new TCHAR[KI_INI_SECTION_MAX];
+		TCHAR *acSection = new (std::nothrow) TCHAR[KI_INI_SECTION_MAX];
 		if (acSection)
 		{
 			//The all users INI file is tried first, then the per user one, like the rest of the profile accesses
@@ -321,7 +316,7 @@ void __fastcall TfrmMain::SavePersistentGrid(void)
 	//A single section write also replaces every previous row at once, so there is nothing to purge
 	if (iLength <= KI_INI_SECTION_MAX)
 	{
-		TCHAR *acSection = new TCHAR[iLength + 2];
+		TCHAR *acSection = new (std::nothrow) TCHAR[iLength + 2];
 		if (acSection)
 		{
 			//The section is a sequence of NUL terminated "key=value" entries, followed by an empty one
@@ -705,7 +700,7 @@ void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 		{
 			//One character per byte at most (ANSI files), plus room for the terminators, so the whole section always fits and is never written back truncated
 			unsigned long lChars = (unsigned long) lIniSize + 4;
-			acRes = new TCHAR[lChars];
+			acRes = new (std::nothrow) TCHAR[lChars];
 			if (acRes)
 			{
 				memset(acRes, 0, lChars * sizeof(TCHAR));
@@ -1088,13 +1083,7 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Sh
 		{
 			for (unsigned int iRow = 1; iRow < iRows; iRow++)
 			{
-				//grdFiles->Cells[KI_GRID_ORIGINAL][(int) iRow]->BeginUpdate();
-				//grdFiles->Cells[KI_GRID_FILE][(int) iRow] = asValue[1];
-				//grdFiles->Cells[KI_GRID_EXTENSION][(int) iRow] = asValue[2];
 				grdFiles->Cells[KI_GRID_ORIGINAL][(int) iRow] = FormatNumberThousand(clsUtil::SizeFile(GetCellValue(grdFiles->Cells[KI_GRID_FILE][iRow], 1).c_str()));
-				//grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iRow] = asValue[4];
-				//grdFiles->Cells[KI_GRID_STATUS][(int) iRow] = asValue[5];
-				//grdFiles->Rows[(int) iRow]->EndUpdate();
 			}
 		}
 		//Restore always, also when the grid became empty after CTRL-F5, or redraw would stay disabled and the cursor busy
@@ -1143,17 +1132,6 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Sh
 		CopyFilesToClipboard();
 		actClearExecute(Sender);
 	}
-	//CTRL-S
-	else if ((Shift.Contains(ssCtrl)) && (Key == 'S'))
-	{
-		//Todo
-	}
-	//CTRL-L
-	else if ((Shift.Contains(ssCtrl)) && (Key == 'L'))
-	{
-		//Todo
-	}
-
 }
 
 
@@ -1414,7 +1392,6 @@ void __fastcall TfrmMain::actOptimizeExecute(TObject *Sender)
 
 	gbProcess = true;
 	gbStop = false;
-	//grdFiles->Enabled = false;
 	
 	//First the interface shows that it is optimizing, and only then the ads are refreshed (it can take a while)
 	RefreshStatus();
@@ -1604,7 +1581,6 @@ void __fastcall TfrmMain::actOptimizeExecute(TObject *Sender)
 	{
 		return;
 	}
-	//grdFiles->Enabled = true;
 	unsigned int iPercentBytes;
 	if (lTotalBytes != 0)
 	{
@@ -1618,7 +1594,6 @@ void __fastcall TfrmMain::actOptimizeExecute(TObject *Sender)
 	iEndTicks = GetTickCount();
 
 
-	//Required indirection
 	String sCaption;
 	TCHAR acTime[64];
 	StrFromTimeInterval(acTime, (sizeof(acTime) / sizeof(TCHAR)) - 1, (unsigned int) (iEndTicks - iStartTicks), 3);
@@ -1856,7 +1831,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 	sInputFile = GetCellValue(grdFiles->Cells[KI_GRID_FILE][iCount], 1).c_str();
 	LeaveCriticalSection(&mudtCriticalSection);
 
-	//Required indirection
 	String sCaption;
 	//Interface updates only on the main thread: workers would compete for them, and in multithreaded mode the main loop already refreshes the global progress. Workers do not use the caption, so they do not even build it
 	if (GetCurrentThreadId() == MainThreadID)
@@ -1865,8 +1839,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		stbMain->Panels->Items[0]->Text = sCaption;
 
 		stbMain->Hint = stbMain->Panels->Items[0]->Text;
-		//Caption = stbMain->Hint + " - " + Application->Name;
-		//Application->Title = Caption;
 		pgbProgress->Position = iCount;
 		clsUtil::SetTaskListProgress((unsigned int) pgbProgress->Position, (unsigned int) pgbProgress->Max);
 		grdFiles->Row = iCount;
@@ -1935,10 +1907,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			{
 				udtFileCreated.dwLowDateTime = 0;
 				udtFileCreated.dwHighDateTime = 0;
-				/* udtFileAccessed.dwLowDateTime = 0;
-				udtFileAccessed.dwHighDateTime = 0;
-				udtFileModified.dwLowDateTime = 0;
-				udtFileModified.dwHighDateTime = 0; */
 			}
 			iFileAttributes = GetFileAttributes(sApiName.c_str());
 		}
@@ -2154,7 +2122,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			{
 				sFlags += "-strip ";
 			}
-			//RunPlugin((unsigned int) iCount, "ImageMagick", (sPluginsDirectory + "magick.exe convert \"%INPUTFILE%\" -quiet -layers optimize -compress LZW " + sFlags + "\"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 			RunPlugin((unsigned int) iCount, "ImageMagick (1/2)", (sPluginsDirectory + "magick.exe convert \"%INPUTFILE%\" -quiet -layers optimize -compress LZW " + sFlags + "\"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 			
 			sFlags = "";
@@ -2287,15 +2254,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		// ICO: ImageMagick, Leanify
 		if (PosEx(sExtensionByContent, KS_EXTENSION_ICO) > 0)
 		{
-			/*
-			sFlags = "";
-			if (!gudtOptions.bPNGCopyMetadata)
-			{
-				sFlags += "-strip ";
-			}
-			RunPlugin((unsigned int) iCount, "ImageMagick (1/2)", (sPluginsDirectory + "magick.exe convert \"%INPUTFILE%\" -quiet -compress ZIP " + sFlags + "\"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-			*/
-
 			//Temporary disable Leanify because it removed IPTC metadata
 			if (!gudtOptions.bPNGCopyMetadata)
 			{
@@ -2577,7 +2535,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			//Skip Ghostcript on PDF with layers, or if no downsampling is selected, because GS always downsample images.
 			if ((!bIsPDFLayered) || (!gudtOptions.bPDFSkipLayered) || (_tcscmp(gudtOptions.acPDFProfile, _T("none")) == 0))
 			{		
-				//RunPlugin((unsigned int) iCount, "mutool (1/4)", (sPluginsDirectory + "mutool.exe clean -gggg -z \"%INPUTFILE%\" \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 				RunPlugin((unsigned int) iCount, "mutool (1/4)", (sPluginsDirectory + "mutool.exe clean -g -z \"%INPUTFILE%\" \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 				
 				//Do not use Ghoscript for Adobe Illustrator (AI) files
@@ -3085,7 +3042,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			}
 			RunPlugin((unsigned int) iCount, "cwebp (2/2)", (sPluginsDirectory + "cwebp.exe -mt -quiet " + sFlags + "\"%INPUTFILE%\" -o \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 
-			//RunPlugin((unsigned int) iCount, "ImageWorsener", (sPluginsDirectory + "imagew.exe -noresize -zipcmprlevel 9 \"%INPUTFILE%\" \"%TMPOUTPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
 		}
 		// ZIP: Leanify, ect, advzip, deflopt, columbo, defluff, deflopt, columbo
 		if (PosEx(sExtensionByContent, KS_EXTENSION_ZIP) > 0)
@@ -3280,7 +3236,6 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 			iPercentBytes = ((unsigned int) ((double) lOptimizedBytes / lOriginalBytes * 100));
 		}
 
-		//Required indirection
 		
 		iEndTicks = GetTickCount();
 		TCHAR acTime[64];
@@ -3628,7 +3583,7 @@ void __fastcall TfrmMain::AddFilesScan(const TCHAR *pacFile, const WIN32_FIND_DA
 								{
 									//One character per byte at most, plus room for the terminators, so a complete section is never mistaken for a truncated one
 									unsigned long lChars = (unsigned long) lIniSize + 4;
-									TCHAR *acSection = (lIniSize < 0x10000000) ? new TCHAR[lChars] : nullptr;
+									TCHAR *acSection = (lIniSize < 0x10000000) ? new (std::nothrow) TCHAR[lChars] : nullptr;
 									if (acSection)
 									{
 										memset(acSection, 0, lChars * sizeof(TCHAR));
@@ -3783,7 +3738,6 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 		clsUtil::DeleteFile(sTmpOutputFile.c_str());
 	}
 
-	//Required indirection
 	String sCaption;
 	sCaption.printf(_((TCHAR *) _T("Running %s...")), psStatus.c_str());
 	EnterCriticalSection(&mudtCriticalSection);
@@ -3808,19 +3762,11 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 	if (bTmpInputFile)
 	{
 		clsUtil::CopyFile(sInputFile.c_str(), sTmpInputFile.c_str());
-		//sInputFile = sTmpOutputFile;
 	}
 
-	//sCommandLine = StringReplace(sCommandLine, "%INPUTFILE%", sInputFile, TReplaceFlags() << rfReplaceAll);
 	sCommandLine = ReplaceStr(sCommandLine, "%INPUTFILE%", sInputFile);
-
-	//sCommandLine = StringReplace(sCommandLine, "%OUTPUTFILE%", sOutputFile, TReplaceFlags() << rfReplaceAll);
 	sCommandLine = ReplaceStr(sCommandLine, "%OUTPUTFILE%", sOutputFile);
-
-	//sCommandLine = StringReplace(sCommandLine, "%TMPINPUTFILE%", sTmpInputFile, TReplaceFlags() << rfReplaceAll);
 	sCommandLine = ReplaceStr(sCommandLine, "%TMPINPUTFILE%", sTmpInputFile);
-
-	//sCommandLine = StringReplace(sCommandLine, "%TMPOUTPUTFILE%", sTmpOutputFile, TReplaceFlags() << rfReplaceAll);
 	sCommandLine = ReplaceStr(sCommandLine, "%TMPOUTPUTFILE%", sTmpOutputFile);
 
 	//If the plugins path has spaces (short names not available) quote the program, otherwise CreateProcess would try to run things such as C:\Program.exe first
@@ -3884,7 +3830,6 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 						//Nothing was replaced, so do not report the smaller size
 						lSizeNew = lSize;
 					}
-					//sInputFile = sTmpOutputFile;
 				}
 			}
 		}
@@ -3959,14 +3904,10 @@ void __fastcall TfrmMain::CheckForUpdates(bool pbSilent)
 
 	//ToDo: Use UrlEscape https://msdn.microsoft.com/en-us/library/windows/desktop/bb773774(v=vs.85).aspx
 	strncpy(acBuffer, ((AnsiString) ReplaceStr(ReplaceStr(ReplaceStr(acBuffer, "\r\n", "%0D"), "=", "%3D"), "\t", "")).c_str(), KI_BUFFER_SIZE - 1);
+	//strncpy does not terminate when the source does not fit (the \r\n to %0D escapes grow it), so terminate it, or the conversions below would read past the buffer
+	acBuffer[KI_BUFFER_SIZE - 1] = 0;
 	strncat(acPath, acBuffer, KI_BUFFER_SIZE - 1 - strlen(acPath));
-	//strcat(acPath, "&log=");
-	//iSize = 0;
-	//clsUtil::ReadFile(clsUtil::GetLogPath(), (void *) acBuffer, &iSize);
-	//strcat(acPath, acBuffer);
 
-	//mbstowcs(acWide, acPath, KI_BUFFER_SIZE);
-	//if (clsUtil::DownloadFile(acWide, acBuffer, KI_BUFFER_SIZE))
 	if (clsUtil::DownloadFilePost(KS_APP_UPDATE_SERVER, KS_APP_UPDATE_PAGE, acPath, acBuffer, KI_BUFFER_SIZE, StartsStr("https://", KS_APP_URL)))
 	{
 		mbstowcs(acWide, acBuffer, KI_BUFFER_SIZE);
@@ -4295,17 +4236,11 @@ String __inline TfrmMain::FormatNumberThousand (unsigned long long plNumber)
 	//return (FloatToStrF(plNumber, (TFloatFormat) ffNumber, 18, 0));
 	TCHAR acNumber[64];
 	TCHAR acFormatedNumber[64];
-	TCHAR *pcDecimal;
 
 
 	_ui64tot(plNumber, acNumber, 10);
+	//GetNumberFormat formats the digits given, so an integer never carries a decimal part to remove
 	GetNumberFormat(LOCALE_USER_DEFAULT, NULL, acNumber, NULL, acFormatedNumber, (sizeof(acFormatedNumber) / sizeof(TCHAR)) - 1);
-	//Remove Decimals
-	pcDecimal = _tcsrchr(acFormatedNumber, FormatSettings.DecimalSeparator);
-	if (pcDecimal)
-	{
-		*pcDecimal = NULL;
-	}
 	return ((String) acFormatedNumber);
 }
 
@@ -4409,10 +4344,7 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 	}
 
 	//Handles are only inherited when the output is captured. The process and thread handles are never inheritable, or the plugins that other workers launch at the same time would keep them alive
-	if (!CreateProcess(NULL, pacCmdLine, NULL, NULL, (hOutWrite != NULL), ((unsigned long) gudtOptions.iProcessPriority) | CREATE_NO_WINDOW, NULL, NULL /*(TCHAR *) pacDirectory*/, &udtSI, &udtPI))
-	{
-		//_stprintf(acTmp, _T("Cannot launch %s"), pacProcess);
-	}
+	CreateProcess(NULL, pacCmdLine, NULL, NULL, (hOutWrite != NULL), ((unsigned long) gudtOptions.iProcessPriority) | CREATE_NO_WINDOW, NULL, NULL, &udtSI, &udtPI);
 
 	//Close the write ends in the parent immediately: the child then sees EOF on stdin and the output pipe can signal end-of-data without deadlock
 	if (hOutWrite != NULL)
@@ -4858,7 +4790,7 @@ void __fastcall TfrmMain::UpdateAds(void)
 	unsigned long lResultFlags;
 
 
-	//El formulario se está cerrando: no iniciar nuevas navegaciones (el cierre bombea mensajes y podría disparar TitleChange -> UpdateAds -> Navigate de nuevo)
+	//The form is closing: do not start new navigations (closing pumps messages, which could trigger TitleChange -> UpdateAds -> Navigate again)
 	if (gbClosing)
 	{
 		return;
@@ -5057,9 +4989,6 @@ void __fastcall TfrmMain::WMSettingChange(TMessage &udtMessage)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::RefreshStatus(bool pbUpdateStatusBar, unsigned int piCurrent, unsigned long long plTotalBytes, unsigned long long plSavedBytes)
 {
-	//Prevent flickering
-	//LockWindowUpdate(Handle);
-
 	//ProcessMessages is required before changing DragAcceptFiles. Checked only once, or every refresh would rescan the whole command line
 	static bool bNoWindow = (StrStrI(GetCommandLine(), _T("/NOWINDOW")) != nullptr);
 	if (bNoWindow)
@@ -5075,7 +5004,6 @@ void __fastcall TfrmMain::RefreshStatus(bool pbUpdateStatusBar, unsigned int piC
 		unsigned int iPercentBytes;
 		if (plTotalBytes != 0)
 		{
-			//iPercentBytes = ((unsigned long long) piTotalBytes - piSavedBytes) * 100 / piTotalBytes;
 			//The percentage is the part that was saved, not the part that remains, or 0 bytes saved would show as 100%
 			iPercentBytes = ((unsigned int) ((double) plSavedBytes / plTotalBytes * 100));
 
@@ -5085,7 +5013,6 @@ void __fastcall TfrmMain::RefreshStatus(bool pbUpdateStatusBar, unsigned int piC
 			iPercentBytes = 0;
 		}
 
-		//Required indirection
 		String sCaption;
 		sCaption.printf(_((TCHAR *) _T("%s / %s files. %s bytes saved (%s%%)")), FormatNumberThousand(piCurrent).c_str(), FormatNumberThousand((unsigned long long) grdFiles->RowCount - 1).c_str(), FormatNumberThousand(plSavedBytes).c_str(), FormatNumberThousand(iPercentBytes).c_str());
 		stbMain->Panels->Items[0]->Text = sCaption;
@@ -5135,7 +5062,6 @@ void __fastcall TfrmMain::RefreshStatus(bool pbUpdateStatusBar, unsigned int piC
 		{
 			if (grdFiles->RowCount > 1)
 			{
-				//Required indirection
 				String sCaption;
 				sCaption.printf(_((TCHAR *) _T("0 / %s files")), FormatNumberThousand((unsigned long long) grdFiles->RowCount - 1).c_str());
 				stbMain->Panels->Items[0]->Text = sCaption;
@@ -5170,15 +5096,8 @@ void __fastcall TfrmMain::RefreshStatus(bool pbUpdateStatusBar, unsigned int piC
 				clsUtil::SetTaskListProgress((unsigned int) pgbProgress->Position, (unsigned int) pgbProgress->Max);
 			}
 		}
-		else
-		{
-			//Caption = Application->Name;
-			//Application->Title = Caption;
-		}
 	}
 
-	//Reenable form updates
-	//LockWindowUpdate(NULL);
 }
 
 
@@ -5282,14 +5201,6 @@ String __inline TfrmMain::SetCellFileValue(const String psValue)
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-const TCHAR * __fastcall TfrmMain::GetOptionCommandLine(void)
-{
-	//GetCommandLine already returns a pointer to the full command line, so there is no need to copy it (copying it truncated long command lines)
-	return (GetCommandLine());
-}
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const TCHAR * __fastcall TfrmMain::GetOptionArgument(const TCHAR *pacKey)
 {
 	TCHAR acArgument[PATH_MAX + 1];
@@ -5303,7 +5214,7 @@ const TCHAR * __fastcall TfrmMain::GetOptionArgument(const TCHAR *pacKey)
 	acArgument[0] = '/';
 	//lstrcpyn always terminates and, unlike _tcsncpy, it does not NUL pad the rest of the buffer (that cleared up to PATH_MAX characters on every option lookup)
 	lstrcpyn(&acArgument[1], pacKey, (sizeof(acArgument) / sizeof(TCHAR)) - 1);
-	pcStart = StrStrI(GetOptionCommandLine(), acArgument);
+	pcStart = StrStrI(GetCommandLine(), acArgument);
 	//The key must be directly followed by the assignment character, or a longer option name or a path containing the same text could match, so keep looking until one does. The whole argument matched, so the character after it can be read (even if it is the terminator)
 	while ((pcStart) && (pcStart[_tcslen(pacKey) + 1] != _T('=')))
 	{
@@ -5419,7 +5330,6 @@ double __fastcall TfrmMain::GetOption(const TCHAR *pacSection, const TCHAR *pacK
 
 	if (pacValue[0] != NULL)
 	{
-		//dRes = _ttof(acDefault);
 		dRes = _ttof(pacValue);
 	}
 	else

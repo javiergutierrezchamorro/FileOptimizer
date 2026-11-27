@@ -440,7 +440,6 @@ void __fastcall TfrmAbout::EasterTimer(TObject *Sender)
 			bLastFull = bFull;
 		}
 	}
-	//Beep(830, 100);
 }
 
 

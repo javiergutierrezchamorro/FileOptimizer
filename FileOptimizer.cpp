@@ -70,7 +70,6 @@ int WINAPI _tWinMain(HINSTANCE phInstance, HINSTANCE phPrevInstance, LPTSTR pacC
 		#if !defined(_WIN64)
 			// Disable file system redirection on Win64 environments
 			//Kernel32 is always loaded, so no need to load and free it
-			//HMODULE hKernel32 = LoadLibraryEx(_T("KERNEL32.DLL"), NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
 			HMODULE hKernel32 = GetModuleHandle(_T("KERNEL32.DLL"));
 			if (hKernel32)
 			{
@@ -136,7 +135,6 @@ int WINAPI _tWinMain(HINSTANCE phInstance, HINSTANCE phPrevInstance, LPTSTR pacC
 	//Released once, whatever way the program ended
 	if (hMutex)
 	{
-		//ReleaseMutex(hMutex);
 		CloseHandle(hMutex);
 	}
 	return (0);

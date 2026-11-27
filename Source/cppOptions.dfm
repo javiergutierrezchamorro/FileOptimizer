@@ -393,7 +393,7 @@ object frmOptions: TfrmOptions
         Height = 13
         AutoSize = False
         Caption = '&Application threads'
-        FocusControl = spnLeanifyIterations
+        FocusControl = spnThreads
         ParentShowHint = False
         ShowHint = False
       end
@@ -626,7 +626,6 @@ object frmOptions: TfrmOptions
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
-        OnChange = cboPDFProfileChange
         Items.Strings = (
           'Full path and Filename (Default)'
           'Filename only'
