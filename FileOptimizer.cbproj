@@ -79,10 +79,10 @@
     <PropertyGroup Condition="'$(Base)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_MajorVer>18</VerInfo_MajorVer>
-        <VerInfo_MinorVer>1</VerInfo_MinorVer>
-        <VerInfo_Build>2904</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=Javier Gutiérrez Chamorro (Guti);FileDescription=Lossless file size optimizer;FileVersion=18.1.0.2904;InternalName=FileOptimizer;LegalCopyright=© Copyright 2012-2026 by Javier Gutiérrez Chamorro (Guti);LegalTrademarks=© Copyright 2012-2026 by Javier Gutiérrez Chamorro (Guti);OriginalFilename=FileOptimizer.exe;ProductName=FileOptimizer;ProductVersion=18.1.0.0;Comments=Get more info at http://www.javiergutierrezchamorro.com</VerInfo_Keys>
+        <VerInfo_MajorVer>19</VerInfo_MajorVer>
+        <VerInfo_MinorVer>0</VerInfo_MinorVer>
+        <VerInfo_Build>2939</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=Javier Gutiérrez Chamorro (Guti);FileDescription=Lossless file size optimizer;FileVersion=19.0.0.2939;InternalName=FileOptimizer;LegalCopyright=© Copyright 2012-2027 by Javier Gutiérrez Chamorro (Guti);LegalTrademarks=© Copyright 2012-2027 by Javier Gutiérrez Chamorro (Guti);OriginalFilename=FileOptimizer.exe;ProductName=FileOptimizer;ProductVersion=19.0.0.0;Comments=Get more info at http://www.javiergutierrezchamorro.com</VerInfo_Keys>
         <BCC_PCHCache>true</BCC_PCHCache>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -215,7 +215,7 @@
         <BCC_OptimizeMaximum>true</BCC_OptimizeMaximum>
         <BCC_DisableCPPAccesControls>true</BCC_DisableCPPAccesControls>
         <BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
-        <BCC_UserSuppliedOptions>-O4</BCC_UserSuppliedOptions>
+        <BCC_UserSuppliedOptions>-O4 -flto -ffunction-sections -fdata-sections</BCC_UserSuppliedOptions>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <BCC_RequireMathFuncErrorNumber>false</BCC_RequireMathFuncErrorNumber>
         <BCC_EnableRTTI>false</BCC_EnableRTTI>
