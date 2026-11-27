@@ -3394,10 +3394,14 @@ void __fastcall TfrmMain::AddFilesInitializeExist(void)
 		}
 		msetFilesExist->clear();
 		int iRows = grdFiles->RowCount;
-		msetFilesExist->reserve((size_t) iRows + 1024);
-		for (int iRow = 0; iRow < iRows; iRow++)
+		//Row 0 is the header ("File"), not a path
+		if (iRows > 1)
 		{
-			msetFilesExist->insert(std::wstring(grdFiles->Cells[KI_GRID_FILE][iRow].c_str()));
+			msetFilesExist->reserve((size_t) iRows + 1024);
+			for (int iRow = 1; iRow < iRows; iRow++)
+			{
+				msetFilesExist->insert(std::wstring(grdFiles->Cells[KI_GRID_FILE][iRow].c_str()));
+			}
 		}
 	}
 }
@@ -4268,7 +4272,6 @@ String __inline TfrmMain::FormatNumberThousand (unsigned long long plNumber)
 	_ui64tot(plNumber, acNumber, 10);
 	if (GetNumberFormat(LOCALE_USER_DEFAULT, 0, acNumber, &udtFmt, acFormatedNumber, (int)(sizeof(acFormatedNumber) / sizeof(TCHAR))) == 0)
 	{
-		//Fallback: unformatted digits
 		return ((String) acNumber);
 	}
 	return ((String) acFormatedNumber);
@@ -4335,7 +4338,15 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 
 	//CreateProcess can modify the command line while parsing, so it gets a private writable copy: the caller passes the buffer of a reference counted String. Same fix clsUtil::RunProcess got
 	const size_t iCmdLen = _tcslen(pacProcess) + 1;
-	TCHAR *pacCmdLine = new TCHAR[iCmdLen];
+	TCHAR *pacCmdLine = new (std::nothrow) TCHAR[iCmdLen];
+	if (!pacCmdLine)
+	{
+		if (GetCurrentThreadId() == MainThreadID)
+		{
+			Screen->Cursor = crDefault;
+		}
+		return ((unsigned long) -1);
+	}
 	_tcscpy(pacCmdLine, pacProcess);
 
 	//Disable Windows error handling. Do not use GetErrorMode because it requires Vista or later.
@@ -4374,7 +4385,12 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 	}
 
 	//Handles are only inherited when the output is captured. The process and thread handles are never inheritable, or the plugins that other workers launch at the same time would keep them alive
-	CreateProcess(NULL, pacCmdLine, NULL, NULL, (hOutWrite != NULL), ((unsigned long) gudtOptions.iProcessPriority) | CREATE_NO_WINDOW, NULL, NULL, &udtSI, &udtPI);
+	if (!CreateProcess(NULL, pacCmdLine, NULL, NULL, (hOutWrite != NULL), ((unsigned long) gudtOptions.iProcessPriority) | CREATE_NO_WINDOW, NULL, NULL, &udtSI, &udtPI))
+	{
+		//CreateProcess failed: process info stays zeroed; still close the pipe ends the parent owns
+		udtPI.hProcess = NULL;
+		udtPI.hThread = NULL;
+	}
 
 	//Close the write ends in the parent immediately: the child then sees EOF on stdin and the output pipe can signal end-of-data without deadlock
 	if (hOutWrite != NULL)
@@ -4412,15 +4428,18 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 				piTimeout = 0;
 			}
 			//Drain the pipe while waiting, or a child writing more than the pipe capacity would block forever, deadlocking the parent too
-			if (lRead < iOutputMax)
+			if (hOutRead != NULL)
 			{
-				lRead += clsUtil::ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
-			}
-			else
-			{
-				//The output buffer is full, so drain and discard the rest, or the child would block the same way
-				unsigned char acDiscard[1024];
-				clsUtil::ReadPipeAvailable(hOutRead, acDiscard, sizeof(acDiscard));
+				if (lRead < iOutputMax)
+				{
+					lRead += clsUtil::ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
+				}
+				else
+				{
+					//The output buffer is full, so drain and discard the rest, or the child would block the same way
+					unsigned char acDiscard[1024];
+					clsUtil::ReadPipeAvailable(hOutRead, acDiscard, sizeof(acDiscard));
+				}
 			}
 			//Give the process a 100 ms time slice. Any result other than timeout means it exited (or the wait failed, and the loop would never end otherwise). The exit code is not checked to exit the loop: a child legitimately returning STILL_ACTIVE (259) would loop forever
 			//The main thread also wakes up as soon as a message arrives (the next loop pumps it), so the interface does not wait up to 100 ms to react while the plugin runs. Workers have no messages
@@ -5144,7 +5163,14 @@ String __fastcall TfrmMain::Hash(const String psFilename)
 	{
 		lSize = (((unsigned long long) udtFileAttribute.nFileSizeHigh) << 32) + udtFileAttribute.nFileSizeLow;
 	}
-	sHash = psFilename + _T("|") + (String) lSize + _T("|") + (String) udtFileAttribute.ftLastWriteTime.dwHighDateTime + _T("|") + (String) udtFileAttribute.ftLastWriteTime.dwLowDateTime;
+	//Use digit strings: (String)ull may go through floating point and lose low bits on huge sizes
+	TCHAR acSize[32];
+	TCHAR acHigh[16];
+	TCHAR acLow[16];
+	_ui64tot(lSize, acSize, 10);
+	_ultot(udtFileAttribute.ftLastWriteTime.dwHighDateTime, acHigh, 10);
+	_ultot(udtFileAttribute.ftLastWriteTime.dwLowDateTime, acLow, 10);
+	sHash = psFilename + _T("|") + acSize + _T("|") + acHigh + _T("|") + acLow;
 	return (sHash);
 }
 

@@ -363,15 +363,18 @@ unsigned long __fastcall clsUtil::RunProcess(const TCHAR *pacProcess, const TCHA
 					Application->ProcessMessages();
 				}
 				//Drain the pipe while waiting, or a child writing more than the pipe capacity would block forever, deadlocking the parent too
-				if (lRead < iOutputMax)
+				if (hOutRead != nullptr)
 				{
-					lRead += ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
-				}
-				else
-				{
-					//The output buffer is full, so drain and discard the rest, or the child would block the same way
-					unsigned char acDiscard[1024];
-					ReadPipeAvailable(hOutRead, acDiscard, sizeof(acDiscard));
+					if (lRead < iOutputMax)
+					{
+						lRead += ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
+					}
+					else
+					{
+						//The output buffer is full, so drain and discard the rest, or the child would block the same way
+						unsigned char acDiscard[1024];
+						ReadPipeAvailable(hOutRead, acDiscard, sizeof(acDiscard));
+					}
 				}
 				//Give the process a 100 ms time slice. Any result other than timeout means it exited (or the wait failed, and the loop would never end otherwise). The exit code is not checked to exit the loop: a child legitimately returning STILL_ACTIVE (259) would loop forever
 				if (WaitForSingleObject(udtPI.hProcess, 100) != WAIT_TIMEOUT)
