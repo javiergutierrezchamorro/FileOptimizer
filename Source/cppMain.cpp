@@ -935,11 +935,13 @@ void __fastcall TfrmMain::grdFilesFixedCellClick(TObject *Sender, System::LongIn
 		{
 			if ((iSortField == KI_GRID_ORIGINAL) || (iSortField == KI_GRID_OPTIMIZED))
 			{
-				//Same result as FormatFloat with 19 zeros, but much faster
-				sValue = (String) ParseNumberThousand(grdFiles->Cells[iSortField][(int) iRow]);
-				if (sValue.Length() < 19)
+				//Zero-padded digit string for numeric order; avoid (String)ull which may go through floating point
+				TCHAR acDigits[32];
+				_ui64tot(ParseNumberThousand(grdFiles->Cells[iSortField][(int) iRow]), acDigits, 10);
+				sValue = acDigits;
+				if (sValue.Length() < 20)
 				{
-					sValue = StringOfChar(L'0', 19 - sValue.Length()) + sValue;
+					sValue = StringOfChar(_T('0'), 20 - sValue.Length()) + sValue;
 				}
 			}
 			else
@@ -4233,14 +4235,42 @@ String __fastcall TfrmMain::GetExtensionByContent (const String psFilename, bool
 //---------------------------------------------------------------------------
 String __inline TfrmMain::FormatNumberThousand (unsigned long long plNumber)
 {
-	//return (FloatToStrF(plNumber, (TFloatFormat) ffNumber, 18, 0));
 	TCHAR acNumber[64];
 	TCHAR acFormatedNumber[64];
+	//Separators and format are fixed for the process (user locale does not change mid-run).
+	//Cached so thousands of status/grid updates during optimization do not re-query the locale.
+	static NUMBERFMT udtFmt = {};
+	static TCHAR acThousand[8] = {};
+	static TCHAR acDecimal[8] = {};
+	static bool bFmtReady = false;
 
+	if (!bFmtReady)
+	{
+		//Force 0 decimal digits: with a NULL format GetNumberFormat uses LOCALE_IDIGITS (often 2),
+		//which produced trailing ",00" / ".00" on European locales for integer counts and sizes.
+		udtFmt.NumDigits = 0;
+		udtFmt.LeadingZero = 0;
+		udtFmt.Grouping = 3;
+		udtFmt.NegativeOrder = 1;
+		if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STHOUSAND, acThousand, (int)(sizeof(acThousand) / sizeof(TCHAR))) == 0)
+		{
+			acThousand[0] = _T(',');
+		}
+		if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, acDecimal, (int)(sizeof(acDecimal) / sizeof(TCHAR))) == 0)
+		{
+			acDecimal[0] = _T('.');
+		}
+		udtFmt.lpDecimalSep = acDecimal;
+		udtFmt.lpThousandSep = acThousand;
+		bFmtReady = true;
+	}
 
 	_ui64tot(plNumber, acNumber, 10);
-	//GetNumberFormat formats the digits given, so an integer never carries a decimal part to remove
-	GetNumberFormat(LOCALE_USER_DEFAULT, NULL, acNumber, NULL, acFormatedNumber, (sizeof(acFormatedNumber) / sizeof(TCHAR)) - 1);
+	if (GetNumberFormat(LOCALE_USER_DEFAULT, 0, acNumber, &udtFmt, acFormatedNumber, (int)(sizeof(acFormatedNumber) / sizeof(TCHAR))) == 0)
+	{
+		//Fallback: unformatted digits
+		return ((String) acNumber);
+	}
 	return ((String) acFormatedNumber);
 }
 
