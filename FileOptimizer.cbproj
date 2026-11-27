@@ -7,10 +7,9 @@
         <MainSource>FileOptimizer.cpp</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Platform Condition="'$(Platform)'==''">Win64x</Platform>
         <TargetedPlatforms>1048579</TargetedPlatforms>
         <ProjectName Condition="'$(ProjectName)'==''">FileOptimizer</ProjectName>
-        <CC_Suffix Condition="'$(CC_Suffix)'==''">c</CC_Suffix>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -197,7 +196,7 @@
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <BCC_MergeDuplicateStrings>true</BCC_MergeDuplicateStrings>
         <ILINK_MapFileType>None</ILINK_MapFileType>
-        <BCC_StringsInWriteableDataSeg>true</BCC_StringsInWriteableDataSeg>
+        <BCC_StringsInWriteableDataSeg>false</BCC_StringsInWriteableDataSeg>
         <DCC_DebugInformation>0</DCC_DebugInformation>
         <BCC_StringsInReadOnlyDataSeg>true</BCC_StringsInReadOnlyDataSeg>
         <DCC_IOChecking>false</DCC_IOChecking>
@@ -211,10 +210,10 @@
         <ILINK_ImageChecksum>true</ILINK_ImageChecksum>
         <ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
         <LinkPackageStatics>rtl.lib;vcl.lib;vclx.lib;vclimg.lib;VclSmp.lib</LinkPackageStatics>
-        <BT_BuildType>Debug</BT_BuildType>
+        <BT_BuildType>Release</BT_BuildType>
         <BCC_OptimizeMaximum>true</BCC_OptimizeMaximum>
         <BCC_DisableCPPAccesControls>true</BCC_DisableCPPAccesControls>
-        <BCC_OptimizeForSpeed>false</BCC_OptimizeForSpeed>
+        <BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
         <BCC_UserSuppliedOptions>-O4</BCC_UserSuppliedOptions>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
         <BCC_RequireMathFuncErrorNumber>false</BCC_RequireMathFuncErrorNumber>

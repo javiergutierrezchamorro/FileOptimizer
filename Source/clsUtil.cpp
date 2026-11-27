@@ -1,5 +1,7 @@
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
+ 3.66. 26/11/2026. FileOptimizer. GetIni no longer cuts values at the last semicolon (mask lists such as *.bak;*.tmp were truncated): a tab, a semicolon preceded by a blank, or a semicolon starting the value (Windows trims the tabs before it) begins the comment
+ 3.65. 26/11/2026. FileOptimizer. MapFileView heap copy uses a non throwing allocation (the null check after it could never be reached, an out of memory condition raised an exception instead of returning no view)
  3.64. 24/11/2026. FileOptimizer. CopyFile can replace the destination safely (copy next to it and swap, ReplaceFile/MoveFileEx, with the direct copy as the last option). ReadFile survives I/O errors on mapped pages
  3.63. 23/11/2026. FileOptimizer. SetIni also skips the write when the key exists with an empty value (the check required a non empty one, so every empty option rewrote the whole INI file on each save)
  3.62. 16/11/2026. FileOptimizer. MsgBox timeout travels in the dialog callback data instead of a shared static (workers could mix it), RunProcess does not let the child inherit the parent ends of its pipes (it never saw the end of its input) nor the process handles, SetRegistry creates the key when writing (the browser emulation key was never written when it did not exist), ExeVersion does not clear 4 KB on every call, GetFileVersionField bounded format
@@ -34,6 +36,7 @@
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "clsUtil.h"
 #include "cppMain.h"
+#include <new>
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -598,7 +601,8 @@ void * __fastcall clsUtil::MapFileView(const TCHAR *pacFile, unsigned int *piSiz
 			//Mapping is not possible on some file systems and network shares, so fall back to a heap copy, but only for small views: allocating and copying a huge file would defeat the purpose of mapping
 			if ((pvRes == nullptr) && (iSize <= (16 * 1024 * 1024)))
 			{
-				pvRes = new unsigned char[iSize];
+				//nothrow, or a failed allocation would throw instead of reaching the check below
+				pvRes = new (std::nothrow) unsigned char[iSize];
 				if (pvRes != nullptr)
 				{
 					unsigned long lRead;
@@ -1142,14 +1146,16 @@ const TCHAR * __fastcall clsUtil::GetIni(const TCHAR *pacSection, const TCHAR *p
 		lstrcpyn(acRes, pacDefault, (sizeof(acRes) / sizeof(TCHAR)));
 	}
 
-	//Remove comments
-	pcSemicolon = _tcsrchr(acRes, ';');
-	if (pcSemicolon)
-	{
-		*pcSemicolon = NULL;
-	}
-	//Remove tabs
+	//Remove comments. SetIni writes them after tabs, so a tab ends the value, and semicolons inside it (such as in a mask list) are kept. Windows trims the blanks before the value, so a value that is only a comment starts with the semicolon. Without a tab, a semicolon preceded by a blank also starts a hand written comment
 	pcSemicolon = _tcschr(acRes, '\t');
+	if (!pcSemicolon)
+	{
+		pcSemicolon = _tcsstr(acRes, _T(" ;"));
+	}
+	if ((!pcSemicolon) && (acRes[0] == ';'))
+	{
+		pcSemicolon = acRes;
+	}
 	if (pcSemicolon)
 	{
 		*pcSemicolon = NULL;

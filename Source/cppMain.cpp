@@ -2062,8 +2062,8 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		{
 			if (!gudtOptions.bWAVCopyMetadata)
 			{
-				String sTmpOutputFile = ReplaceStr(sInputFile, ".flac", "-stripped.flac");
-				//Prevent a bug in shntool with no lowercase extensions
+				String sTmpOutputFile = (EndsStr(".flac", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 5) + "-stripped.flac") : sInputFile);
+				//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
 				if (sTmpOutputFile == sInputFile)
 				{
 					sTmpOutputFile += "-stripped.flac";
@@ -2090,8 +2090,8 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 				}
 				if (gudtOptions.bWAVStripSilence)
 				{
-					sTmpOutputFile = ReplaceStr(sInputFile, ".flac", "-trimmed.flac");
-					//Prevent a bug in shntool with no lowercase extensions
+					sTmpOutputFile = (EndsStr(".flac", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 5) + "-trimmed.flac") : sInputFile);
+					//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
 					if (sTmpOutputFile == sInputFile)
 					{
 						sTmpOutputFile += "-trimmed.flac";
@@ -2987,8 +2987,8 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		{
 			if (!gudtOptions.bWAVCopyMetadata)
 			{
-				String sTmpOutputFile = ReplaceStr(sInputFile, ".wav", "-stripped.wav");
-				//Prevent a bug in shntool with no lowercase extensions
+				String sTmpOutputFile = (EndsStr(".wav", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 4) + "-stripped.wav") : sInputFile);
+				//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
 				if (sTmpOutputFile == sInputFile)
 				{
 					sTmpOutputFile += "-stripped.wav";
@@ -3015,8 +3015,8 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 				}
 				if (gudtOptions.bWAVStripSilence)
 				{
-					sTmpOutputFile = ReplaceStr(sInputFile, ".wav", "-trimmed.wav");
-					//Prevent a bug in shntool with no lowercase extensions
+					sTmpOutputFile = (EndsStr(".wav", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 4) + "-trimmed.wav") : sInputFile);
+					//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
 					if (sTmpOutputFile == sInputFile)
 					{
 						sTmpOutputFile += "-trimmed.wav";
@@ -3609,8 +3609,8 @@ void __fastcall TfrmMain::AddFilesScan(const TCHAR *pacFile, const WIN32_FIND_DA
 						String sHashKey = (String) iHashKey;
 
 						//The first lookup of a batch reads the INI file directly, but when more files follow, the Cache section is loaded once into a hashed list: every direct lookup parses the INI file again, which gets very slow with big caches
-						//A path with a semicolon is always looked up in the list: GetIni treats the semicolon as the start of a comment and cuts the value, so such a file was never recognized as already optimized when it was the only one added
-						if (((miCacheLookups == 1) || (sHashValue.Pos(";") > 0)) && (!mlstCache))
+						//A path with a blank followed by a semicolon is always looked up in the list: GetIni treats that as the start of a comment and cuts the value, so such a file was never recognized as already optimized when it was the only one added
+						if (((miCacheLookups == 1) || (sHashValue.Pos(" ;") > 0)) && (!mlstCache))
 						{
 							bool bLoaded = true;
 							mlstCache = new THashedStringList();
@@ -3905,7 +3905,7 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 		clsUtil::DeleteFile(sTmpOutputFile.c_str());
 	}
 
-	if ((lSizeNew <= 8) || (lSizeNew >= lSize))
+	if ((lSizeNew < 8) || (lSizeNew >= lSize))
 	{
 		lSizeNew = lSize;
 	}
@@ -4104,6 +4104,11 @@ String __fastcall TfrmMain::GetExtensionByContent (const String psFilename, bool
 		}
 		if (bFilled)
 		{
+			//The two byte signatures of BMP (and the first byte of OBJ) also match many text files, so their headers are validated. BMP: the size of the DIB header (at offset 14, or 28 in a bitmap array, which starts with its own 14 bytes header) must be 12, or a multiple of 4 from 16 to 124 (OS/2 2.x headers are variable). OBJ: a THEADR record has its length 2 bytes over the length of the name that follows
+			const unsigned int iDibOffset = (memcmp(acBuffer, "BA", 2) == 0) ? 28 : 14;
+			const unsigned int iDibSize = acBuffer[iDibOffset] | (acBuffer[iDibOffset + 1] << 8) | (acBuffer[iDibOffset + 2] << 16) | ((unsigned int) acBuffer[iDibOffset + 3] << 24);
+			const bool bValidDib = ((iDibSize == 12) || ((iDibSize >= 16) && (iDibSize <= 124) && ((iDibSize & 3) == 0)));
+			const unsigned int iRecordLength = acBuffer[1] | (acBuffer[2] << 8);
 			//ToDo: Optimize to use regular comparisons instead of memcmp for short comparisons.
 			//Check AVIF
 			if ((memcmp(&acBuffer[4], "ftyp", 4) == 0) &&
@@ -4116,7 +4121,7 @@ String __fastcall TfrmMain::GetExtensionByContent (const String psFilename, bool
 				sRes = ".avif";
 			}
 			//Check BMP
-			else if ((memcmp(acBuffer, "BM", 2) == 0) || (memcmp(acBuffer, "BA", 2) == 0) || (memcmp(acBuffer, "CI", 2) == 0) || (memcmp(acBuffer, "CP", 2) == 0) || (memcmp(acBuffer, "IC", 2) == 0) || (memcmp(acBuffer, "PT", 2) == 0))
+			else if (((memcmp(acBuffer, "BM", 2) == 0) || (memcmp(acBuffer, "BA", 2) == 0) || (memcmp(acBuffer, "CI", 2) == 0) || (memcmp(acBuffer, "CP", 2) == 0) || (memcmp(acBuffer, "IC", 2) == 0) || (memcmp(acBuffer, "PT", 2) == 0)) && (bValidDib))
 			{
 				sRes = ".bmp";
 			}
@@ -4184,7 +4189,7 @@ String __fastcall TfrmMain::GetExtensionByContent (const String psFilename, bool
 			}
 			//Check OBJ
 			else if ((memcmp(acBuffer, "\x4C\x01", 2) == 0) ||
-				(acBuffer[0] == 0x80))
+				((acBuffer[0] == 0x80) && (iRecordLength >= 2) && (acBuffer[3] == (iRecordLength - 2))))
 			{
 				sRes = ".obj";
 			}
@@ -4604,7 +4609,7 @@ bool __fastcall TfrmMain::IsEXESFX(const TCHAR *pacFile)
 		try
 		{
 			//Check if it is EXE
-			if ((iSize >= 2) && ((memcmp(acBuffer, "MZ", 2) == 0) || (memcmp(acBuffer, "ZM", 2) == 0)))
+			if (iSize >= 2)
 			{
 				//Check if it is an Inno Setup Installer
 				if (clsUtil::MemMem((const void *) acBuffer, iSize, (const void *) "Inno Setup", 10) != NULL)
