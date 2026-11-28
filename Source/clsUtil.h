@@ -13,22 +13,6 @@
 	#define min(a,b) (((a) < (b)) ? (a) : (b))
 #endif
 
-/*
-#if defined(_DEBUG)
-	//For some reason BCC64 gaves an error with __FUNC__
-	#if defined(_WIN64)
-		#define Log(piLevel, pacValue) (clsUtil::LogAdd(_T(__FILE__), __LINE__, _T(""), piLevel, pacValue, 5))
-	#else
-		#define Log(piLevel, pacValue) (clsUtil::LogAdd(_T(__FILE__), __LINE__, _T(__FUNC__), piLevel, pacValue, 5))
-	#endif
-#else
-	#if defined(_WIN64)
-		#define Log(piLevel, pacValue) (clsUtil::LogAdd(_T(__FILE__), __LINE__, _T(""), piLevel, pacValue, gudtOptions.iLogLevel))
-	#else
-		#define Log(piLevel, pacValue) (clsUtil::LogAdd(_T(__FILE__), __LINE__, _T(__FUNC__), piLevel, pacValue, gudtOptions.iLogLevel))
-	#endif
-#endif
-*/
 
 
 #if defined(PATH_MAX)
@@ -47,11 +31,8 @@ class clsUtil
 {
 	public:
 		static const void * __fastcall MemMem (const void *buf, size_t buf_len, const void *byte_sequence, size_t byte_sequence_len);
-		static HRESULT CALLBACK TaskDialogCallbackProc (HWND phWnd, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData);
 		static int __fastcall MsgBox(HWND phWnd, const TCHAR *pacText, const TCHAR *pacTitle, unsigned int piType, unsigned int piTimeout = 0);
-		static HANDLE __fastcall FindProcess(const TCHAR *pacProcess);
 		static unsigned long __fastcall ReadPipeAvailable(HANDLE hRead, void *pvData, unsigned int piSize);
-		static unsigned long __fastcall RunProcess(const TCHAR *pacProcess, const TCHAR *pacDirectory, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait);
 		static bool __fastcall ExistsFile(const TCHAR *pacFile);
 		static bool __fastcall RenameFile(const TCHAR *pacNewName, const TCHAR *pacOldName);
 		static unsigned long long __fastcall SizeFile(const TCHAR *pacFile);
@@ -59,11 +40,9 @@ class clsUtil
 		//Returns a read only view of the first *piSize bytes of pacFile (of the whole file when *piSize is 0), and stores the size really available in *piSize, so the caller never reads past the end of the view. When mapping is not possible, a heap copy is returned instead (only for small views, so huge files are never allocated and copied just to scan a part of them). *pbMapped tells UnmapFileView how the view must be released
 		static void * __fastcall MapFileView(const TCHAR *pacFile, unsigned int *piSize, bool *pbMapped);
 		static void __fastcall UnmapFileView(void *pvView, bool pbMapped);
-		static bool __fastcall WriteFile(const TCHAR *pacFile, const void *pvData, unsigned int piSize, unsigned int piOffset = 0);
 		static bool __fastcall GetFileTimestamp(const TCHAR *pacFile, FILETIME *pudtCreated = nullptr, FILETIME *pudtAccessed  = nullptr, FILETIME *pudtModified  = nullptr);
 		static bool __fastcall SetFileTimestamp(const TCHAR *pacFile, const FILETIME *pudtCreated = nullptr, const FILETIME *pudtAccessed = nullptr, const FILETIME *pudtModified = nullptr);
 		static bool __fastcall DirectoryCreate(String psDirectory);
-		static bool __fastcall DownloadFile(const TCHAR *pacUrl, void *pvData, unsigned int piSize);
 		static bool __fastcall DownloadFilePost(const TCHAR *pacServer, const TCHAR *pacPage, const char *pacParameters, void *pvData, unsigned int piSize, bool pbHttps = false);
 		//pbReplace: the destination is an existing file that must never be left half written, so it is copied next to it and then swapped
 		static bool __fastcall CopyFile(const TCHAR *pacSource, const TCHAR *pacDestination, bool pbReplace = false);
@@ -72,17 +51,11 @@ class clsUtil
 		static const TCHAR * __fastcall GetIniPath(bool pbAllUsers = false);
 		static const TCHAR * __fastcall GetIni(const TCHAR *pacSection, const TCHAR *pacKey, const TCHAR *pacDefault);
 		static int __fastcall GetIni(const TCHAR *pacSection, const TCHAR *pacKey, int piDefault = 0);
-		static long long __fastcall GetIni(const TCHAR *pacSection, const TCHAR *pacKey, long long plDefault = 0);
-		static double __fastcall GetIni(const TCHAR *pacSection, const TCHAR *pacKey, double pdDefault = 0);
-		static bool __fastcall GetIni(const TCHAR *pacSection, const TCHAR *pacKey, bool pbDefault = false );
 		static bool __fastcall SetIni(const TCHAR *pacSection, const TCHAR *pacKey, const TCHAR *pacValue = _T(""), const TCHAR *pacComment = _T(""));
 		static bool __fastcall SetIni(const TCHAR *pacSection, const TCHAR *pacKey, bool pbValue, const TCHAR *pacComment = _T(""));
 		static bool __fastcall SetIni(const TCHAR *pacSection, const TCHAR *pacKey, int piValue, const TCHAR *pacComment = _T(""));
 		static bool __fastcall SetIni(const TCHAR *pacSection, const TCHAR *pacKey, long long plValue, const TCHAR *pacComment = _T(""));
-		static bool __fastcall SetIni(const TCHAR *pacSection, const TCHAR *pacKey, double pdValue, const TCHAR *pacComment = _T(""));
 		static bool __fastcall DeleteIni(const TCHAR *pacSection, const TCHAR *pacKey = nullptr);
-		static unsigned int __fastcall Serialize (void *pacBuffer, unsigned int piSize);
-		static unsigned int __fastcall Unserialize (void *pacBuffer, unsigned int piSize);
 		static unsigned int __fastcall Crc32 (const void *pacBuffer, unsigned int piLen, unsigned int piOldCrc = 0xFFFFFFFF);
 		static int __fastcall Random (int piMin, int piMax);
 		static const TCHAR * __fastcall GetRegistryPath(void);
@@ -100,7 +73,6 @@ class clsUtil
 		static bool __fastcall SetTaskListProgress(unsigned int piCompleted, unsigned int piTotal);
 		static unsigned int __fastcall GetWindowsVersion(void);
 		static bool __fastcall IsWindows64(void);
-		static bool __fastcall IsWine(void);
 		static bool __fastcall ShutdownWindows(unsigned int piMode = 0);
 		static String __fastcall GetApiName(const TCHAR *pacFile);
 		static String __fastcall GetShortName(String psLongName);

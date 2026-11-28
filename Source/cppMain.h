@@ -334,7 +334,6 @@ public: // User declarations
 	static const TCHAR * __fastcall GetOption(const TCHAR *pacSection, const TCHAR *pacKey, const TCHAR *pacDefault);
 	static int __fastcall GetOption(const TCHAR *pacSection, const TCHAR *pacKey, int piDefault);
 	static long long __fastcall GetOption(const TCHAR *pacSection, const TCHAR *pacKey, long long plDefault);
-	static double __fastcall GetOption(const TCHAR *pacSection, const TCHAR *pacKey, double pdDefault);
 	static bool __fastcall GetOption(const TCHAR *pacSection, const TCHAR *pacKey, bool pbDefault);
 };
 

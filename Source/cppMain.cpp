@@ -17,14 +17,16 @@ TfrmMain *frmMain = nullptr;
 struct udtOptions gudtOptions  = {};
 //Only used inside this file, so they get internal linkage
 static SYSTEM_INFO gudtSystemInfo = {};
-static bool gbProcess = false;
-static bool gbStop = false;
+//volatile: written on the main thread (or stop handlers) and read by optimization workers without a critical section
+static volatile bool gbProcess = false;
+static volatile bool gbStop = false;
 //Set (per thread) when RunProcess killed a plugin that exceeded its maximum run time, so its partial output is never used
 static __thread bool mbPluginTimedOut;
 //Multithreaded optimization: handles of the workers still running (so closing can wait for them), and whether the form is already closing
 static HANDLE mahWorkerThreads[MAXIMUM_WAIT_OBJECTS];
 static int miWorkerThreads = 0;
-static bool gbClosing = false;
+//volatile: set on the main thread while closing; workers and the optimize loop read it
+static volatile bool gbClosing = false;
 static unsigned int miStartTicks;
 //Files already in the grid, to detect duplicates in constant time: a sorted list needed a linear insertion per added file, which made adding huge folders quadratic
 static std::unordered_set<std::wstring> *msetFilesExist = nullptr;
@@ -969,12 +971,17 @@ void __fastcall TfrmMain::grdFilesFixedCellClick(TObject *Sender, System::LongIn
 			{
 				asValue = SplitString(lstTemp->Strings[(int) (iRows - iRow - 1)], "|");
 			}
+			//Need sort-key + 5 columns; skip a malformed line rather than indexing out of range
+			if (asValue.Length < 6)
+			{
+				continue;
+			}
 
-			lstRow->Add(asValue[1]); //0: File
-			lstRow->Add(asValue[2]); //1: Extension (Type)
-			lstRow->Add(asValue[3]); //2: Original size
-			lstRow->Add(asValue[4]); //3: Optimized size
-			lstRow->Add(asValue[5]); //4: Status
+			lstRow->Add(asValue[1]); // File
+			lstRow->Add(asValue[2]); // Extension (Type)
+			lstRow->Add(asValue[3]); // Original size
+			lstRow->Add(asValue[4]); // Optimized size
+			lstRow->Add(asValue[5]); // Status
 			grdFiles->Rows[(int) iRow] = lstRow;
 		}
 		delete lstRow;
@@ -1409,10 +1416,18 @@ void __fastcall TfrmMain::actOptimizeExecute(TObject *Sender)
 		}
 	}
 	#if defined(_WIN64)
-		_tcscat(acTmpFile, _T("\\Plugins64\\"));
+		const TCHAR *pacPlugins = _T("\\Plugins64\\");
 	#else
-		_tcscat(acTmpFile, _T("\\Plugins32\\"));
+		const TCHAR *pacPlugins = _T("\\Plugins32\\");
 	#endif
+	{
+		size_t iBase = _tcslen(acTmpFile);
+		size_t iPlug = _tcslen(pacPlugins);
+		if (iBase + iPlug < (sizeof(acTmpFile) / sizeof(TCHAR)))
+		{
+			_tcscpy(acTmpFile + iBase, pacPlugins);
+		}
+	}
 	sPluginsDirectory = clsUtil::GetShortName((String) acTmpFile);
 	SetCurrentDirectory(sPluginsDirectory.c_str());
 
@@ -1578,6 +1593,10 @@ void __fastcall TfrmMain::actOptimizeExecute(TObject *Sender)
 	//Restore Windows error handling, which was disabled by the plugins launched from any worker
 	SetErrorMode(0);
 	gbProcess = false;
+	//Masks are only needed during this run; free them now so the next Optimize starts clean and peak memory drops
+	SplitMaskList(_T(""), &sppacIncludeMasks, &siIncludeMasks);
+	SplitMaskList(_T(""), &sppacExcludeMasks, &siExcludeMasks);
+	SplitMaskList(_T(""), &sppacDisablePluginMasks, &siDisablePluginMasks);
 	//When closing, the form has already been destroyed while processing messages, so do not touch it nor the interface anymore
 	if (gbClosing)
 	{
@@ -1833,6 +1852,36 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 	sInputFile = GetCellValue(grdFiles->Cells[KI_GRID_FILE][iCount], 1).c_str();
 	LeaveCriticalSection(&mudtCriticalSection);
 
+	//Applies an in-place plugin output file over the input when it is a complete and smaller file, and updates the optimized size cell. Shared by the plugins that leave their result in a known output file (shntool, flasm...)
+	auto ApplyOutputFile = [&](const String &psTmpOutputFile)
+	{
+		//The current optimized size is read under the critical section, because the main thread also reads the cells while painting
+		EnterCriticalSection(&mudtCriticalSection);
+		unsigned long long lOptimizedBytes = ParseNumberThousand(grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount]);
+		LeaveCriticalSection(&mudtCriticalSection);
+		//SizeFile is expensive, so call it only once
+		unsigned long long lTmpOutputSize = clsUtil::SizeFile(psTmpOutputFile.c_str());
+		if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
+		{
+			if (clsUtil::CopyFile(psTmpOutputFile.c_str(), sInputFile.c_str(), true))
+			{
+				EnterCriticalSection(&mudtCriticalSection);
+				grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
+				LeaveCriticalSection(&mudtCriticalSection);
+			}
+		}
+	};
+
+	//Builds the name shntool gives to its output for the input file: only the final extension is replaced (a folder with the same text in its name would change the name shntool gives to its output). Files whose extension is not lowercase keep it, avoiding the shntool bug with them
+	auto ShntoolOutputFile = [&](const TCHAR *pacExtension, const TCHAR *pacSuffix)
+	{
+		if (EndsStr(pacExtension, sInputFile))
+		{
+			return (sInputFile.SubString(1, sInputFile.Length() - (int) _tcslen(pacExtension)) + pacSuffix);
+		}
+		return (sInputFile + pacSuffix);
+	};
+
 	String sCaption;
 	//Interface updates only on the main thread: workers would compete for them, and in multithreaded mode the main loop already refreshes the global progress. Workers do not use the caption, so they do not even build it
 	if (GetCurrentThreadId() == MainThreadID)
@@ -1896,8 +1945,8 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		}
 	}
 
-	//Check file still exists and is not to be excluded
-	if ((clsUtil::ExistsFile(sInputFile.c_str())) && (!bExcluded))
+	//Check that it is not excluded first (no disk access), and that the file still exists
+	if ((!bExcluded) && (clsUtil::ExistsFile(sInputFile.c_str())))
 	{
 		unsigned int iFileAttributes = INVALID_FILE_ATTRIBUTES;
 		//GetApiName avoids GetShortPathName for short paths, which is expensive (it queries the disk for every component of the path), and it is needed for every attribute and timestamp operation, so cache it
@@ -2032,57 +2081,20 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		{
 			if (!gudtOptions.bWAVCopyMetadata)
 			{
-				String sTmpOutputFile = (EndsStr(".flac", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 5) + "-stripped.flac") : sInputFile);
-				//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
-				if (sTmpOutputFile == sInputFile)
-				{
-					sTmpOutputFile += "-stripped.flac";
-				}
-
+				String sTmpOutputFile = ShntoolOutputFile(_T(".flac"), _T("-stripped.flac"));
 				RunPlugin((unsigned int) iCount, "shntool (1/4)", (sPluginsDirectory + "shntool.exe strip -q -O always \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-				//Read the cell under the critical section, because the main thread also reads it while painting
-				unsigned long long lOptimizedBytes, lTmpOutputSize;
-				EnterCriticalSection(&mudtCriticalSection);
-				lOptimizedBytes = ParseNumberThousand(grdFiles->Cells[KI_GRID_OPTIMIZED][iCount]);
-				LeaveCriticalSection(&mudtCriticalSection);
-				//SizeFile is expensive, so call it only once
-				lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-				if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
-				{
-					clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
-					EnterCriticalSection(&mudtCriticalSection);
-					grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
-					LeaveCriticalSection(&mudtCriticalSection);
-				}
+				ApplyOutputFile(sTmpOutputFile);
 				if (!gudtOptions.bDebug)
 				{
 					clsUtil::DeleteFile(sTmpOutputFile.c_str());
 				}
 				if (gudtOptions.bWAVStripSilence)
 				{
-					sTmpOutputFile = (EndsStr(".flac", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 5) + "-trimmed.flac") : sInputFile);
-					//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
-					if (sTmpOutputFile == sInputFile)
-					{
-						sTmpOutputFile += "-trimmed.flac";
-					}
-
+					sTmpOutputFile = ShntoolOutputFile(_T(".flac"), _T("-trimmed.flac"));
 					RunPlugin((unsigned int) iCount, "shntool (2/4)", (sPluginsDirectory + "shntool.exe trim -q -O always \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-					//Read the cell under the critical section, because the main thread also reads it while painting
-					EnterCriticalSection(&mudtCriticalSection);
-					lOptimizedBytes = ParseNumberThousand(grdFiles->Cells[KI_GRID_OPTIMIZED][iCount]);
-					LeaveCriticalSection(&mudtCriticalSection);
-					//SizeFile is expensive, so call it only once
-					lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-					if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
-					{
-						clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
-						EnterCriticalSection(&mudtCriticalSection);
-						grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
-						LeaveCriticalSection(&mudtCriticalSection);
-					}
+					ApplyOutputFile(sTmpOutputFile);
 					if (!gudtOptions.bDebug)
-					{			
+					{
 						clsUtil::DeleteFile(sTmpOutputFile.c_str());
 					}
 				}
@@ -2806,37 +2818,24 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		if (PosEx(sExtensionByContent, KS_EXTENSION_SWF) > 0)
 		{
 			String sTmpOutputFile = ChangeFileExt(sInputFile, ".$wf");
-			RunPlugin((unsigned int) iCount, "flasm (1/5)", (sPluginsDirectory + "flasm.exe -x \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-			//A flasm killed by Stop (or because it hung) leaves a partial file, which must not replace the input
-			if ((!gbStop) && (!mbPluginTimedOut))
+			//flasm works in place and leaves its result in a ".$wf" file, which must not replace the input when the plugin was stopped or killed
+			auto CopyFlasmOutput = [&]()
 			{
-				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
-			}
-			clsUtil::DeleteFile(sTmpOutputFile.c_str());
+				if ((!gbStop) && (!mbPluginTimedOut))
+				{
+					clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
+				}
+				clsUtil::DeleteFile(sTmpOutputFile.c_str());
+			};
+
+			RunPlugin((unsigned int) iCount, "flasm (1/5)", (sPluginsDirectory + "flasm.exe -x \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
+			CopyFlasmOutput();
 
 			RunPlugin((unsigned int) iCount, "flasm (2/5)", (sPluginsDirectory + "flasm.exe -u \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-			//A flasm killed by Stop (or because it hung) leaves a partial file, which must not replace the input
-			if ((!gbStop) && (!mbPluginTimedOut))
-			{
-				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
-			}
-			clsUtil::DeleteFile(sTmpOutputFile.c_str());
+			CopyFlasmOutput();
 
 			RunPlugin((unsigned int) iCount, "flasm (3/5)", (sPluginsDirectory + "flasm.exe -z \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-			//Read the cell under the critical section, because the main thread also reads it while painting
-			unsigned long long lOptimizedBytes, lTmpOutputSize;
-			EnterCriticalSection(&mudtCriticalSection);
-			lOptimizedBytes = ParseNumberThousand(grdFiles->Cells[KI_GRID_OPTIMIZED][iCount]);
-			LeaveCriticalSection(&mudtCriticalSection);
-			//SizeFile is expensive, so call it only once
-			lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-			if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
-			{
-				clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
-				EnterCriticalSection(&mudtCriticalSection);
-				grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
-				LeaveCriticalSection(&mudtCriticalSection);
-			}
+			ApplyOutputFile(sTmpOutputFile);
 			clsUtil::DeleteFile(sTmpOutputFile.c_str());
 
 			RunPlugin((unsigned int) iCount, "zRecompress (4/5)", (sPluginsDirectory + "zRecompress.exe -tswf-lzma \"%TMPINPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
@@ -2946,55 +2945,18 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		{
 			if (!gudtOptions.bWAVCopyMetadata)
 			{
-				String sTmpOutputFile = (EndsStr(".wav", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 4) + "-stripped.wav") : sInputFile);
-				//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
-				if (sTmpOutputFile == sInputFile)
-				{
-					sTmpOutputFile += "-stripped.wav";
-				}
-
+				String sTmpOutputFile = ShntoolOutputFile(_T(".wav"), _T("-stripped.wav"));
 				RunPlugin((unsigned int) iCount, "shntool (1/2)", (sPluginsDirectory + "shntool.exe strip -q -O always \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-				//Read the cell under the critical section, because the main thread also reads it while painting
-				unsigned long long lOptimizedBytes, lTmpOutputSize;
-				EnterCriticalSection(&mudtCriticalSection);
-				lOptimizedBytes = ParseNumberThousand(grdFiles->Cells[KI_GRID_OPTIMIZED][iCount]);
-				LeaveCriticalSection(&mudtCriticalSection);
-				//SizeFile is expensive, so call it only once
-				lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-				if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
-				{
-					clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
-					EnterCriticalSection(&mudtCriticalSection);
-					grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
-					LeaveCriticalSection(&mudtCriticalSection);
-				}
+				ApplyOutputFile(sTmpOutputFile);
 				if (!gudtOptions.bDebug)
 				{
 					clsUtil::DeleteFile(sTmpOutputFile.c_str());
 				}
 				if (gudtOptions.bWAVStripSilence)
 				{
-					sTmpOutputFile = (EndsStr(".wav", sInputFile) ? (sInputFile.SubString(1, sInputFile.Length() - 4) + "-trimmed.wav") : sInputFile);
-					//Only the extension at the end is replaced (a folder with the same text in its name would change the name shntool gives to its output). Prevent a bug in shntool with no lowercase extensions
-					if (sTmpOutputFile == sInputFile)
-					{
-						sTmpOutputFile += "-trimmed.wav";
-					}
-
+					sTmpOutputFile = ShntoolOutputFile(_T(".wav"), _T("-trimmed.wav"));
 					RunPlugin((unsigned int) iCount, "shntool (2/2)", (sPluginsDirectory + "shntool.exe trim -q -O always \"%INPUTFILE%\"").c_str(), sInputFile, "", 0, 0);
-					//Read the cell under the critical section, because the main thread also reads it while painting
-					EnterCriticalSection(&mudtCriticalSection);
-					lOptimizedBytes = ParseNumberThousand(grdFiles->Cells[KI_GRID_OPTIMIZED][iCount]);
-					LeaveCriticalSection(&mudtCriticalSection);
-					//SizeFile is expensive, so call it only once
-					lTmpOutputSize = clsUtil::SizeFile(sTmpOutputFile.c_str());
-					if ((lTmpOutputSize > 0) && (lTmpOutputSize < lOptimizedBytes) && (!gbStop) && (!mbPluginTimedOut))
-					{
-						clsUtil::CopyFile(sTmpOutputFile.c_str(), sInputFile.c_str(), true);
-						EnterCriticalSection(&mudtCriticalSection);
-						grdFiles->Cells[KI_GRID_OPTIMIZED][(int) iCount] = FormatNumberThousand(clsUtil::SizeFile(sInputFile.c_str()));
-						LeaveCriticalSection(&mudtCriticalSection);
-					}
+					ApplyOutputFile(sTmpOutputFile);
 					if (!gudtOptions.bDebug)
 					{
 						clsUtil::DeleteFile(sTmpOutputFile.c_str());
@@ -3232,10 +3194,11 @@ void __fastcall TfrmMain::actOptimizeFor(TObject *Sender, int AIndex)
 		lOptimizedBytes = ParseNumberThousand(grdFiles->Cells[KI_GRID_OPTIMIZED][iCount]);
 		LeaveCriticalSection(&mudtCriticalSection);
 		unsigned int iPercentBytes = 0;
-		//Prevent dividing by zero, which would give an invalid percentage
+		//Savings percentage (same meaning as the status bar), not remaining size
 		if (lOriginalBytes > 0)
 		{
-			iPercentBytes = ((unsigned int) ((double) lOptimizedBytes / lOriginalBytes * 100));
+			unsigned long long lFileSaved = (lOriginalBytes > lOptimizedBytes) ? (lOriginalBytes - lOptimizedBytes) : 0;
+			iPercentBytes = ((unsigned int) ((double) lFileSaved / lOriginalBytes * 100));
 		}
 
 		
@@ -3300,7 +3263,6 @@ void __fastcall TfrmMain::tmrMainTimer(TObject *Sender)
 		{
 			Screen->Cursor = crAppStart;
 			grdFiles->Enabled = false;  //Prevent grid modifications while adding files
-			//Show();	//Required because some themes do not automatically refresh
 			Application->ProcessMessages();
 			AddFilesInitializeExist();
 			bool bAdded = false;
@@ -3542,7 +3504,6 @@ void __fastcall TfrmMain::AddFilesScan(const TCHAR *pacFile, const WIN32_FIND_DA
 				//Check if already added
 				if (!gudtOptions.bAllowDuplicates)
 				{
-				//if (grdFiles->Cols[KI_GRID_FILE]->IndexOf(sCellFile) >= 0)
 				if (AddFilesExist(sCellFile))
 				{
 					return;
@@ -3685,7 +3646,6 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 
 	if (gbStop)
 	{
-		//Close();
 		return (0);
 	}
 
@@ -3714,9 +3674,15 @@ int __fastcall TfrmMain::RunPlugin(unsigned int piCurrent, String psStatus, Stri
 	{
 		//Add final slash if it has not. Guarded because it mutates shared state, and workers run concurrently
 		EnterCriticalSection(&mudtCriticalSection);
-		if (gudtOptions.acTempDirectory[_tcslen(gudtOptions.acTempDirectory) - 1] != '\\')
 		{
-			_tcscat(gudtOptions.acTempDirectory, _T("\\"));
+			size_t iTempLen = _tcslen(gudtOptions.acTempDirectory);
+			//Room for the slash + NUL; never strcat into a possibly full PATH_MAX buffer
+			if ((iTempLen > 0) && (iTempLen + 1 < (sizeof(gudtOptions.acTempDirectory) / sizeof(TCHAR))) &&
+				(gudtOptions.acTempDirectory[iTempLen - 1] != _T('\\')))
+			{
+				gudtOptions.acTempDirectory[iTempLen] = _T('\\');
+				gudtOptions.acTempDirectory[iTempLen + 1] = NULL;
+			}
 		}
 		LeaveCriticalSection(&mudtCriticalSection);
 		clsUtil::CopyString(acTempPath, sizeof(acTempPath) / sizeof(TCHAR), gudtOptions.acTempDirectory);
@@ -3916,7 +3882,9 @@ void __fastcall TfrmMain::CheckForUpdates(bool pbSilent)
 
 	if (clsUtil::DownloadFilePost(KS_APP_UPDATE_SERVER, KS_APP_UPDATE_PAGE, acPath, acBuffer, KI_BUFFER_SIZE, StartsStr("https://", KS_APP_URL)))
 	{
-		mbstowcs(acWide, acBuffer, KI_BUFFER_SIZE);
+		//Leave room for the NUL: mbstowcs does not append one when the count is exhausted
+		mbstowcs(acWide, acBuffer, KI_BUFFER_SIZE - 1);
+		acWide[KI_BUFFER_SIZE - 1] = NULL;
 		//Check we only got number and punctuation digits in first characters to detect router errors returning HTML
 		size_t iWideLen = min(_tcslen(acWide), 10);
 		for (size_t iWide = 0; iWide < iWideLen; iWide++)
@@ -3933,15 +3901,17 @@ void __fastcall TfrmMain::CheckForUpdates(bool pbSilent)
 
 		gudtOptions.iAdsShown = 0;
 
-		if (GetModuleFileName(NULL, (TCHAR *) acPath, KI_BUFFER_SIZE / sizeof(TCHAR)) != 0)
+		//Local version (TCHAR), never alias the char POST buffer as wide
+		TCHAR acLocalVersion[64] = {};
+		if (GetModuleFileName(NULL, acTemp, KI_BUFFER_SIZE) != 0)
 		{
-			clsUtil::CopyString(acTemp, KI_BUFFER_SIZE, clsUtil::ExeVersion((TCHAR *) acPath));
+			clsUtil::CopyString(acLocalVersion, sizeof(acLocalVersion) / sizeof(TCHAR), clsUtil::ExeVersion(acTemp));
 		}
-		_stprintf((TCHAR *) acBuffer, _T("%10s"), (TCHAR *) acTemp);
+		_stprintf(acTemp, _T("%10s"), acLocalVersion);
 
-		clsUtil::CopyString(acTemp, KI_BUFFER_SIZE, acWide);
+		//acWide still holds the server response from mbstowcs above
 		//The server can append donation details to the version in the form "version (donator)", so they must be split before comparing, or donators would always be told a new version is available
-		TCHAR *pcDonation = _tcsstr(acTemp, _T(" ("));
+		TCHAR *pcDonation = _tcsstr(acWide, _T(" ("));
 		if (pcDonation != NULL)
 		{
 			clsUtil::CopyString(gudtOptions.acDonation, sizeof(gudtOptions.acDonation) / sizeof(TCHAR), pcDonation + 2);
@@ -3960,12 +3930,13 @@ void __fastcall TfrmMain::CheckForUpdates(bool pbSilent)
 				actDonateExecute(NULL);
 			}
 		}
-		_stprintf(acWide, _T("%10s"), (TCHAR *) acTemp);
+		TCHAR acServerVersion[64] = {};
+		_stprintf(acServerVersion, _T("%10s"), acWide);
 
-		if (_tcsncmp(acWide, (TCHAR *) acBuffer, 10) > 0)
+		if (_tcsncmp(acServerVersion, acTemp, 10) > 0)
 		{
 			String sCaption;
-			sCaption.printf(_((TCHAR *) _T("%s version %s is available.\r\nDo you want to download it now?")), Application->Name.c_str(), Trim(acWide).c_str());
+			sCaption.printf(_((TCHAR *) _T("%s version %s is available.\r\nDo you want to download it now?")), Application->Name.c_str(), Trim(acServerVersion).c_str());
 			if (clsUtil::MsgBox(Handle, sCaption.c_str(), _((TCHAR *) _T("Check updates")), MB_YESNO | MB_ICONQUESTION) == ID_YES)
 			{
 				ShellExecute(Handle, _T("open"), KS_APP_UPDATE_URL, _T(""), _T(""), SW_SHOWNORMAL);
@@ -4007,7 +3978,6 @@ String __fastcall TfrmMain::GetExtensionByContent (const String psFilename, bool
 	String sExtensionFind = " " + sRes + " ";
 	if (((PosEx(sExtensionFind, sExtensionAll) == 0) && ((gudtOptions.acJSAdditionalExtensions[0] == NULL) || (PosEx(sExtensionFind, " " + ReplaceStr((String) gudtOptions.acJSAdditionalExtensions, ",", " ") + " ") == 0))) || (pbForce))
 	{
-		//memset(acBuffer, 0, sizeof(acBuffer));
 		bool bMapped;
 		bool bFilled = false;
 
@@ -4336,7 +4306,7 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 		Screen->Cursor = crAppStart;
 	}
 
-	//CreateProcess can modify the command line while parsing, so it gets a private writable copy: the caller passes the buffer of a reference counted String. Same fix clsUtil::RunProcess got
+	//CreateProcess can modify the command line while parsing, so it gets a private writable copy: the caller passes the buffer of a reference counted String
 	const size_t iCmdLen = _tcslen(pacProcess) + 1;
 	TCHAR *pacCmdLine = new (std::nothrow) TCHAR[iCmdLen];
 	if (!pacCmdLine)
@@ -4347,7 +4317,7 @@ unsigned long __fastcall TfrmMain::RunProcess(const TCHAR *pacProcess, TCHAR *pa
 		}
 		return ((unsigned long) -1);
 	}
-	_tcscpy(pacCmdLine, pacProcess);
+	memcpy(pacCmdLine, pacProcess, iCmdLen * sizeof(TCHAR));
 
 	//Disable Windows error handling. Do not use GetErrorMode because it requires Vista or later.
 	SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOALIGNMENTFAULTEXCEPT | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
@@ -5314,7 +5284,6 @@ const TCHAR * __fastcall TfrmMain::GetOption(const TCHAR *pacSection, const TCHA
 	static __thread TCHAR acRes[2048];
 
 
-	//memset(acRes, 0, sizeof(acRes));
 	/* Get it via global registry */
 	lstrcpyn(acRes, clsUtil::GetRegistry(HKEY_LOCAL_MACHINE, clsUtil::GetRegistryPath(), pacKey), sizeof(acRes) / sizeof(TCHAR));
 	if (acRes[0] == NULL)
@@ -5373,26 +5342,6 @@ long long __fastcall TfrmMain::GetOption(const TCHAR *pacSection, const TCHAR *p
 		lRes = plDefault;
 	}
 	return (lRes);
-}
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-double __fastcall TfrmMain::GetOption(const TCHAR *pacSection, const TCHAR *pacKey, double pdDefault)
-{
-	double dRes;
-	const TCHAR *pacValue = GetOption(pacSection, pacKey, _T(""));
-
-
-	if (pacValue[0] != NULL)
-	{
-		dRes = _ttof(pacValue);
-	}
-	else
-	{
-		dRes = pdDefault;
-	}
-	return (dRes);
 }
 
 

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
+ 3.67. 28/11/2026. FileOptimizer. Removed the unused general purpose helpers (FindProcess, RunProcess, WriteFile, DownloadFile, Serialize, Unserialize, IsWine, and the GetIni for bool/long long/double and SetIni for double overloads): nothing in the program called them. TaskDialogCallbackProc is internal to the module now. CopyToRecycleBin builds its two PATH_MAX buffers writing only the names and the double terminators, instead of clearing 64 KB of stack on every recycled file
  3.66. 26/11/2026. FileOptimizer. GetIni no longer cuts values at the last semicolon (mask lists such as *.bak;*.tmp were truncated): a tab, a semicolon preceded by a blank, or a semicolon starting the value (Windows trims the tabs before it) begins the comment
  3.65. 26/11/2026. FileOptimizer. MapFileView heap copy uses a non throwing allocation (the null check after it could never be reached, an out of memory condition raised an exception instead of returning no view)
  3.64. 24/11/2026. FileOptimizer. CopyFile can replace the destination safely (copy next to it and swap, ReplaceFile/MoveFileEx, with the direct copy as the last option). ReadFile survives I/O errors on mapped pages
@@ -72,8 +73,9 @@ const void * __fastcall clsUtil::MemMem (const void *buf, size_t buf_len, const 
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Dialog callback of the timed message boxes. The timeout travels in the callback data of its own dialog, so message boxes shown at the same time never share it. Internal to this module
 #pragma argsused
-HRESULT CALLBACK clsUtil::TaskDialogCallbackProc(HWND phWnd, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData)
+static HRESULT CALLBACK TaskDialogCallbackProc(HWND phWnd, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData)
 {
 	HRESULT hResult = S_OK;
 
@@ -85,7 +87,6 @@ HRESULT CALLBACK clsUtil::TaskDialogCallbackProc(HWND phWnd, UINT uNotification,
 	}
 	else if (uNotification == TDN_TIMER)
 	{
-		//The timeout travels in the callback data of its own dialog, so message boxes shown at the same time never share it
 		unsigned int iTimeout = (unsigned int) dwRefData;
 		SendMessage(phWnd, TDM_SET_PROGRESS_BAR_POS, (WPARAM) min((unsigned long long) 100, ((unsigned long long) wParam * 100) / max(iTimeout, 1u)), 0);
 		if (wParam > iTimeout)
@@ -127,7 +128,7 @@ int __fastcall clsUtil::MsgBox(HWND phWnd, const TCHAR *pacText, const TCHAR *pa
 			if (piTimeout != 0)
 			{
 				udtFlags.dwFlags |= TDF_CALLBACK_TIMER | TDF_SHOW_PROGRESS_BAR;
-				udtFlags.pfCallback = (PFTASKDIALOGCALLBACK) clsUtil::TaskDialogCallbackProc;
+				udtFlags.pfCallback = (PFTASKDIALOGCALLBACK) TaskDialogCallbackProc;
 				udtFlags.lpCallbackData = (LONG_PTR) piTimeout;
 			}
 
@@ -234,36 +235,6 @@ int __fastcall clsUtil::MsgBox(HWND phWnd, const TCHAR *pacText, const TCHAR *pa
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-HANDLE __fastcall clsUtil::FindProcess(const TCHAR *pacProcess)
-{
-	PROCESSENTRY32 udtEntry;
-	HANDLE hProcess = nullptr;
-
-
-	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-	if (hSnapshot != INVALID_HANDLE_VALUE)
-	{
-		udtEntry.dwSize = sizeof(PROCESSENTRY32);
-		bool bRes = Process32First(hSnapshot, &udtEntry);
-		while (bRes)
-		{
-			if (_tcsicmp(udtEntry.szExeFile, pacProcess) == 0)
-			{
-				//Limited access is enough to know that it is running (full access is denied for elevated processes or from other users). Caller must close the handle
-				hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | SYNCHRONIZE, FALSE, udtEntry.th32ProcessID);
-				break;
-			}
-			bRes = Process32Next(hSnapshot, &udtEntry);
-		}
-		CloseHandle(hSnapshot);
-	}
-	return (hProcess);
-}
-
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 unsigned long __fastcall clsUtil::ReadPipeAvailable(HANDLE hRead, void *pvData, unsigned int piSize)
 {
 	unsigned long lRead = 0;
@@ -279,151 +250,6 @@ unsigned long __fastcall clsUtil::ReadPipeAvailable(HANDLE hRead, void *pvData, 
 		}
 	}
 	return (lRead);
-}
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-unsigned long __fastcall clsUtil::RunProcess(const TCHAR *pacProcess, const TCHAR *pacDirectory, TCHAR *pacOutput, unsigned int piOutputLen, bool pbWait)
-{
-	unsigned long lExitCode = (unsigned long) -1;
-	unsigned long lRead = 0;
-	//One byte of the output buffer is never used, so the captured output is always NUL terminated
-	unsigned int iOutputMax = (piOutputLen > 0) ? (piOutputLen - 1) : 0;
-	STARTUPINFO udtSI = {};
-	PROCESS_INFORMATION udtPI = {};
-	SECURITY_ATTRIBUTES udtSA = {};
-	HANDLE hOutRead = nullptr, hOutWrite = nullptr;
-	HANDLE hInRead = nullptr, hInWrite = nullptr;
-	//The command line is not a path, so it must not go through GetShortName (on 64 bit Windows it would prefix long ones with \\?\ and break them). Explicit writable buffer, because CreateProcess can write into the command line while parsing it
-	const size_t iCmdLen = _tcslen(pacProcess) + 1;
-	TCHAR *pacCmdLine = new TCHAR[iCmdLen];
-	memcpy(pacCmdLine, pacProcess, iCmdLen * sizeof(TCHAR));
-
-	//Only the main thread can safely touch the VCL screen cursor
-	if (GetCurrentThreadId() == MainThreadID)
-	{
-		Screen->Cursor = crHourGlass;
-	}
-	udtSA.nLength = sizeof(udtSA);
-	udtSA.bInheritHandle = true;
-	udtSA.lpSecurityDescriptor = nullptr;
-
-	udtSI.cb = sizeof(udtSI);
-	udtSI.dwFlags = STARTF_USESHOWWINDOW;
-	udtSI.wShowWindow = SW_HIDE;
-
-	//Capture the child output through a dedicated pipe. A separate stdin pipe is used so the child never sees its own stdout on stdin (the previous reuse of the output read end mixed the two streams for any plugin that both writes and reads).
-	if ((pacOutput != nullptr) && (piOutputLen > 0) && (CreatePipe(&hOutRead, &hOutWrite, &udtSA, piOutputLen)))
-	{
-		//Provide an empty stdin (EOF) via a second pipe; the write end is closed right after CreateProcess
-		if (!CreatePipe(&hInRead, &hInWrite, &udtSA, 0))
-		{
-			hInRead = nullptr;
-			hInWrite = nullptr;
-		}
-		if (hInRead != nullptr)
-		{
-			//The ends kept by the parent must not be inherited: the child would keep its own copy of the write end of its input open, so it would never see the end of it
-			SetHandleInformation(hOutRead, HANDLE_FLAG_INHERIT, 0);
-			SetHandleInformation(hInWrite, HANDLE_FLAG_INHERIT, 0);
-		}
-		udtSI.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
-		udtSI.hStdInput = (hInRead != nullptr) ? hInRead : hOutRead;	//fallback only if stdin pipe failed
-		udtSI.hStdOutput = hOutWrite;
-		//The child also gets the write end as its standard error, or its error output would go to an invalid handle (and capturing it helps debugging plugin failures)
-		udtSI.hStdError = hOutWrite;
-		//The output buffer is zeroed in advance, and the last byte is never written
-		memset(pacOutput, 0, piOutputLen);
-	}
-
-	//Handles are only inherited when the output is captured (the child needs the pipe handles set as its standard input and output). The process and thread handles are never inheritable, or other children created meanwhile would keep them alive
-	if (CreateProcess(nullptr, pacCmdLine, nullptr, nullptr, (hOutWrite != nullptr), NULL, nullptr, pacDirectory, &udtSI, &udtPI))
-	{
-		//Close the write ends in the parent immediately: the child then sees EOF on stdin and the output pipe can signal end-of-data without deadlock
-		if (hOutWrite != nullptr)
-		{
-			CloseHandle(hOutWrite);
-			hOutWrite = nullptr;
-		}
-		if (hInWrite != nullptr)
-		{
-			CloseHandle(hInWrite);
-			hInWrite = nullptr;
-		}
-
-		if (pbWait)
-		{
-			bool bExited = false;
-			do
-			{
-				//Only the main thread can process messages: workers would dispatch them in the wrong thread
-				if (GetCurrentThreadId() == MainThreadID)
-				{
-					Application->ProcessMessages();
-				}
-				//Drain the pipe while waiting, or a child writing more than the pipe capacity would block forever, deadlocking the parent too
-				if (hOutRead != nullptr)
-				{
-					if (lRead < iOutputMax)
-					{
-						lRead += ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
-					}
-					else
-					{
-						//The output buffer is full, so drain and discard the rest, or the child would block the same way
-						unsigned char acDiscard[1024];
-						ReadPipeAvailable(hOutRead, acDiscard, sizeof(acDiscard));
-					}
-				}
-				//Give the process a 100 ms time slice. Any result other than timeout means it exited (or the wait failed, and the loop would never end otherwise). The exit code is not checked to exit the loop: a child legitimately returning STILL_ACTIVE (259) would loop forever
-				if (WaitForSingleObject(udtPI.hProcess, 100) != WAIT_TIMEOUT)
-				{
-					bExited = true;
-				}
-			}
-			while (!bExited);
-			GetExitCodeProcess(udtPI.hProcess, &lExitCode);
-		}
-		else
-		{
-			GetExitCodeProcess(udtPI.hProcess, &lExitCode);
-		}
-		CloseHandle(udtPI.hProcess);
-		CloseHandle(udtPI.hThread);
-	}
-
-	if (hOutWrite != nullptr)
-	{
-		CloseHandle(hOutWrite);
-	}
-	if (hInWrite != nullptr)
-	{
-		CloseHandle(hInWrite);
-	}
-	if (hInRead != nullptr)
-	{
-		CloseHandle(hInRead);
-	}
-
-	if (hOutRead != nullptr)
-	{
-		//Read what is left in the pipe, since the child could have exited before the last drain
-		if (lRead < iOutputMax)
-		{
-			ReadPipeAvailable(hOutRead, (void *) (((unsigned char *) pacOutput) + lRead), iOutputMax - (unsigned int) lRead);
-		}
-		CloseHandle(hOutRead);
-	}
-
-	//Only the main thread can safely touch the VCL screen cursor
-	if (GetCurrentThreadId() == MainThreadID)
-	{
-		Screen->Cursor = crDefault;
-	}
-
-	delete[] pacCmdLine;
-	return (lExitCode);
 }
 
 
@@ -651,58 +477,6 @@ void __fastcall clsUtil::UnmapFileView(void *pvView, bool pbMapped)
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool __fastcall clsUtil::WriteFile(const TCHAR *pacFile, const void *pvData, unsigned int piSize, unsigned int piOffset)
-{
-	bool bRes = false;
-
-
-	HANDLE hMapping = nullptr;
-	//When writing from the start the file is recreated, but writing a chunk at an offset must not truncate the existing contents
-	HANDLE hFile = CreateFile(GetApiName(pacFile).c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, (piOffset == 0) ? CREATE_ALWAYS : OPEN_ALWAYS, FILE_FLAG_WRITE_THROUGH, nullptr);
-	if (hFile != INVALID_HANDLE_VALUE)
-	{
-		// Use file mapped IO, only when writing from the start (the view always starts at offset 0). An empty file cannot be mapped
-		if ((piOffset == 0) && (piSize > 0))
-		{
-			hMapping = CreateFileMapping(hFile, nullptr, PAGE_READWRITE, 0, piSize, nullptr);
-			if (hMapping != nullptr)
-			{
-				void *pacBuffer = MapViewOfFile(hMapping, FILE_MAP_WRITE, 0, 0, piSize);
-				if (pacBuffer != nullptr)
-				{
-					memcpy(pacBuffer, pvData, piSize);
-					bRes = UnmapViewOfFile(pacBuffer);
-				}
-			}
-		}
-		// Use regular IO, also when mapping is not possible (offset, empty data, network shares...), or nothing would be written
-		if (!bRes)
-		{
-			if (piOffset != 0)
-			{
-				//SetFilePointerEx, so offsets over 2 GB do not overflow the signed long offset of SetFilePointer
-				LARGE_INTEGER lOffset;
-				lOffset.QuadPart = piOffset;
-				SetFilePointerEx(hFile, lOffset, nullptr, FILE_BEGIN);
-			}
-			unsigned long lWritten;
-			//A partial write (such as when the disk gets full) is not a success, or the caller would believe the whole data was stored
-			bRes = ((::WriteFile(hFile, pvData, piSize, &lWritten, nullptr) != 0) && (lWritten == piSize));
-		}
-	}
-	if (hMapping)
-	{
-		CloseHandle(hMapping);
-	}
-	if (hFile != INVALID_HANDLE_VALUE)
-	{
-		CloseHandle(hFile);
-	}
-	return (bRes);
-}
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool __fastcall clsUtil::GetFileTimestamp(const TCHAR *pacFile, FILETIME *pudtCreated, FILETIME *pudtAccessed, FILETIME *pudtModified)
 {
 	bool bRes = false;
@@ -837,31 +611,6 @@ static bool ReadInternetResponse(HINTERNET phRequest, void *pvData, unsigned int
 		lTotal += lRead;
 	}
 	*plTotal = lTotal;
-	return (bRes);
-}
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool __fastcall clsUtil::DownloadFile(const TCHAR *pacUrl, void *pvData, unsigned int piSize)
-{
-	bool bRes = false;
-
-
-	BuildUserAgent(pvData, piSize);
-	HINTERNET hInternet = InternetOpen((const TCHAR *) pvData, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, NULL);
-	if (hInternet != nullptr)
-	{
-		HINTERNET hHttp = InternetOpenUrl(hInternet, pacUrl, nullptr, 0, INTERNET_FLAG_EXISTING_CONNECT | INTERNET_FLAG_HYPERLINK, NULL);
-		if (hHttp != nullptr)
-		{
-			unsigned long lRead;
-			//An empty response is a failure, so the caller never mistakes it for a valid download
-			bRes = ((ReadInternetResponse(hHttp, pvData, piSize, &lRead)) && (lRead > 0));
-			InternetCloseHandle(hHttp);
-		}
-		InternetCloseHandle(hInternet);
-	}
 	return (bRes);
 }
 
@@ -1180,41 +929,6 @@ int __fastcall clsUtil::GetIni(const TCHAR *pacSection, const TCHAR *pacKey, int
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-long long __fastcall clsUtil::GetIni(const TCHAR *pacSection, const TCHAR *pacKey, long long plDefault)
-{
-	TCHAR acDefault[2048];
-
-
-	_i64tot(plDefault, acDefault, 10);
-	return (_ttoi64(GetIni(pacSection, pacKey, acDefault)));
-}
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-double __fastcall clsUtil::GetIni(const TCHAR *pacSection, const TCHAR *pacKey, double pdDefault)
-{
-	TCHAR acDefault[2048];
-
-
-	_stprintf(acDefault, _T("%f"), pdDefault);
-	return (_ttof(GetIni(pacSection, pacKey, acDefault)));
-}
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool __fastcall clsUtil::GetIni(const TCHAR *pacSection, const TCHAR *pacKey, bool pbDefault)
-{
-	const TCHAR *pacValue = GetIni(pacSection, pacKey, (pbDefault) ? _T("true") : _T("false"));
-
-
-	return ((_tcsicmp(pacValue, _T("true")) == 0) || (_tcsicmp(pacValue, _T("yes")) == 0) || (_tcsicmp(pacValue, _T("on")) == 0) || (_tcscmp(pacValue, _T("1")) == 0));
-}
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool __fastcall clsUtil::SetIni(const TCHAR *pacSection, const TCHAR *pacKey, const TCHAR *pacValue, const TCHAR *pacComment)
 {
 	bool bRes;
@@ -1290,18 +1004,6 @@ bool __fastcall clsUtil::SetIni(const TCHAR *pacSection, const TCHAR *pacKey, lo
 	return (SetIni(pacSection, pacKey, acValue, pacComment));
 }
 
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool __fastcall clsUtil::SetIni(const TCHAR *pacSection, const TCHAR *pacKey, double pdValue, const TCHAR *pacComment)
-{
-	TCHAR acValue[2048];
-
-
-	_stprintf(acValue, _T("%f"), pdValue);
-	return (SetIni(pacSection, pacKey, acValue, pacComment));
-}
 
 
 
@@ -1448,43 +1150,6 @@ bool __fastcall clsUtil::DeleteRegistry(HKEY phKey, const TCHAR *pacSubkey)
 	bRes = (RegDeleteKey(phKey, pacSubkey) == ERROR_SUCCESS);
 
 	return (bRes);
-}
-
-
-
-// ---------------------------------------------------------------------------
-unsigned int __fastcall clsUtil::Serialize (void *pacBuffer, unsigned int piSize)
-{
-	for (int iBuffer = (int) piSize - 1; iBuffer >= 0; iBuffer--)
-	{
-		unsigned char iByte = ((unsigned char *) pacBuffer)[iBuffer];
-		((unsigned char *) pacBuffer)[iBuffer << 1] = (iByte & 15) + '0';
-		((unsigned char *) pacBuffer)[(iBuffer << 1) + 1] = (iByte >> 4) + '0';
-	}
-	return (piSize << 1);
-}
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-unsigned int __fastcall clsUtil::Unserialize (void *pacBuffer, unsigned int piSize)
-{
-	for (unsigned int iBuffer = 0; (iBuffer + 1) < piSize; iBuffer+=2)
-	{
-		unsigned char iNibbleL = ((unsigned char *) pacBuffer)[iBuffer] - '0';
-		unsigned char iNibbleH = ((unsigned char *) pacBuffer)[iBuffer + 1] - '0';
-
-		//Do a simple integrity check
-		if ((iNibbleL > 15) || (iNibbleH > 15))
-		{
-			return (0);
-		}
-		else
-		{
-			((unsigned char *) pacBuffer)[iBuffer >> 1] = (unsigned char) (iNibbleL + (iNibbleH << 4));
-		}
-	}
-	return (piSize >> 1);
 }
 
 
@@ -1704,8 +1369,9 @@ bool __fastcall clsUtil::CopyToRecycleBin(const TCHAR *pacSource)
 {
 	int iRes = -1;
 	SHFILEOPSTRUCT udtFileOp = {};
-	TCHAR acSource[PATH_MAX + 1] = {};
-	TCHAR acDestination[PATH_MAX + 1] = {};
+	//Not zeroed in advance: the names are built below writing only the characters used and their terminators, instead of clearing 64 KB of stack on every recycled file
+	TCHAR acSource[PATH_MAX + 1];
+	TCHAR acDestination[PATH_MAX + 1];
 
 
 	//Only the main thread can process messages: workers would dispatch them in the wrong thread
@@ -1713,13 +1379,21 @@ bool __fastcall clsUtil::CopyToRecycleBin(const TCHAR *pacSource)
 	{
 		Application->ProcessMessages();
 	}
-	// ShFileOperation expect strings ending in double NULL, so always leave room for them
-	//SHFileOperation expects a double NUL terminated string: the buffer is zeroed in advance, so the copy only needs to leave its last character free
-	clsUtil::CopyString(acSource, (sizeof(acSource) / sizeof(TCHAR)) - 1, pacSource);
+	//SHFileOperation expects a list of strings ending in a double NUL, so both terminators are written explicitly
+	size_t iSourceLen = _tcslen(pacSource);
+	//Leave room for the two terminators
+	if (iSourceLen > ((sizeof(acSource) / sizeof(TCHAR)) - 2))
+	{
+		iSourceLen = (sizeof(acSource) / sizeof(TCHAR)) - 2;
+	}
+	memcpy(acSource, pacSource, iSourceLen * sizeof(TCHAR));
+	acSource[iSourceLen] = NULL;
+	acSource[iSourceLen + 1] = NULL;
 
-	_tcsncpy(acDestination, acSource, (sizeof(acDestination) / sizeof(TCHAR)) - 5);
-	acDestination[(sizeof(acDestination) / sizeof(TCHAR)) - 5] = NULL;
-	_tcscat(acDestination, _T(".tmp"));
+	//The temporary copy is the same name with a .tmp extension, always leaving room for it and its terminator
+	size_t iDestinationLen = (iSourceLen > ((sizeof(acDestination) / sizeof(TCHAR)) - 5)) ? ((sizeof(acDestination) / sizeof(TCHAR)) - 5) : iSourceLen;
+	memcpy(acDestination, acSource, iDestinationLen * sizeof(TCHAR));
+	_tcscpy(acDestination + iDestinationLen, _T(".tmp"));
 
 	//If it cannot be copied do not delete the original, since it could not be restored afterwards
 	if (!CopyFile(acSource, acDestination))
@@ -1864,28 +1538,6 @@ bool __fastcall clsUtil::IsWindows64(void)
 	return (iWindowsArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
 }
 
-
-
-// ---------------------------------------------------------------------------
-bool __fastcall clsUtil::IsWine(void)
-{
-	static bool bIsWine = false;
-	static bool bChecked = false;
-
-
-	if (!bChecked)
-	{
-		//NTDLL is always loaded, so no need to load and free it
-		HMODULE hNtDll = GetModuleHandle(_T("NTDLL.DLL"));
-		if (hNtDll)
-		{
-			const void *wine_get_version = (void *) GetProcAddress(hNtDll, "wine_get_version");
-			bIsWine = (wine_get_version != nullptr);
-		}
-		bChecked = true;
-	}
-	return (bIsWine);
-}
 
 
 // ---------------------------------------------------------------------------
